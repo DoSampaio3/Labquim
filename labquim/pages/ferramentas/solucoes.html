@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Soluções | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .hero-ferramenta{background:linear-gradient(135deg,#1a3560 0%,#2a6496 100%);padding:48px 0 36px;color:#fff}
+    .hero-ferramenta h1{font-family:'Merriweather',serif;font-size:1.9rem;margin:8px 0;color:#fff}
+    .hero-ferramenta p{opacity:.85;max-width:560px;font-size:1rem}
+    .badge-tool{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.8rem;margin-bottom:12px}
+    .sec-ferramenta{padding:44px 0 60px;background:#f4f6fb}
+    .tabs{display:flex;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden;margin-bottom:28px;max-width:580px;margin-left:auto;margin-right:auto}
+    .tab{flex:1;padding:14px;border:none;background:none;cursor:pointer;font-size:.92rem;font-weight:600;color:#888;border-bottom:3px solid transparent;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .tab.ativo{color:#1a3560;border-bottom-color:#1a3560;background:#f0f5ff}
+    .tab:hover:not(.ativo){background:#f8fafc}
+    .panel{display:none}
+    .panel.ativo{display:block}
+    .calc-card{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:32px;max-width:580px;margin:0 auto}
+    .calc-card h2{font-size:1.1rem;font-weight:700;color:#1a3560;margin:0 0 4px}
+    .calc-desc{font-size:.85rem;color:#666;margin-bottom:22px;line-height:1.6}
+    .formula-inline{font-family:'Courier New',monospace;background:#f0f5ff;padding:2px 8px;border-radius:4px;font-size:.9em;color:#1a3560}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:.85rem;font-weight:600;color:#444;margin-bottom:6px}
+    .field label .u{color:#999;font-weight:400}
+    .field input,.field select{width:100%;padding:11px 14px;border:2px solid #dde3ed;border-radius:10px;font-size:.95rem;font-family:inherit;background:#f8fafc;outline:none;transition:border .2s;box-sizing:border-box}
+    .field input:focus,.field select:focus{border-color:#2a6496;background:#fff}
+    .g2{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+    .g2b{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:768px){
+      .g2,.g2b{grid-template-columns:1fr}
+      .tabs{border-radius:8px}
+      .tab{padding:11px 8px;font-size:.8rem}
+      .sol-card{padding:22px 16px}
+    }
+    @media(max-width:480px){
+      .tab{font-size:.75rem;padding:10px 6px;gap:4px}
+    }
+    .btn-calc{width:100%;padding:13px;background:#1a3560;color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s;margin-top:4px}
+    .btn-calc:hover{background:#0f2040}
+    .btn-reset{width:100%;padding:10px;background:#f0f3f8;color:#555;border:none;border-radius:10px;font-size:.88rem;font-weight:600;cursor:pointer;margin-top:8px;transition:background .2s}
+    .btn-reset:hover{background:#e2e8f0}
+    .resultado{display:none;margin-top:20px;background:#eaf3ff;border:1.5px solid #b8d4f5;border-radius:12px;padding:20px}
+    .resultado.visivel{display:block}
+    .resultado.erro{background:#fff3f3;border-color:#fca5a5}
+    .res-titulo{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#777;margin-bottom:12px}
+    .res-lista{list-style:none;padding:0;margin:0}
+    .res-lista li{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #d4e8fb}
+    .res-lista li:last-child{border-bottom:none}
+    .res-chave{font-size:.88rem;color:#555}
+    .res-valor{font-size:1.05rem;font-weight:800;color:#1a3560;font-family:'Courier New',monospace}
+    .res-valor.erro-v{color:#c0392b}
+    .formula-box{font-family:'Courier New',monospace;font-size:.88rem;background:#fff;border:1px solid #dde3ed;border-radius:8px;padding:10px;text-align:center;margin-top:12px;color:#333}
+    .info-section{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);padding:28px;max-width:580px;margin:28px auto 0}
+    .info-section h3{font-size:1rem;font-weight:700;color:#1a3560;margin-bottom:14px}
+    .info-section details{margin-bottom:8px}
+    .info-section summary{cursor:pointer;font-weight:600;color:#444;font-size:.9rem;padding:8px 0;border-bottom:1px solid #eef1f6;user-select:none}
+    .info-section summary::marker{color:var(--azul-medio)}
+    .info-body{padding:12px 0 4px;font-size:.86rem;color:#555;line-height:1.75}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="componentes-header"></div>
+
+<section class="hero-ferramenta">
+  <div class="container">
+    <div class="badge-tool"><i class="fas fa-flask"></i> Ferramentas LabQuim</div>
+    <h1>🧪 Calculadora de Soluções</h1>
+    <p>Calcule a massa de reagentes sólidos ou o volume de reagentes líquidos necessários para preparar soluções com a molaridade desejada.</p>
+  </div>
+</section>
+
+<section class="sec-ferramenta">
+  <div class="container">
+
+    <div class="tabs">
+      <button class="tab ativo" data-painel="solido"><i class="fas fa-weight"></i> Reagente Sólido</button>
+      <button class="tab" data-painel="liquido"><i class="fas fa-tint"></i> Reagente Líquido</button>
+    </div>
+
+    <!-- Painel Sólido -->
+    <div class="panel ativo" id="painel-solido">
+      <div class="calc-card">
+        <h2>Reagente Sólido</h2>
+        <p class="calc-desc">Calcula a <strong>massa a pesar</strong> para preparar uma solução de molaridade e volume definidos.<br>Fórmula: <span class="formula-inline">m = M × V × PM</span></p>
+
+        <div class="field">
+          <label for="s_pm">Peso Molecular <span class="u">(g/mol)</span></label>
+          <input type="number" id="s_pm" placeholder="Ex: 58.44  (NaCl)" min="0" step="any">
+        </div>
+        <div class="field">
+          <label>Molaridade desejada</label>
+          <div class="g2">
+            <input type="number" id="s_m" placeholder="Ex: 0.5" min="0" step="any">
+            <select id="s_m_u">
+              <option value="1">M (mol/L)</option>
+              <option value="0.001">mM</option>
+              <option value="0.000001">μM</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Volume final</label>
+          <div class="g2">
+            <input type="number" id="s_v" placeholder="Ex: 100" min="0" step="any">
+            <select id="s_v_u">
+              <option value="0.001">mL</option>
+              <option value="1">L</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-calc" id="btn-solido"><i class="fas fa-calculator"></i> Calcular Massa</button>
+        <button class="btn-reset" id="reset-solido"><i class="fas fa-redo"></i> Limpar</button>
+
+        <div class="resultado" id="res-solido">
+          <div class="res-titulo">Resultado</div>
+          <ul class="res-lista">
+            <li><span class="res-chave">Massa necessária (formatada)</span><span class="res-valor" id="out-massa">—</span></li>
+            <li><span class="res-chave">Massa em gramas</span><span class="res-valor" id="out-massa-g">—</span></li>
+          </ul>
+          <div class="formula-box">m (g) = M (mol/L) × V (L) × PM (g/mol)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Painel Líquido -->
+    <div class="panel" id="painel-liquido">
+      <div class="calc-card">
+        <h2>Reagente Líquido</h2>
+        <p class="calc-desc">Calcula o <strong>volume de estoque a pipetar</strong> de um reagente líquido concentrado para preparar uma solução diluída.<br>Fórmulas: <span class="formula-inline">M₁ = (P × ρ × 1000) / PM</span> &nbsp;→&nbsp; <span class="formula-inline">V₁ = (M₂ × V₂) / M₁</span></p>
+
+        <div class="g2b">
+          <div class="field">
+            <label for="l_rho">Densidade ρ <span class="u">(g/mL)</span></label>
+            <input type="number" id="l_rho" placeholder="Ex: 1.84  (H₂SO₄)" min="0" step="any">
+          </div>
+          <div class="field">
+            <label for="l_p">Pureza <span class="u">(%)</span></label>
+            <input type="number" id="l_p" placeholder="Ex: 98" min="0" max="100" step="any">
+          </div>
+        </div>
+        <div class="field">
+          <label for="l_pm">Peso Molecular <span class="u">(g/mol)</span></label>
+          <input type="number" id="l_pm" placeholder="Ex: 98.08  (H₂SO₄)" min="0" step="any">
+        </div>
+        <div class="g2b">
+          <div class="field">
+            <label for="l_m2">Molaridade alvo <span class="u">(M)</span></label>
+            <input type="number" id="l_m2" placeholder="Ex: 1.0" min="0" step="any">
+          </div>
+          <div class="field">
+            <label for="l_v2">Volume alvo <span class="u">(mL)</span></label>
+            <input type="number" id="l_v2" placeholder="Ex: 500" min="0" step="any">
+          </div>
+        </div>
+
+        <button class="btn-calc" id="btn-liquido"><i class="fas fa-calculator"></i> Calcular Volume</button>
+        <button class="btn-reset" id="reset-liquido"><i class="fas fa-redo"></i> Limpar</button>
+
+        <div class="resultado" id="res-liquido">
+          <div class="res-titulo">Resultado</div>
+          <ul class="res-lista">
+            <li><span class="res-chave">Volume de estoque (formatado)</span><span class="res-valor" id="out-vol">—</span></li>
+            <li><span class="res-chave">Volume em litros</span><span class="res-valor" id="out-vol-l">—</span></li>
+            <li><span class="res-chave">Molaridade do estoque M₁</span><span class="res-valor" id="out-m1">—</span></li>
+          </ul>
+          <div class="formula-box">M₁ = (P% × ρ × 1000) / PM &nbsp;|&nbsp; V₁ = (M₂ × V₂) / M₁</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="info-section">
+      <h3><i class="fas fa-info-circle" style="margin-right:8px"></i> Fundamentos e Avisos</h3>
+      <details>
+        <summary>Base matemática — Reagente Sólido</summary>
+        <div class="info-body">A massa é obtida multiplicando molaridade (mol/L) × volume (L) × peso molecular (g/mol), resultando na massa em gramas. Os valores são apresentados com prefixos automáticos: g → mg → μg.</div>
+      </details>
+      <details>
+        <summary>Base matemática — Reagente Líquido</summary>
+        <div class="info-body">A molaridade do estoque é estimada a partir da densidade e pureza: <strong>M₁ = (P × ρ × 1000) / PM</strong>. O volume necessário é calculado por diluição simples: <strong>V₁ = (M₂ × V₂) / M₁</strong>.</div>
+      </details>
+      <details>
+        <summary>Aviso de uso</summary>
+        <div class="info-body">Esta ferramenta é apenas um <strong>auxiliar de cálculo</strong>. Sempre verifique os rótulos dos reagentes, unidades e procedimentos de segurança do laboratório antes de preparar soluções.</div>
+      </details>
+    </div>
+
+  </div>
+</section>
+
+<div id="componentes-footer"></div>
+<script src="../../assets/js/componentes.js"></script>
+<script>
+  document.getElementById('componentes-header').innerHTML = gerarHeader('ferramentas');
+  document.getElementById('componentes-footer').innerHTML = gerarFooter();
+  inicializarNav();
+
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('ativo'));
+      tab.classList.add('ativo');
+      document.getElementById('painel-' + tab.dataset.painel).classList.add('ativo');
+    });
+  });
+
+  function pNum(id) {
+    const v = parseFloat(document.getElementById(id).value);
+    return (isFinite(v) && v > 0) ? v : null;
+  }
+
+  function fmt(val, unidade) {
+    if (val >= 1)      return val.toFixed(5) + ' ' + unidade;
+    if (val >= 1e-3)   return (val * 1e3).toFixed(5) + ' m' + unidade;
+    if (val >= 1e-6)   return (val * 1e6).toFixed(5) + ' μ' + unidade;
+    return (val * 1e9).toFixed(5) + ' n' + unidade;
+  }
+
+  function mostrar(boxId, ok) {
+    const box = document.getElementById(boxId);
+    box.classList.add('visivel');
+    box.classList.toggle('erro', !ok);
+  }
+
+  function ocultar(boxId) {
+    const box = document.getElementById(boxId);
+    box.classList.remove('visivel', 'erro');
+  }
+
+  // === SÓLIDO ===
+  function calcSolido() {
+    const pm = pNum('s_pm');
+    const m  = pNum('s_m');
+    const mf = parseFloat(document.getElementById('s_m_u').value);
+    const v  = pNum('s_v');
+    const vf = parseFloat(document.getElementById('s_v_u').value);
+
+    if (!pm || !m || !v) {
+      mostrar('res-solido', false);
+      document.getElementById('out-massa').textContent   = 'Preencha todos os campos';
+      document.getElementById('out-massa-g').textContent = '—';
+      document.getElementById('out-massa').className = 'res-valor erro-v';
+      return;
+    }
+
+    const M_L   = m * mf;
+    const V_L   = v * vf;
+    const massa  = M_L * V_L * pm;
+
+    document.getElementById('out-massa').textContent   = fmt(massa, 'g');
+    document.getElementById('out-massa-g').textContent = massa.toFixed(6) + ' g';
+    document.getElementById('out-massa').className = 'res-valor';
+    mostrar('res-solido', true);
+  }
+
+  document.getElementById('btn-solido').addEventListener('click', calcSolido);
+  document.getElementById('reset-solido').addEventListener('click', () => {
+    ['s_pm','s_m','s_v'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('s_m_u').value = '1';
+    document.getElementById('s_v_u').value = '0.001';
+    ocultar('res-solido');
+  });
+  document.querySelectorAll('#painel-solido input, #painel-solido select').forEach(el =>
+    el.addEventListener('keydown', e => { if(e.key==='Enter') calcSolido(); })
+  );
+
+  // === LÍQUIDO ===
+  function calcLiquido() {
+    const rho = pNum('l_rho');
+    const p   = parseFloat(document.getElementById('l_p').value);
+    const pm  = pNum('l_pm');
+    const m2  = pNum('l_m2');
+    const v2  = pNum('l_v2');
+
+    const pOk = isFinite(p) && p > 0 && p <= 100;
+
+    if (!rho || !pOk || !pm || !m2 || !v2) {
+      mostrar('res-liquido', false);
+      document.getElementById('out-vol').textContent   = 'Preencha todos os campos corretamente';
+      document.getElementById('out-vol-l').textContent = '—';
+      document.getElementById('out-m1').textContent    = '—';
+      document.getElementById('out-vol').className = 'res-valor erro-v';
+      return;
+    }
+
+    const pf = p / 100;
+    const M1 = (pf * rho * 1000) / pm;
+    const V2L = v2 / 1000;
+    const V1L = (m2 * V2L) / M1;
+
+    document.getElementById('out-vol').textContent   = fmt(V1L, 'L');
+    document.getElementById('out-vol-l').textContent = V1L.toFixed(6) + ' L';
+    document.getElementById('out-m1').textContent    = M1.toFixed(4) + ' M';
+    document.getElementById('out-vol').className = 'res-valor';
+    mostrar('res-liquido', true);
+  }
+
+  document.getElementById('btn-liquido').addEventListener('click', calcLiquido);
+  document.getElementById('reset-liquido').addEventListener('click', () => {
+    ['l_rho','l_p','l_pm','l_m2','l_v2'].forEach(id => document.getElementById(id).value = '');
+    ocultar('res-liquido');
+  });
+  document.querySelectorAll('#painel-liquido input').forEach(el =>
+    el.addEventListener('keydown', e => { if(e.key==='Enter') calcLiquido(); })
+  );
+</script>
+</body>
+</html>

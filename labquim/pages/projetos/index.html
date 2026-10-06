@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projetos de Pesquisa | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .prof-card{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);overflow:hidden;transition:box-shadow .2s,transform .2s;display:flex;flex-direction:column}
+    .prof-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.14);transform:translateY(-3px)}
+    .prof-card-header{padding:24px 24px 16px;border-bottom:1px solid #eef1f6;display:flex;align-items:center;gap:16px}
+    .prof-card-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;color:#fff;flex-shrink:0}
+    .prof-card-header h3{font-size:1rem;color:#1a3560;margin:0 0 3px}
+    .prof-card-header p{font-size:.8rem;color:#888;margin:0}
+    .prof-card-body{padding:16px 24px;flex:1}
+    .proj-mini{padding:10px 0;border-bottom:1px solid #f0f3f8;font-size:.85rem}
+    .proj-mini:last-child{border-bottom:none}
+    .proj-mini h4{font-size:.88rem;color:#1a3560;margin:0 0 4px;line-height:1.4}
+    .proj-mini .proj-status{font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:4px}
+    .status-and{background:#e6f4ea;color:#1e7e34}
+    .status-conc{background:#f0f4ff;color:#1a3560}
+    .prof-card-footer{padding:16px 24px;border-top:1px solid #eef1f6}
+    .projetos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px}
+    @media(max-width:768px){.projetos-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="header-container"></div>
+<div id="breadcrumb-container"></div>
+
+<div style="background:linear-gradient(135deg,#1a3560,#2d5a9e);padding:52px 0 36px;color:#fff">
+  <div class="container">
+    <h1 style="font-size:2rem;color:#fff;margin-bottom:8px"><i class="fas fa-flask" style="margin-right:12px;opacity:.8"></i>Projetos de Pesquisa</h1>
+    <p style="opacity:.82">Selecione um pesquisador para ver seus projetos detalhados</p>
+    <div style="display:flex;gap:24px;margin-top:20px;flex-wrap:wrap">
+      <div style="text-align:center"><div style="font-size:1.9rem;font-weight:800">5</div><div style="font-size:.78rem;opacity:.75">Pesquisadores</div></div>
+      <div style="text-align:center"><div style="font-size:1.9rem;font-weight:800">31</div><div style="font-size:.78rem;opacity:.75">Projetos Ativos</div></div>
+      <div style="text-align:center"><div style="font-size:1.9rem;font-weight:800">31</div><div style="font-size:.78rem;opacity:.75">Concluídos</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-padded" style="background:#f4f6fb">
+  <div class="container">
+    <div 
+    <!-- Aviso desatualização -->
+    
+    <class="projetos-grid">
+
+      <!-- Clayton -->
+      <div class="prof-card animar">
+        <div class="prof-card-header">
+          <img src="../../assets/img/clayton.gif" alt="Clayton" class="prof-card-avatar" style="object-fit:cover;object-position:top" onerror="this.outerHTML='<div class=\'prof-card-avatar\' style=\'background:linear-gradient(135deg,#1a3560,#2a6496)\'>CQ</div>'">
+          <div>
+            <h3>Prof. Dr. Clayton Queiroz Alves</h3>
+            <p>Fitoquímica · Produtos Naturais · Atividade Biológica</p>
+          </div>
+        </div>
+        <div class="prof-card-body">
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Bioeconomia do Licuri (Syagrus spp.) — FINEP</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Formulações Lipossomais com Produtos Naturais do Semiárido</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Busca por Novos Agentes Terapêuticos a Partir de Fontes Naturais</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Estudo Fitoquímico de Dioclea virgata</h4></div>
+        </div>
+        <div class="prof-card-footer">
+          <a href="clayton.html" class="btn btn-primario" style="width:100%;justify-content:center;font-size:.88rem"><i class="fas fa-arrow-right"></i> Ver todos os projetos</a>
+        </div>
+      </div>
+
+      <!-- Humbervânia -->
+      <div class="prof-card animar">
+        <div class="prof-card-header">
+          <div class="prof-card-avatar" style="background:linear-gradient(135deg,#5a4a2d,#8a7040)">HG</div>
+          <div>
+            <h3>Profa. Dra. Humbervânia Reis Gonçalves da Silva</h3>
+            <p>Quimiometria · Biocombustíveis · Propriedade Intelectual</p>
+          </div>
+        </div>
+        <div class="prof-card-body">
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Mapeamento Tecnológico de Água Salina no Semiárido</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Especiação de Metais por Imagens Digitais</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Avaliação da Qualidade de Biocombustíveis em Tempo Real</h4></div>
+        </div>
+        <div class="prof-card-footer">
+          <a href="humbervania.html" class="btn btn-primario" style="width:100%;justify-content:center;font-size:.88rem"><i class="fas fa-arrow-right"></i> Ver todos os projetos</a>
+        </div>
+      </div>
+
+      <!-- Ivanice -->
+      <div class="prof-card animar">
+        <div class="prof-card-header">
+          <div class="prof-card-avatar" style="background:linear-gradient(135deg,#2d5a4e,#3d7a6a)">IF</div>
+          <div>
+            <h3>Profa. Dra. Ivanice Ferreira dos Santos</h3>
+            <p>Química Ambiental · Especiação · Quimiometria</p>
+          </div>
+        </div>
+        <div class="prof-card-body">
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Contaminantes Emergentes em Rios de Salvador — FAPESB</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Valores de Referência para Metais nos Solos da Bahia</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Risco Ecotoxicológico — IDAEA/CSIC, Espanha — CNPq</h4></div>
+          <div class="proj-mini"><span class="proj-status status-conc">Concluído</span><h4>SARS-CoV-2 em Corpos D'água — COVID-19</h4></div>
+        </div>
+        <div class="prof-card-footer">
+          <a href="ivanice.html" class="btn btn-primario" style="width:100%;justify-content:center;font-size:.88rem"><i class="fas fa-arrow-right"></i> Ver todos os projetos</a>
+        </div>
+      </div>
+
+      <!-- Marcos -->
+      <div class="prof-card animar">
+        <div class="prof-card-header">
+          <div class="prof-card-avatar" style="background:linear-gradient(135deg,#1e4d8c,#2a6dd9)">MM</div>
+          <div>
+            <h3>Prof. Dr. Marcos de Oliveira Melo</h3>
+            <p>Fotocatálise · Nanomateriais · Química Ambiental</p>
+          </div>
+        </div>
+        <div class="prof-card-body">
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Materiais de Baixo Custo para Remoção de Poluentes</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>TiO₂ Dopado para Degradação de Poluentes</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Bioadsorventes de Resíduos Agroindustriais</h4></div>
+        </div>
+        <div class="prof-card-footer">
+          <a href="marcos.html" class="btn btn-primario" style="width:100%;justify-content:center;font-size:.88rem"><i class="fas fa-arrow-right"></i> Ver todos os projetos</a>
+        </div>
+      </div>
+
+      <!-- Vânia -->
+      <div class="prof-card animar">
+        <div class="prof-card-header">
+          <div class="prof-card-avatar" style="background:linear-gradient(135deg,#5b2d8e,#8e44ad)">VR</div>
+          <div>
+            <h3>Profa. Dra. Vânia Rastelly de Sousa</h3>
+            <p>Produtos Naturais · Resíduos Químicos · DFT</p>
+          </div>
+        </div>
+        <div class="prof-card-body">
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Gerenciamento de Resíduos Químicos nos Labs da UEFS</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Estudo do Potencial Antioxidante de Curcuminóides (DFT)</h4></div>
+          <div class="proj-mini"><span class="proj-status status-and">Em andamento</span><h4>Geoprópolis Coletadas na Bahia</h4></div>
+          <div class="proj-mini"><span class="proj-status status-conc">Concluído</span><h4>Bioetanol a Partir de Resíduos Lignocelulósicos</h4></div>
+        </div>
+        <div class="prof-card-footer">
+          <a href="vania.html" class="btn btn-primario" style="width:100%;justify-content:center;font-size:.88rem"><i class="fas fa-arrow-right"></i> Ver todos os projetos</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="footer-container"></div>
+<script src="../../assets/js/componentes.js"></script>
+<script src="../../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('header-container').innerHTML = gerarHeader('projetos');
+  document.getElementById('footer-container').innerHTML = gerarFooter();
+  document.getElementById('breadcrumb-container').innerHTML = gerarBreadcrumb([
+    { texto: 'Home', href: '../../index.html' },
+    { texto: 'Projetos', href: '#' },
+  ]);
+  inicializarNav();
+});
+</script>
+</body>
+</html>

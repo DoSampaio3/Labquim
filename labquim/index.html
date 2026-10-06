@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LabQuim — Laboratório de Pesquisa em Química da UEFS. Especializado em Fitoquímica, Produtos Naturais e Atividade Biológica.">
+  <title>LabQuim | Laboratório de Química — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="header-container"></div>
+
+<div class="carousel" id="carousel">
+  <div class="carousel-track" id="carousel-track">
+    <div class="carousel-slide">
+      <img src="assets/img/lab01.jpg" alt="Laboratório de Química">
+      <div class="carousel-overlay">
+        <div class="carousel-caption">
+          <h2>Pesquisa de Excelência em Química</h2>
+          <p>Ensino, pesquisa e extensão em produtos naturais, química ambiental, materiais e quimiometria.</p>
+          <a href="pages/professores.html" class="btn btn-contorno-branco">Conheça a equipe</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-slide">
+      <img src="assets/img/lab02.jpg" alt="Equipamentos do laboratório">
+      <div class="carousel-overlay">
+        <div class="carousel-caption">
+          <h2>Infraestrutura Moderna</h2>
+          <p>FTIR, polarímetro, sistema ELGA, rotaevaporador e muito mais.</p>
+          <a href="pages/laboratorio.html" class="btn btn-contorno-branco">Ver laboratório</a>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-slide">
+      <img src="assets/img/lab03.jpg" alt="Pesquisadores em ação">
+      <div class="carousel-overlay">
+        <div class="carousel-caption">
+          <h2>Formando Pesquisadores</h2>
+          <p>Formação de estudantes de graduação e pós-graduação.</p>
+          <a href="pages/projetos/index.html" class="btn btn-contorno-branco">Ver projetos</a>
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-btn prev" id="carousel-prev"><i class="fa fa-chevron-left"></i></button>
+  <button class="carousel-btn next" id="carousel-next"><i class="fa fa-chevron-right"></i></button>
+  <div class="carousel-dots" id="carousel-dots">
+    <button class="dot ativo"></button>
+    <button class="dot"></button>
+    <button class="dot"></button>
+  </div>
+</div>
+
+<section class="section-padded">
+  <div class="container">
+    <div class="quem-somos-grid">
+      <div class="quem-somos-texto quem-somos-texto-first">
+        <h2 class="section-titulo">Quem Somos</h2>
+        <p class="section-subtitulo" style="margin-bottom:20px;">O LABQUIM – Laboratório de Química da Universidade Estadual de Feira de Santana (UEFS) é um espaço acadêmico-científico voltado ao desenvolvimento de atividades de ensino, pesquisa e extensão nas diversas áreas das ciências químicas. Inserido no contexto universitário da UEFS, o laboratório desempenha papel fundamental na formação acadêmica e profissional de estudantes de graduação e pós-graduação, oferecendo suporte técnico e científico para práticas experimentais, projetos de pesquisa e ações extensionistas.</p>
+        <p>O laboratório atua como ambiente de integração entre conhecimento teórico e prática experimental, contribuindo para o fortalecimento da produção científica, inovação tecnológica e desenvolvimento de soluções aplicadas às demandas da sociedade. Suas atividades abrangem análises químicas, desenvolvimento metodológico, estudos experimentais e apoio a pesquisas interdisciplinares, promovendo a construção de conhecimento científico com rigor e excelência acadêmica.</p>
+        <p>Comprometido com os princípios da indissociabilidade entre ensino, pesquisa e extensão, o LABQUIM busca estimular a formação crítica, científica e colaborativa de estudantes e pesquisadores, proporcionando um ambiente propício à inovação, à investigação experimental e ao avanço das ciências químicas. Além disso, o laboratório fortalece a interação entre universidade e sociedade por meio de projetos científicos, ações educativas e iniciativas voltadas à difusão do conhecimento.</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;">
+          <a href="pages/laboratorio.html" class="btn btn-primario"><i class="fa fa-flask"></i> Conheça o Lab</a>
+          <a href="pages/professores.html" class="btn btn-contorno-verde"><i class="fa fa-users"></i> Nossa Equipe</a>
+        </div>
+      </div>
+      <div class="quem-somos-img">
+        <img src="assets/img/cromatografia.jpg" alt="Cromatografia">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-padded section-fundo-suave">
+  <div class="container">
+    <h2 class="section-titulo centro">Nossas Áreas de Atuação</h2>
+    <p class="section-subtitulo centro">Pesquisa, ensino e inovação para a ciência química</p>
+    <div class="info-cards">
+      <div class="info-card animar">
+        <div class="info-card-icon">📊</div>
+        <h3>LabQuim em Números</h3>
+        <div class="lab-numeros">
+          <div class="lab-numero-item"><span class="lab-numero-valor">5</span><span class="lab-numero-label">Professores Pesquisadores</span></div>
+          <div class="lab-numero-item"><span class="lab-numero-valor">5</span><span class="lab-numero-label">Linhas de Pesquisa</span></div>
+          <div class="lab-numero-item"><span class="lab-numero-valor">+20</span><span class="lab-numero-label">Anos de Pesquisa</span></div>
+        </div>
+        <a href="pages/professores.html" style="font-size:0.85rem; font-weight:600; color:var(--azul-medio); margin-top:12px; display:inline-block;">Conheça a equipe →</a>
+      </div>
+      <div class="info-card animar">
+        <div class="info-card-icon">🔬</div>
+        <h3>Nossa Infraestrutura</h3>
+        <p>Espectrômetro FTIR, polarímetro, balança analítica, sistema ELGA de água ultrapura, rotaevaporador, leitor de microplacas, banhos termostatizados e muito mais.</p>
+        <a href="pages/laboratorio.html" style="font-size:0.85rem; font-weight:600; color:var(--azul-medio); margin-top:12px; display:inline-block;">Ver laboratório →</a>
+      </div>
+      <div class="info-card animar">
+        <div class="info-card-icon">📍</div>
+        <h3>Localização</h3>
+        <p>O LabQuim está localizado no Módulo de Ciências Exatas da Universidade Estadual de Feira de Santana (UEFS), Bahia.</p>
+        <a href="#contato" style="font-size:0.85rem; font-weight:600; color:var(--azul-medio); margin-top:12px; display:inline-block;">Como chegar →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-padded">
+  <div class="container">
+    <h2 class="section-titulo centro">Pesquisas do Grupo</h2>
+    <p class="section-subtitulo centro">Conheça as linhas de pesquisa desenvolvidas por nossos professores</p>
+    <div class="pesquisa-destaque" style="margin-bottom:20px;">
+      <div class="pesquisa-destaque-texto">
+        <h3>Prof. Dr. Clayton Queiroz Alves</h3>
+        <p>Produtos Naturais, Fitoquímica e Atividade Biológica <em>in vitro</em></p>
+      </div>
+      <a href="pages/linhas-pesquisa/fitoquimica.html" class="btn btn-contorno-branco"><i class="fa fa-arrow-right"></i> Ver linha de pesquisa</a>
+    </div>
+    <div class="pesquisa-destaque" style="background: var(--verde-acento); margin-bottom:20px;">
+      <div class="pesquisa-destaque-texto">
+        <h3>Profa. Dra. Humbervânia Reis Gonçalves da Silva</h3>
+        <p>Sensores Fluorimétricos, Biocombustíveis, Quimiometria e Propriedade Intelectual</p>
+      </div>
+      <a href="pages/linhas-pesquisa/biocombustiveis-quimiometria.html" class="btn btn-contorno-branco"><i class="fa fa-arrow-right"></i> Ver linha de pesquisa</a>
+    </div>
+    <div class="pesquisa-destaque" style="background:#5a6e8c; margin-bottom:20px;">
+      <div class="pesquisa-destaque-texto">
+        <h3>Profa. Dra. Ivanice Ferreira dos Santos</h3>
+        <p>Química Analítica Ambiental, Especiação de Metais e Quimiometria</p>
+      </div>
+      <a href="pages/linhas-pesquisa/quimica-analitica-ambiental.html" class="btn btn-contorno-branco"><i class="fa fa-arrow-right"></i> Ver linha de pesquisa</a>
+    </div>
+    <div class="pesquisa-destaque" style="background:#3d6b5e; margin-bottom:20px;">
+      <div class="pesquisa-destaque-texto">
+        <h3>Prof. Dr. Marcos de Oliveira Melo</h3>
+        <p>Química de Coordenação, Materiais e Remoção de Poluentes em Meio Aquoso</p>
+      </div>
+      <a href="pages/linhas-pesquisa/materiais-adsorcao.html" class="btn btn-contorno-branco"><i class="fa fa-arrow-right"></i> Ver linha de pesquisa</a>
+    </div>
+    <div class="pesquisa-destaque" style="background:#7d3c98; margin-bottom:20px;">
+      <div class="pesquisa-destaque-texto">
+        <h3>Profa. Dra. Vânia Rastelly de Sousa</h3>
+        <p>Química de Produtos Naturais, Fitoquímica e Gerenciamento de Resíduos Químicos</p>
+      </div>
+      <a href="pages/linhas-pesquisa/residuos-quimicos.html" class="btn btn-contorno-branco"><i class="fa fa-arrow-right"></i> Ver linha de pesquisa</a>
+    </div>
+  </div>
+</section>
+
+<div class="financiadores">
+  <div class="container">
+    <p style="text-align:center; font-size:0.8rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#9aa5b4; margin-bottom:24px;">Apoio e Fomento</p>
+    <div class="financiadores-grid">
+      <img src="assets/img/cnpq.png" alt="CNPq">
+      <img src="assets/img/capes.png" alt="CAPES">
+      <span class="fomento-texto">FAPESB</span>
+    </div>
+  </div>
+</div>
+
+<section class="section-padded section-fundo-suave" id="contato">
+  <div class="container">
+    <h2 class="section-titulo centro">Entre em Contato</h2>
+    <p class="section-subtitulo centro">Tem dúvidas ou interesse em colaborações? Envie uma mensagem.</p>
+    <div class="contato-grid" style="margin-top:40px;">
+      <div>
+        <div id="form-alerta" style="display:none;"></div>
+        <form id="form-contato">
+          <div class="form-group">
+            <label for="nome">Nome completo *</label>
+            <input type="text" id="nome" name="nome" class="form-control" placeholder="Seu nome" required>
+          </div>
+          <div class="form-group">
+            <label for="email">E-mail *</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="seu@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="assunto">Assunto</label>
+            <input type="text" id="assunto" name="assunto" class="form-control" placeholder="Sobre o que deseja falar?">
+          </div>
+          <div class="form-group">
+            <label for="mensagem">Mensagem *</label>
+            <textarea id="mensagem" name="mensagem" class="form-control" placeholder="Escreva sua mensagem aqui..." required></textarea>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" id="copia" name="copia" checked>
+            <label for="copia">Envie-me uma cópia desta mensagem</label>
+          </div>
+          <button type="submit" class="btn btn-primario" id="btn-enviar">
+            <span class="spinner"></span>
+            <span class="btn-texto"><i class="fa fa-paper-plane"></i> Enviar mensagem</span>
+          </button>
+        </form>
+      </div>
+      <div>
+        <div class="info-contato">
+          <h3>Informações de Contato</h3>
+          <div class="info-item">
+            <div class="info-item-icon"><i class="fa fa-map-marker-alt"></i></div>
+            <div class="info-item-texto">
+              <h4>Endereço</h4>
+              <p>Universidade Estadual de Feira de Santana<br>Av. Transnordestina, s/n — Novo Horizonte<br>CEP 44036-900 — Feira de Santana, BA</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-item-icon"><i class="fa fa-phone"></i></div>
+            <div class="info-item-texto">
+              <h4>Telefone</h4>
+              <p>(75) 3161-8086</p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-item-icon"><i class="fa fa-university"></i></div>
+            <div class="info-item-texto">
+              <h4>Instituição</h4>
+              <p>UEFS — Universidade Estadual de Feira de Santana<br>Módulo de Ciências Exatas</p>
+            </div>
+          </div>
+          <div style="margin-top:24px; border-top:1px solid #dde3ec; padding-top:20px;">
+            <p style="font-size:0.82rem; color:#9aa5b4; line-height:1.6;">
+              <i class="fa fa-info-circle" style="color:var(--azul-medio); margin-right:6px;"></i>
+              Atendimento: segunda a sexta, das 8h às 12h e das 14h às 18h.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-container"></div>
+<script src="assets/js/componentes.js"></script>
+<script src="assets/js/app.js"></script>
+<script>
+  
+  
+</script>
+</body>
+</html>

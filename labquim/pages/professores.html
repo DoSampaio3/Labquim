@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipe | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    /* ── Tabs ── */
+    .eq-tabs-wrap{background:#fff;border-bottom:2px solid #eef1f6;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    .eq-tabs{display:flex;overflow-x:auto;scrollbar-width:none}
+    .eq-tabs::-webkit-scrollbar{display:none}
+    .etab{padding:15px 24px;border:none;background:none;cursor:pointer;font-size:.88rem;font-weight:600;color:#888;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:inherit;transition:all .2s}
+    .etab.on{color:#1a3560;border-bottom-color:#1a3560}
+    .etab:hover:not(.on){background:#f8fafc;color:#444}
+    .ep{display:none}.ep.on{display:block}
+
+    /* ── Professor layout ── */
+    .prof-wrap{max-width:900px;margin:0 auto}
+    .prof-top{display:flex;gap:28px;align-items:flex-start;background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:28px;margin-bottom:20px}
+    @media(max-width:640px){.prof-top{flex-direction:column}}
+    .prof-foto{width:140px;height:140px;border-radius:12px;object-fit:cover;flex-shrink:0}
+    .prof-avatar{width:140px;height:140px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:800;color:#fff}
+    .prof-cargo{font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--azul-medio,#2a6496);margin-bottom:4px}
+    .prof-nome{font-size:1.35rem;font-weight:800;color:#1a3560;margin:0 0 10px}
+    .prof-bio{font-size:.88rem;color:#4a5568;line-height:1.8;margin-bottom:12px}
+    .prof-links{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+    .plink{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:8px;background:#eef2ff;color:#1a3560;text-decoration:none;font-size:.78rem;font-weight:700;transition:background .15s}
+    .plink:hover{background:#1a3560;color:#fff}
+    .plink.email{background:#e6f4ea;color:#1e7e34}
+    .plink.email:hover{background:#1e7e34;color:#fff}
+
+    /* ── Sections inside professor ── */
+    .psec{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.06);padding:22px 26px;margin-bottom:14px}
+    .psec-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#1a3560;margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid #eef1f6}
+    .psec-title i{font-size:.85rem}
+    .tag-list{display:flex;flex-wrap:wrap;gap:7px}
+    .tag{padding:4px 12px;border-radius:20px;font-size:.78rem;font-weight:600}
+    .tag-blue{background:#eef2ff;color:#1a3560}
+    .tag-green{background:#e6f4ea;color:#1e7e34}
+    .tag-purple{background:#f0e8ff;color:#5b2d8e}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:560px){.info-grid{grid-template-columns:1fr}}
+    .info-item{font-size:.85rem;color:#4a5568;line-height:1.6}
+    .info-item strong{color:#1a3560;display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+    .disc-list{list-style:none;padding:0;margin:0}
+    .disc-list li{font-size:.85rem;color:#4a5568;padding:5px 0;border-bottom:1px solid #f5f7fa;display:flex;align-items:baseline;gap:8px}
+    .disc-list li:last-child{border-bottom:none}
+    .disc-list li::before{content:"•";color:#2a6496;flex-shrink:0}
+    .aviso-box{background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:10px 16px;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;font-size:.83rem;color:#92400e}
+    .aviso-box i{flex-shrink:0;margin-top:2px}
+    .aviso-box a{color:#92400e;text-decoration:underline}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="header-container"></div>
+<div id="breadcrumb-container"></div>
+
+<div style="background:linear-gradient(135deg,#1a3560,#2d5a9e);padding:52px 0 36px;color:#fff">
+  <div class="container">
+    <h1 style="font-size:2rem;color:#fff;margin-bottom:8px"><i class="fas fa-users" style="margin-right:10px;opacity:.8"></i>Equipe de Pesquisa</h1>
+    <p style="opacity:.82">Docentes pesquisadores do LabQuim — Universidade Estadual de Feira de Santana (UEFS)</p>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="eq-tabs-wrap">
+  <div class="container">
+    <div class="eq-tabs">
+      <button class="etab on" data-p="clayton">Clayton Alves</button>
+      <button class="etab" data-p="humbervania">Humbervânia Silva</button>
+      <button class="etab" data-p="ivanice">Ivanice Santos</button>
+      <button class="etab" data-p="marcos">Marcos Melo</button>
+      <button class="etab" data-p="vania">Vânia Rastelly</button>
+    </div>
+  </div>
+</div>
+
+<section style="padding:40px 0 60px;background:#f4f6fb">
+<div class="container">
+
+  
+
+  <!-- ══ CLAYTON ══ -->
+  <div class="ep on" id="ep-clayton">
+    <div class="prof-wrap">
+      <div class="prof-top">
+        <img src="../assets/img/clayton.gif" alt="Prof. Dr. Clayton Queiroz Alves" class="prof-foto" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#1a3560,#2a6496);display:none">CQ</div>
+        <div style="flex:1">
+          <p class="prof-cargo">Professor Pleno · UEFS</p>
+          <h2 class="prof-nome">Prof. Dr. Clayton Queiroz Alves</h2>
+          <p class="prof-bio">Graduado em Química pela Universidade Estadual do Sudoeste da Bahia (2004), Mestre (2007) e Doutor (2012) em Química pela Universidade Federal da Bahia, com Pós-Doutorado no Instituto de Ciências Biomédicas Abel Salazar — Universidade do Porto, Portugal (2017–2018). Professor Pleno da UEFS desde 2012. Tem experiência em Química Orgânica, com ênfase em Produtos Naturais, Fitoquímica e Atividade Biológica in vitro. Orienta nos Programas de Pós-Graduação em Ciências Farmacêuticas (UEFS) e em Recursos Genéticos Vegetais (PPGRGV/UEFS). Coordenador do LabQuim (desde 2020), Vice-coordenador da Central Analítica da UEFS (desde 2024) e Coordenador do LABEM — Laboratório de Espectrometria de Massas (desde 2024).</p>
+          <div class="prof-links">
+            <a href="http://lattes.cnpq.br/9188574132632625" target="_blank" class="plink"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <a href="https://orcid.org/0000-0002-3242-3230" target="_blank" class="plink"><i class="fas fa-id-badge"></i> ORCID</a>
+            <a href="publicacoes.html" class="plink"><i class="fas fa-book-open"></i> Publicações</a>
+            <a href="projetos/clayton.html" class="plink"><i class="fas fa-project-diagram"></i> Projetos</a>
+            <span class="plink" style="cursor:default;background:#f0f4ff">ID: 9188574132632625</span>
+            <span class="plink" style="cursor:default;background:#e6f4ea;color:#1e7e34">WoS: 257 cit. · H-8</span>
+            <span class="plink" style="cursor:default;background:#e6f4ea;color:#1e7e34">Scopus: 330 cit.</span>
+            <span class="plink" style="cursor:default;background:#f0f4ff">Atualizado: 20/06/2026</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</div>
+        <div class="info-grid">
+          <div class="info-item"><strong>Pós-Doutorado (2017–2018)</strong>Instituto de Ciências Biomédicas Abel Salazar — ICBAS, Universidade do Porto, Portugal. Área: Química Orgânica / Produtos Naturais.</div>
+          <div class="info-item"><strong>Doutorado (2007–2012)</strong>Química — UFBA. Tese: "Estudo Químico e Avaliação Biológica de Duas Espécies de Leguminosae: Dioclea virgata e Cenostigma macrophyllum". Orient.: Jorge Mauricio David.</div>
+          <div class="info-item"><strong>Mestrado (2005–2007)</strong>Química — UFBA. Dissertação: "Flavonóides antioxidantes e Derivados de ácido gálico isolados de Cenostigma gardnerianum Tul. (Leguminosae)". Orient.: Jorge Maurício David.</div>
+          <div class="info-item"><strong>Graduação (2000–2004)</strong>Química — Universidade Estadual do Sudoeste da Bahia (UESB).</div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-flask"></i> Linhas de Pesquisa</div>
+        <div class="tag-list">
+          <span class="tag tag-blue">Produtos Naturais</span>
+          <span class="tag tag-blue">Fitoquímica</span>
+          <span class="tag tag-blue">Atividade Biológica in vitro</span>
+          <span class="tag tag-blue">Química Orgânica</span>
+          <span class="tag tag-blue">Química dos Produtos Naturais</span>
+          <span class="tag tag-blue">Biodiversidade e Bioprospecção de Plantas Nativas</span>
+          <span class="tag tag-blue">Produtos Naturais de Interesse Farmacêutico</span>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-chalkboard-teacher"></i> Disciplinas Ministradas</div>
+        <ul class="disc-list">
+          <li>Química dos Compostos Orgânicos II (EXA 291)</li>
+          <li>Química Orgânica Experimental II</li>
+          <li>Métodos Físicos de Análise Orgânica</li>
+          <li>Química Geral e Inorgânica (Engenharia de Alimentos)</li>
+          <li>Química Orgânica Experimental I</li>
+          <li>Química Analítica (Ciências Farmacêuticas)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-briefcase"></i> Cargos e Funções</div>
+        <ul class="disc-list">
+          <li><strong>Coordenador do LABEM</strong> — Laboratório de Espectrometria de Massas (set/2024–atual)</li>
+          <li><strong>Vice-coordenador da Central Analítica da UEFS</strong> (ago/2024–atual)</li>
+          <li><strong>Coordenador do LabQuim</strong> — Laboratório de Pesquisa em Química (mar/2020–atual)</li>
+          <li><strong>Coordenador do Horto Florestal da UEFS</strong> (set/2020–set/2021)</li>
+          <li><strong>Coordenador Pedagógico do Projeto UPT</strong> — Universidade para Todos (mar/2018–out/2019)</li>
+          <li><strong>Coordenador Geral e Pedagógico do Projeto UPT</strong> (abr/2014–fev/2017)</li>
+          <li>Revisor de periódicos: RSC Medicinal Chemistry; J. Biomolecular Structure &amp; Dynamics; Revista Virtual de Química; Química Nova; Pharmaceutical Biology</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-award"></i> Prêmios e Destaques</div>
+        <ul class="disc-list">
+          <li>Patente INPI (BR10202001359): Uso de Bergenina como composição antimicrobiana para prevenção de crescimento fúngico em plantas (2020)</li>
+          <li>Prêmio Miguel Fascio de Melhor Pôster — X EQBA (2025)</li>
+          <li>Prêmio Inventor 2012 — Universidade Federal da Bahia</li>
+          <li>Orientador de trabalho premiado em 1º lugar (modalidade oral, Ciências Exatas) — XVIII Seminário de IC da UEFS (2014)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-map-marker-alt"></i> Endereço Profissional</div>
+        <div class="info-item">Universidade Estadual de Feira de Santana — Av. Transnordestina S/N, Novo Horizonte, CEP 44036-900, Feira de Santana, BA. Tel.: (75) 3161-8086. Homepage: www.uefs.br</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ HUMBERVANIA ══ -->
+  <div class="ep" id="ep-humbervania">
+    <div class="prof-wrap">
+      <div class="prof-top">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#5a4a2d,#8a7040)">HG</div>
+        <div style="flex:1">
+          <p class="prof-cargo">Professora Assistente B · UEFS</p>
+          <h2 class="prof-nome">Profa. Dra. Humbervânia Reis Gonçalves da Silva</h2>
+          <p class="prof-bio">Graduada em Química pela UFBA (2009), Mestre em Química pela UFBA (2012) e Doutora em Química pela UFBA (2017), com dois Pós-Doutorados na UFBA (2020 e 2021–2022, com bolsa PETROGAL BRASIL S/A). Professora efetiva da UEFS desde setembro de 2022. Tem experiência em espectrofluorimetria, quimiometria, propriedade intelectual e biocombustíveis. Vice-coordenadora do Colegiado do Curso de Licenciatura em Química (desde dez/2023) e Vice-coordenadora de Estágio (desde jan/2025). Membro do Conselho Gestor da Agência de Inovação da UEFS — INOVAUEFS (desde abr/2025). Possui 10 patentes registradas no INPI e recebeu o Prêmio Inventor pela UFBA em 2011 e 2012.</p>
+          <div class="prof-links">
+            <a href="http://lattes.cnpq.br/8221392220498277" target="_blank" class="plink"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <a href="publicacoes.html" class="plink"><i class="fas fa-book-open"></i> Publicações</a>
+            <a href="projetos/humbervania.html" class="plink"><i class="fas fa-project-diagram"></i> Projetos</a>
+            <span class="plink" style="cursor:default;background:#f0f4ff">ID: 8221392220498277</span>
+            <span class="plink" style="cursor:default;background:#e6f4ea;color:#1e7e34">Scopus: 52 cit.</span>
+            <span class="plink" style="cursor:default;background:#e6f4ea;color:#1e7e34">10 patentes INPI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</div>
+        <div class="info-grid">
+          <div class="info-item"><strong>Pós-Doutorado (2021–2022)</strong>UFBA — Bolsista PETROGAL BRASIL S/A. Área: Físico-Química e Química Analítica.</div>
+          <div class="info-item"><strong>Pós-Doutorado (2020)</strong>UFBA — Área: Química Analítica / Métodos Óticos de Análise / Ciências Ambientais.</div>
+          <div class="info-item"><strong>Doutorado (2012–2017)</strong>Química — UFBA. Tese: "Identificação e quantificação dos compostos químicos responsáveis pela fluorescência do biodiesel". Orient.: Cristina M. Quintella. Coorient.: Marilena Meira. Bolsista CNPq.</div>
+          <div class="info-item"><strong>Mestrado (2010–2012)</strong>Química — UFBA. Dissertação: "Determinação rápida da concentração de biodiesel em diesel (BXX) através de espectrofluorimetria e análise covariante de dados". Orient.: Cristina M. Quintella. Coorient.: Marilena Meira. Bolsista CAPES.</div>
+          <div class="info-item"><strong>Graduação (2006–2009)</strong>Química — UFBA. TCC: "Prospecção de métodos e aparelhos para análise de adulteração de diesel e desenvolvimento de método por espectrofluorimetria total 3D associado à quimiometria". Orient.: Cristina M. Quintella.</div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-flask"></i> Linhas de Pesquisa</div>
+        <div class="tag-list">
+          <span class="tag tag-blue">Campos Maduros: Produção e Transporte de Petróleo, Biocombustíveis e coprodutos</span>
+          <span class="tag tag-blue">Ciência, Tecnologia, Inovação e Propriedade Intelectual</span>
+          <span class="tag tag-blue">Estratégias Analíticas para especiação e determinação de metais e metaloides em matrizes ambientais empregando imagens digitais (CONSEPE 155/2018)</span>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-chalkboard-teacher"></i> Disciplinas Ministradas</div>
+        <ul class="disc-list">
+          <li>Físico-Química I (Licenciatura em Química)</li>
+          <li>Química Aplicada à Biologia (Agronomia)</li>
+          <li>Química Aplicada (Engenharia Civil)</li>
+          <li>Conceitos e Aplicações de Propriedade Intelectual — Pós-Graduação PROFNIT (UFBA)</li>
+          <li>Bioquímica (IFBA — Biologia/Zootecnia, 2017–2019)</li>
+          <li>Físico-Química; Química Geral I e II (UNIVASF, 2012–2013)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-briefcase"></i> Cargos e Funções</div>
+        <ul class="disc-list">
+          <li>Vice-coordenadora do Colegiado do Curso de Licenciatura em Química (desde dez/2023)</li>
+          <li>Vice-coordenadora de Estágio (desde jan/2025)</li>
+          <li>Membro do Conselho Gestor da Agência de Inovação da UEFS — INOVAUEFS (desde abr/2025)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-award"></i> Prêmios e Destaques</div>
+        <ul class="disc-list">
+          <li>Prêmio Inventor — UFBA (2011)</li>
+          <li>Prêmio Inventor — UFBA (2012)</li>
+          <li>10 Patentes registradas no INPI (2010–2023)</li>
+          <li>Pós-Doutorado com bolsa da empresa PETROGAL BRASIL S/A (2021–2022)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-map-marker-alt"></i> Endereço Profissional</div>
+        <div class="info-item">Universidade Estadual de Feira de Santana — Av. Transnordestina S/N, Novo Horizonte, CEP 44036-900, Feira de Santana, BA.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ IVANICE ══ -->
+  <div class="ep" id="ep-ivanice">
+    <div class="prof-wrap">
+      <div class="prof-top">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#2d5a4e,#3d7a6a)">IF</div>
+        <div style="flex:1">
+          <p class="prof-cargo">Professora Titular · UEFS</p>
+          <h2 class="prof-nome">Profa. Dra. Ivanice Ferreira dos Santos</h2>
+          <p class="prof-bio">Doutora em Química pela UFBA, com período de doutorado sanduíche no Consejo Superior de Investigaciones Científicas — CSIC/IDAEA (Espanha). Mestre e Bacharel/Licenciada em Química pela UFBA. Possui experiência em Ciências Ambientais, Química Analítica e Química Ambiental, com ênfase em: desenvolvimento de métodos analíticos para análise de poluentes, quimiometria, espectrometria de emissão e absorção atômica, atuando nos temas: planejamento e otimização de experimentos, análise exploratória (PCA/HCA/PLS), biodisponibilidade de metais em sedimentos (SVA-MES), composição mineral de alimentos, ICP OES, ICP-MS, HPLC e GC-MS. Também desenvolveu trabalhos em Biotecnologia e Microbiologia com ênfase em microbiota da Indústria do Petróleo (BRS e BRN; Tecnologia de Exclusão Biocompetitiva).</p>
+          <div class="prof-links">
+            <a href="http://lattes.cnpq.br/3393553125456224" target="_blank" class="plink"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <a href="https://orcid.org/0000-0002-0390-2005" target="_blank" class="plink"><i class="fas fa-id-badge"></i> ORCID</a>
+            <a href="publicacoes.html" class="plink"><i class="fas fa-book-open"></i> Publicações</a>
+            <a href="projetos/ivanice.html" class="plink"><i class="fas fa-project-diagram"></i> Projetos</a>
+            <span class="plink" style="cursor:default;background:#f0f4ff">ID: 3393553125456224</span>
+            <span class="plink" style="cursor:default;background:#e6f4ea;color:#1e7e34">WoS: 563 cit. · H-12</span>
+            <span class="plink" style="cursor:default;background:#f0f4ff">Atualizado: 06/05/2026</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</div>
+        <div class="info-grid">
+          <div class="info-item"><strong>Pós-Doutorado</strong>Bolsista de Pós-Doutorado no Exterior (CNPq) — CSIC/IDAEA, Espanha.</div>
+          <div class="info-item"><strong>Doutorado</strong>Química — UFBA, com período de doutorado sanduíche no Consejo Superior de Investigaciones Científicas — CSIC/IDAEA (Espanha).</div>
+          <div class="info-item"><strong>Mestrado</strong>Química — UFBA.</div>
+          <div class="info-item"><strong>Graduação</strong>Bacharelado e Licenciatura em Química — UFBA.</div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-flask"></i> Linhas de Pesquisa</div>
+        <div class="tag-list">
+          <span class="tag tag-blue">Quimiometria</span>
+          <span class="tag tag-blue">PCA / HCA / PLS</span>
+          <span class="tag tag-blue">Especiação de Metais em Sedimentos (SVA-MES)</span>
+          <span class="tag tag-blue">Composição Mineral de Alimentos</span>
+          <span class="tag tag-blue">ICP OES / ICP-MS</span>
+          <span class="tag tag-blue">HPLC / GC-MS</span>
+          <span class="tag tag-blue">Imagens Digitais para Análise Química</span>
+          <span class="tag tag-blue">Contaminantes Emergentes</span>
+          <span class="tag tag-blue">Planejamento e Otimização de Experimentos</span>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-briefcase"></i> Cargos e Funções</div>
+        <ul class="disc-list">
+          <li>Bolsista de Pós-Doutorado no Exterior (CNPq)</li>
+          <li>Professora Permanente do PPGM/UEFS</li>
+          <li>Professora Colaboradora do PGENAM/UFBA e do PGQUI/UESB</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-map-marker-alt"></i> Endereço Profissional</div>
+        <div class="info-item">Universidade Estadual de Feira de Santana — Departamento de Ciências Exatas. Av. Transnordestina S/N, Novo Horizonte, CEP 44036-900, Feira de Santana, BA.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MARCOS ══ -->
+  <div class="ep" id="ep-marcos">
+    <div class="prof-wrap">
+      <div class="prof-top">
+        <img src="../assets/img/marcos.jpg" alt="Prof. Dr. Marcos de Oliveira Melo" class="prof-foto" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#1e4d8c,#2a6dd9);display:none">MM</div>
+        <div style="flex:1">
+          <p class="prof-cargo">Professor Adjunto · UEFS</p>
+          <h2 class="prof-nome">Prof. Dr. Marcos de Oliveira Melo</h2>
+          <p class="prof-bio">Graduado em Licenciatura em Química pela Universidade do Estado da Bahia (2005), Mestre em Química Inorgânica pela UFBA (2011) e Doutor em Química Analítica pela UFBA (2017). Professor efetivo da UEFS desde outubro de 2013, com dedicação exclusiva de 40h. Atualmente ministra as disciplinas Transformações Químicas, Química dos Elementos e Química de Coordenação e Materiais. Exerce atividades no Núcleo de Estudos Ambientais do Departamento de Geoquímica da UFBA (Instituto de Geociências). Recebeu o título de Patrono das turmas 2018.1, 2018.2 e 2019.1 da UEFS.</p>
+          <div class="prof-links">
+            <a href="http://lattes.cnpq.br/1777128013209684" target="_blank" class="plink"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <a href="publicacoes.html" class="plink"><i class="fas fa-book-open"></i> Publicações</a>
+            <a href="projetos/marcos.html" class="plink"><i class="fas fa-project-diagram"></i> Projetos</a>
+            <span class="plink" style="cursor:default;background:#f0f4ff">ID: 1777128013209684</span>
+            <span class="plink" style="cursor:default;background:#f0f4ff">Atualizado: 27/04/2026</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</div>
+        <div class="info-grid">
+          <div class="info-item"><strong>Doutorado (2012–2017)</strong>Química — UFBA. Tese: "Estudos para reaproveitamento de biomassas de sementes de mangaba e goiaba para adsorção de Cd e Pb em meio aquoso". Orient.: Rennan Geovanny Oliveira Araujo.</div>
+          <div class="info-item"><strong>Mestrado (2008–2010 / obtido 2011)</strong>Química — UFBA. Dissertação: "Produção fotocatalítica de hidrogênio a partir de solução aquosa de glicerol". Orient.: Luciana Almeida da Silva.</div>
+          <div class="info-item"><strong>Graduação (2002–2005)</strong>Licenciatura em Química — Universidade do Estado da Bahia (UNEB).</div>
+          <div class="info-item"><strong>Técnico (1997–2000)</strong>Instrumentação Industrial — Instituto Federal da Bahia (IFBA).</div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-flask"></i> Linhas de Pesquisa</div>
+        <div class="tag-list">
+          <span class="tag tag-blue">Análise e Avaliação de Impactos Ambientais</span>
+          <span class="tag tag-blue">Educação Ambiental</span>
+          <span class="tag tag-blue">Química Inorgânica de Materiais</span>
+          <span class="tag tag-blue">Química Ambiental</span>
+          <span class="tag tag-blue">Nanomateriais</span>
+          <span class="tag tag-blue">Fotocatálise</span>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-chalkboard-teacher"></i> Disciplinas Ministradas</div>
+        <ul class="disc-list">
+          <li>Transformações Químicas</li>
+          <li>Química dos Elementos</li>
+          <li>Química de Coordenação e de Materiais</li>
+          <li>Materiais</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-briefcase"></i> Cargos e Funções</div>
+        <ul class="disc-list">
+          <li>Atividades no Núcleo de Estudos Ambientais do Departamento de Geoquímica da UFBA (Instituto de Geociências)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-award"></i> Prêmios e Destaques</div>
+        <ul class="disc-list">
+          <li>Patrono das turmas 2018.1, 2018.2 e 2019.1 da UEFS</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-map-marker-alt"></i> Endereço Profissional</div>
+        <div class="info-item">Universidade Estadual de Feira de Santana — Av. Transnordestina S/N, Novo Horizonte, CEP 44036-900, Feira de Santana, BA. Tel.: (75) 3161-8086</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ VANIA ══ -->
+  <div class="ep" id="ep-vania">
+    <div class="prof-wrap">
+      <div class="prof-top">
+        <div class="prof-avatar" style="background:linear-gradient(135deg,#5b2d8e,#8e44ad)">VR</div>
+        <div style="flex:1">
+          <p class="prof-cargo">Professora Titular · UEFS</p>
+          <h2 class="prof-nome">Profa. Dra. Vânia Rastelly de Sousa</h2>
+          <p class="prof-bio">Graduada em Química Industrial pela UFBA (1997), Mestre em Química pela UFBA (1999) e Doutora em Química pela UFBA (2005). Professora da UEFS desde novembro de 2001 (Adjunta até 2015, Titular desde 2015), com dedicação exclusiva de 40h. Tem experiência em Química de Produtos Naturais e Resíduos Químicos, atuando em: Meio Ambiente, Gestão de Resíduos Químicos, Educação Ambiental e Fitoquímica. Coordenadora de Extensão do Departamento de Ciências Exatas (2018–2024) e Membro da Comissão de Curricularização da Extensão na UEFS (desde 2021). Aprovada em concurso público para Químico de Petróleo Júnior da PETROBRAS (2001) e para a carreira do magistério público (2000). Recebeu o título de Professora Homenageada do Curso de Licenciatura em Química (2018).</p>
+          <div class="prof-links">
+            <a href="http://lattes.cnpq.br/9550613321460915" target="_blank" class="plink"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <a href="publicacoes.html" class="plink"><i class="fas fa-book-open"></i> Publicações</a>
+            <a href="projetos/vania.html" class="plink"><i class="fas fa-project-diagram"></i> Projetos</a>
+            <span class="plink" style="cursor:default;background:#f0f4ff">ID: 9550613321460915</span>
+            <span class="plink" style="cursor:default;background:#f0f4ff">Atualizado: 26/08/2025</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-graduation-cap"></i> Formação Acadêmica</div>
+        <div class="info-grid">
+          <div class="info-item"><strong>Doutorado (1999–2005)</strong>Química — UFBA. Tese: "Triterpenos, xantonas, cumarinas, bifenilas e derivados do floroglucinol de Kielmeyera lathrophyton e de Kielmeyera coriacea". Orient.: Frederico Guaré Cruz. Bolsista CAPES.</div>
+          <div class="info-item"><strong>Mestrado (1997–1999)</strong>Química — UFBA. Dissertação: "Estudo Fitoquímico de Kielmeyera sp e Kielmeyera coriacea". Orient.: Frederico Guaré Cruz. Bolsista CAPES.</div>
+          <div class="info-item"><strong>Graduação (1992–1997)</strong>Química Industrial — UFBA.</div>
+          <div class="info-item"><strong>Especialização (2013–2014)</strong>Gestão Ambiental — Universidade Estácio de Sá (360h).</div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-flask"></i> Linhas de Pesquisa</div>
+        <div class="tag-list">
+          <span class="tag tag-blue">Educação Ambiental</span>
+          <span class="tag tag-blue">Meio Ambiente</span>
+          <span class="tag tag-blue">Química de Produtos Naturais</span>
+          <span class="tag tag-blue">Fitoquímica · Composição Química · Química Orgânica</span>
+          <span class="tag tag-blue">Gerenciamento de Resíduos Químicos</span>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-chalkboard-teacher"></i> Disciplinas Ministradas</div>
+        <ul class="disc-list">
+          <li>EXA 489 — Gerenciamento de Resíduos Químicos (Licenciatura em Química e Agronomia)</li>
+          <li>EXA 409 — Química Geral e Inorgânica (Engenharia de Alimentos)</li>
+          <li>EXA 413 — Físico-Química (Farmácia)</li>
+          <li>EXA 414 — Físico-Química I (Engenharia de Alimentos)</li>
+          <li>EXA 418 — Química Aplicada à Biologia (Ciências Biológicas)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-briefcase"></i> Cargos e Funções</div>
+        <ul class="disc-list">
+          <li><strong>Presidente da Comissão Técnica de Gerenciamento de Resíduos Químicos</strong> (membro desde nov/2012)</li>
+          <li><strong>Coordenadora de Extensão do Departamento de Ciências Exatas</strong> (jan/2018–ago/2024)</li>
+          <li>Membro da Comissão de Curricularização da Extensão na UEFS (desde ago/2021)</li>
+          <li>Membro do Comitê Interno de Bolsas de Extensão (2017–2021)</li>
+          <li>Membro do Colegiado de Engenharia de Alimentos (2008–2018)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-award"></i> Prêmios e Destaques</div>
+        <ul class="disc-list">
+          <li>Professora Homenageada do Curso de Licenciatura em Química — UEFS/Turma de Química (2018)</li>
+          <li>Aprovada em concurso público para Químico de Petróleo Júnior — PETROBRAS (2001)</li>
+          <li>Aprovada em concurso público para a carreira do magistério público (2000)</li>
+        </ul>
+      </div>
+
+      <div class="psec">
+        <div class="psec-title"><i class="fas fa-map-marker-alt"></i> Endereço Profissional</div>
+        <div class="info-item">Universidade Estadual de Feira de Santana — Departamento de Ciências Exatas, Av. Transnordestina S/N, Novo Horizonte, CEP 44036-900, Feira de Santana, BA — Caixa Postal: 252. Tel.: (75) 3161-8086. Homepage: www.uefs.br</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<div id="footer-container"></div>
+<script src="../assets/js/componentes.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('header-container').innerHTML = gerarHeader('equipe');
+  document.getElementById('footer-container').innerHTML = gerarFooter();
+  document.getElementById('breadcrumb-container').innerHTML = gerarBreadcrumb([
+    { texto: 'Home', href: '../index.html' },
+    { texto: 'Equipe', href: '#' },
+  ]);
+  inicializarNav();
+  document.querySelectorAll('.etab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.etab').forEach(b => b.classList.remove('on'));
+      document.querySelectorAll('.ep').forEach(p => p.classList.remove('on'));
+      btn.classList.add('on');
+      document.getElementById('ep-' + btn.dataset.p).classList.add('on');
+      window.scrollTo({ top: document.querySelector('.eq-tabs-wrap').offsetTop - 8, behavior: 'smooth' });
+    });
+  });
+});
+</script>
+</body>
+</html>

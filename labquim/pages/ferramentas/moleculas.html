@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desenhador de Moléculas | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .hero-ferramenta{background:linear-gradient(135deg,#1a3560 0%,#2a6496 100%);padding:48px 0 36px;color:#fff}
+    .hero-ferramenta h1{font-family:'Merriweather',serif;font-size:1.9rem;margin:8px 0;color:#fff}
+    .hero-ferramenta p{opacity:.85;max-width:540px;font-size:1rem}
+    .badge-tool{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.8rem;margin-bottom:12px}
+    .sec-ferramenta{padding:44px 0 60px;background:#f4f6fb}
+    .tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+    @media(max-width:768px){
+      .tool-grid{grid-template-columns:1fr}
+      .tool-card{padding:20px}
+      .chips{gap:5px}
+      .chip{font-size:.74rem;padding:3px 9px}
+      .sec-ferramenta{padding:28px 0 44px}
+    }
+    @media(max-width:480px){
+      .btn-row{flex-direction:column}
+      .btn-primary-tool,.btn-secondary-tool,.btn-green-tool{width:100%;text-align:center;justify-content:center}
+    }
+    .tool-card{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:28px}
+    .tool-card h2{font-size:1rem;font-weight:700;color:#1a3560;margin:0 0 16px;display:flex;align-items:center;gap:8px}
+    .input-smiles{width:100%;padding:11px 14px;border:2px solid #dde3ed;border-radius:10px;font-size:.95rem;font-family:'Courier New',monospace;box-sizing:border-box;background:#f8fafc;outline:none;transition:border .2s}
+    .input-smiles:focus{border-color:#2a6496;background:#fff}
+    .btn-row{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+    .btn-primary-tool{flex:1;padding:11px;background:#1a3560;color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s}
+    .btn-primary-tool:hover{background:#0f2040}
+    .btn-secondary-tool{padding:11px 16px;background:#f0f3f8;color:#555;border:none;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s}
+    .btn-secondary-tool:hover{background:#e2e8f0}
+    .btn-green-tool{padding:11px 16px;background:#27ae60;color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s}
+    .btn-green-tool:hover{background:#1e8449}
+    .chips-label{font-size:.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+    .chip{background:#eef2ff;border:1px solid #c7d2fe;border-radius:20px;padding:4px 12px;font-size:.78rem;cursor:pointer;color:#1a3560;font-weight:500;transition:all .15s}
+    .chip:hover{background:#1a3560;color:#fff;border-color:#1a3560}
+    .erro-box{background:#fff3f3;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;color:#c0392b;font-size:.84rem;margin-top:8px;display:none}
+    .canvas-wrapper{background:#f8fafc;border-radius:12px;border:2px dashed #dde3ed;min-height:300px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+    .canvas-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;color:#bbb;font-size:.9rem;text-align:center;padding:24px}
+    .canvas-placeholder i{font-size:2.5rem;opacity:.35}
+    #output-canvas{max-width:100%;display:block}
+    .mol-info{background:#f0f7ff;border-radius:10px;padding:14px 16px;margin-top:14px;display:none}
+    .mol-info-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+    .mol-info-label{font-size:.78rem;color:#666;font-weight:600}
+    .mol-info-val{font-size:.92rem;font-weight:700;color:#1a3560;font-family:monospace;word-break:break-all;max-width:60%;text-align:right}
+    .ref-card{background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.06);padding:28px;margin-top:28px}
+    .ref-card h3{font-size:1rem;font-weight:700;color:#1a3560;margin-bottom:14px}
+    .ref-table{width:100%;border-collapse:collapse;font-size:.86rem}
+    .ref-table th{background:#f0f4ff;color:#1a3560;padding:8px 12px;text-align:left;font-weight:700}
+    .ref-table td{padding:7px 12px;border-bottom:1px solid #eef1f6}
+    .ref-table tr:last-child td{border-bottom:none}
+    code{background:#eef2ff;border-radius:4px;padding:2px 6px;font-size:.85em;color:#1a3560}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="componentes-header"></div>
+
+<section class="hero-ferramenta">
+  <div class="container">
+    <div class="badge-tool"><i class="fas fa-atom"></i> Ferramentas LabQuim</div>
+    <h1>⚗️ Desenhador de Moléculas</h1>
+    <p>Visualize estruturas químicas a partir da notação SMILES. Desenhe, explore e exporte como imagem PNG.</p>
+  </div>
+</section>
+
+<section class="sec-ferramenta">
+  <div class="container">
+    <div class="tool-grid">
+
+      <!-- Painel esquerdo -->
+      <div class="tool-card">
+        <h2><i class="fas fa-keyboard"></i> Notação SMILES</h2>
+        <input type="text" id="smiles-input" class="input-smiles" placeholder="Ex: c1ccccc1 (benzeno)" autocomplete="off" spellcheck="false">
+        <div id="erro-box" class="erro-box"><i class="fas fa-exclamation-circle"></i> <span id="erro-msg">SMILES inválido.</span></div>
+        <div class="btn-row">
+          <button class="btn-primary-tool" id="btn-desenhar"><i class="fas fa-drafting-compass"></i> Desenhar</button>
+          <button class="btn-secondary-tool" id="btn-limpar"><i class="fas fa-trash-alt"></i> Limpar</button>
+          <button class="btn-green-tool" id="btn-exportar"><i class="fas fa-download"></i> PNG</button>
+        </div>
+        <div class="chips-label">Exemplos rápidos</div>
+        <div class="chips">
+          <span class="chip" data-s="c1ccccc1">Benzeno</span>
+          <span class="chip" data-s="C1CCCCC1">Ciclo-hexano</span>
+          <span class="chip" data-s="CC(=O)O">Ác. acético</span>
+          <span class="chip" data-s="CC(=O)Oc1ccccc1C(=O)O">Aspirina</span>
+          <span class="chip" data-s="c1ccc2ccccc2c1">Naftaleno</span>
+          <span class="chip" data-s="OC(=O)c1ccccc1O">Ác. salicílico</span>
+          <span class="chip" data-s="CN1CCC[C@H]1c2cccnc2">Nicotina</span>
+          <span class="chip" data-s="NCCc1ccc(O)c(O)c1">Dopamina</span>
+          <span class="chip" data-s="C(C(=O)O)N">Glicina</span>
+          <span class="chip" data-s="O=C1NC(=O)c2ccccc21">Ftalimida</span>
+          <span class="chip" data-s="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O">Glicose</span>
+          <span class="chip" data-s="O=C(O)CC(O)(CC(=O)O)C(=O)O">Ác. cítrico</span>
+        </div>
+      </div>
+
+      <!-- Painel direito: canvas -->
+      <div class="tool-card">
+        <h2><i class="fas fa-eye"></i> Estrutura Molecular</h2>
+        <div class="canvas-wrapper" id="canvas-wrapper">
+          <div class="canvas-placeholder" id="placeholder">
+            <i class="fas fa-project-diagram"></i>
+            <span>Insira um SMILES e clique em <strong>Desenhar</strong></span>
+          </div>
+          <canvas id="output-canvas" style="display:none"></canvas>
+        </div>
+        <div class="mol-info" id="mol-info">
+          <div class="mol-info-row">
+            <span class="mol-info-label">Fórmula Molecular</span>
+            <span class="mol-info-val" id="info-formula">—</span>
+          </div>
+          <div class="mol-info-row">
+            <span class="mol-info-label">SMILES</span>
+            <span class="mol-info-val" id="info-smiles">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guia de referência -->
+    <div class="ref-card">
+      <h3><i class="fas fa-book-open" style="margin-right:8px"></i> Guia Rápido — Notação SMILES</h3>
+      <table class="ref-table">
+        <thead><tr><th>Símbolo</th><th>Significado</th><th>Exemplo</th></tr></thead>
+        <tbody>
+          <tr><td><code>C</code></td><td>Carbono alifático (sp³)</td><td><code>CC</code> → etano</td></tr>
+          <tr><td><code>c</code></td><td>Carbono aromático</td><td><code>c1ccccc1</code> → benzeno</td></tr>
+          <tr><td><code>N, O, S</code></td><td>Nitrogênio, Oxigênio, Enxofre</td><td><code>CCO</code> → etanol</td></tr>
+          <tr><td><code>=</code></td><td>Ligação dupla</td><td><code>C=O</code> → formaldeído</td></tr>
+          <tr><td><code>#</code></td><td>Ligação tripla</td><td><code>C#N</code> → cianeto</td></tr>
+          <tr><td><code>( )</code></td><td>Ramificação lateral</td><td><code>CC(C)C</code> → isobutano</td></tr>
+          <tr><td><code>1…9</code></td><td>Fechamento de anel</td><td><code>C1CCCCC1</code> → ciclo-hexano</td></tr>
+          <tr><td><code>[ ]</code></td><td>Átomo com carga explícita</td><td><code>[NH4+]</code> → amônio</td></tr>
+          <tr><td><code>@, @@</code></td><td>Centro estereogênico (R/S)</td><td><code>[C@@H]</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div id="componentes-footer"></div>
+
+<script src="../../assets/js/smiles-drawer.min.js"></script>
+<script src="../../assets/js/componentes.js"></script>
+<script>
+  document.getElementById('componentes-header').innerHTML = gerarHeader('ferramentas');
+  document.getElementById('componentes-footer').innerHTML = gerarFooter();
+  inicializarNav();
+
+  const inputEl   = document.getElementById('smiles-input');
+  const canvasEl  = document.getElementById('output-canvas');
+  const placeholder = document.getElementById('placeholder');
+  const erroBox   = document.getElementById('erro-box');
+  const erroMsg   = document.getElementById('erro-msg');
+  const molInfo   = document.getElementById('mol-info');
+
+  // Inicializa o Drawer com tamanho dinâmico
+  function criarDrawer() {
+    const wrapper = document.getElementById('canvas-wrapper');
+    const w = Math.min(wrapper.offsetWidth - 32, 460);
+    const h = Math.max(w * 0.75, 280);
+    return new SmilesDrawer.Drawer({
+      width: w, height: h,
+      bondThickness: 1.4,
+      fontSizeLarge: 7,
+      themes: {
+        light: {
+          C:'#222', O:'#c0392b', N:'#2471a3', S:'#d4ac0d',
+          P:'#7d3c98', F:'#1e8449', Cl:'#148f77', Br:'#a93226',
+          I:'#6c3483', BACKGROUND:'#f8fafc'
+        }
+      }
+    });
+  }
+
+  let drawer = criarDrawer();
+
+  function desenhar() {
+    const smiles = inputEl.value.trim();
+    if (!smiles) return;
+    erroBox.style.display = 'none';
+    drawer = criarDrawer();
+    SmilesDrawer.parse(smiles, function(tree) {
+      placeholder.style.display = 'none';
+      canvasEl.style.display = 'block';
+      drawer.draw(tree, 'output-canvas', 'light', false);
+      molInfo.style.display = 'block';
+      try {
+        document.getElementById('info-formula').textContent = drawer.getMolecularFormula() || '—';
+      } catch(e) {
+        document.getElementById('info-formula').textContent = '—';
+      }
+      document.getElementById('info-smiles').textContent = smiles;
+    }, function(err) {
+      placeholder.style.display = 'flex';
+      canvasEl.style.display = 'none';
+      molInfo.style.display = 'none';
+      erroMsg.textContent = 'SMILES inválido — verifique a notação e tente novamente.';
+      erroBox.style.display = 'block';
+    });
+  }
+
+  document.getElementById('btn-desenhar').addEventListener('click', desenhar);
+  inputEl.addEventListener('keydown', e => { if(e.key === 'Enter') desenhar(); });
+
+  document.getElementById('btn-limpar').addEventListener('click', () => {
+    inputEl.value = '';
+    placeholder.style.display = 'flex';
+    canvasEl.style.display = 'none';
+    molInfo.style.display = 'none';
+    erroBox.style.display = 'none';
+    inputEl.focus();
+  });
+
+  document.getElementById('btn-exportar').addEventListener('click', () => {
+    if (canvasEl.style.display === 'none') {
+      alert('Desenhe uma molécula primeiro.');
+      return;
+    }
+    const link = document.createElement('a');
+    link.download = 'molecula-labquim.png';
+    link.href = canvasEl.toDataURL('image/png');
+    link.click();
+  });
+
+  document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      inputEl.value = chip.dataset.s;
+      desenhar();
+    });
+  });
+
+  // Desenha benzeno ao carregar como demo
+  window.addEventListener('load', () => {
+    inputEl.value = 'c1ccccc1';
+    desenhar();
+  });
+</script>
+</body>
+</html>

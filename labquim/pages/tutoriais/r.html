@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial: Instalação e Uso do R | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .tut-hero{background:linear-gradient(135deg,#1a3560 0%,#2a6496 100%);padding:52px 0 36px;color:#fff}
+    .tut-hero h1{font-family:'Merriweather',serif;font-size:1.9rem;color:#fff;margin-bottom:8px}
+    .tut-hero p{opacity:.85;max-width:600px;font-size:1rem}
+
+    .tut-body{padding:48px 0 64px;background:#f4f6fb}
+    .tut-grid{display:grid;grid-template-columns:240px 1fr;gap:32px;align-items:start}
+    @media(max-width:768px){.tut-grid{grid-template-columns:1fr}}
+
+    /* Sidebar índice */
+    .tut-nav{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:20px;position:sticky;top:80px}
+    .tut-nav h4{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#aaa;margin-bottom:12px}
+    .tut-nav a{display:block;padding:7px 10px;font-size:.86rem;color:#555;text-decoration:none;border-radius:7px;transition:all .15s;border-left:3px solid transparent}
+    .tut-nav a:hover,.tut-nav a.ativo{background:#f0f5ff;color:#1a3560;border-left-color:#1a3560}
+
+    /* Conteúdo */
+    .tut-sec{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:32px;margin-bottom:24px}
+    .tut-sec h2{font-size:1.3rem;color:#1a3560;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+    .tut-sec h2 .n{width:32px;height:32px;background:#1a3560;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;flex-shrink:0}
+    .tut-sec h3{font-size:1rem;color:#1a3560;margin:20px 0 8px}
+    .tut-sec p{font-size:.9rem;color:#444;line-height:1.8;margin-bottom:12px}
+    .tut-sec ul,.tut-sec ol{font-size:.9rem;color:#444;line-height:1.8;padding-left:20px;margin-bottom:12px}
+    .tut-sec li{margin-bottom:6px}
+
+    /* Code blocks */
+    .code-block{background:#1e2a3a;border-radius:10px;padding:16px 20px;margin:12px 0;position:relative;overflow-x:auto}
+    .code-block pre{margin:0;font-family:'Courier New',monospace;font-size:.85rem;color:#e8f0fe;white-space:pre;line-height:1.7}
+    .code-block .lang-tag{position:absolute;top:8px;right:12px;font-size:.7rem;color:#7a9cc0;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+    .btn-copy{position:absolute;top:8px;right:50px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#aac;border-radius:6px;padding:3px 10px;font-size:.72rem;cursor:pointer;transition:background .15s}
+    .btn-copy:hover{background:rgba(255,255,255,.2);color:#fff}
+
+    /* Tips / warnings */
+    .tip{background:#e8f5e9;border-left:4px solid #27ae60;border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:.88rem;color:#1e5c30}
+    .tip i{margin-right:6px;color:#27ae60}
+    .warn{background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:.88rem;color:#7c4700}
+    .warn i{margin-right:6px;color:#f59e0b}
+    .info{background:#e8f0fb;border-left:4px solid #1a3560;border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:.88rem;color:#1a3560}
+    .info i{margin-right:6px}
+
+    /* Package cards */
+    .pkg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:14px 0}
+    .pkg-card{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px}
+    .pkg-card .pkg-name{font-weight:800;color:#1a3560;font-family:'Courier New',monospace;font-size:.9rem;margin-bottom:4px}
+    .pkg-card p{font-size:.78rem;color:#666;margin:0;line-height:1.5}
+
+    /* Inline code */
+    code{background:#eef2ff;color:#1a3560;border-radius:4px;padding:1px 6px;font-family:'Courier New',monospace;font-size:.88em}
+
+    /* Output box */
+    .output-box{background:#0d1117;border-radius:8px;padding:12px 16px;margin:8px 0;font-family:'Courier New',monospace;font-size:.82rem;color:#58a6ff;overflow-x:auto}
+    .output-box .out-label{color:#7c8d9a;font-size:.72rem;display:block;margin-bottom:4px}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="header-container"></div>
+
+<section class="tut-hero">
+  <div class="container">
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.8rem;margin-bottom:12px">
+      <i class="fas fa-graduation-cap"></i> Tutoriais LabQuim
+    </div>
+    <h1>📊 Instalação e Uso do R para Química Analítica</h1>
+    <p>Guia completo desde a instalação do R e RStudio até análises estatísticas, quimiometria e geração de gráficos científicos — com exemplos práticos para o laboratório.</p>
+  </div>
+</section>
+
+<section class="tut-body">
+  <div class="container">
+    <div class="tut-grid">
+
+      <!-- Índice lateral -->
+      <div class="tut-nav">
+        <h4>Índice</h4>
+        <a href="#sec1">1. O que é o R?</a>
+        <a href="#sec2">2. Instalação do R</a>
+        <a href="#sec3">3. Instalação do RStudio</a>
+        <a href="#sec4">4. Primeiros passos</a>
+        <a href="#sec5">5. Pacotes essenciais</a>
+        <a href="#sec6">6. Importar dados</a>
+        <a href="#sec7">7. Estatística descritiva</a>
+        <a href="#sec8">8. Regressão linear</a>
+        <a href="#sec9">9. Gráficos com ggplot2</a>
+        <a href="#sec10">10. Quimiometria (PCA)</a>
+        <a href="#sec11">11. Recursos adicionais</a>
+      </div>
+
+      <!-- Conteúdo -->
+      <div>
+
+        <div class="tut-sec" id="sec1">
+          <h2><span class="n">1</span> O que é o R?</h2>
+          <p>O <strong>R</strong> é uma linguagem de programação gratuita e open-source especializada em análise estatística e visualização de dados. É amplamente utilizado em química analítica, quimiometria, análise ambiental e farmacologia. Suas principais vantagens são:</p>
+          <ul>
+            <li>Totalmente gratuito e multiplataforma (Windows, macOS, Linux)</li>
+            <li>Mais de 20.000 pacotes na CRAN (repositório oficial)</li>
+            <li>Ideal para quimiometria: PCA, PLS, HCA, calibração multivariada</li>
+            <li>Integração com Excel, CSV, banco de dados e instrumentos analíticos</li>
+            <li>Produção de gráficos científicos de alta qualidade (publicação)</li>
+          </ul>
+          <div class="info"><i class="fas fa-info-circle"></i> O RStudio é a IDE (ambiente de desenvolvimento) recomendada para trabalhar com R. Instale o R primeiro, depois o RStudio.</div>
+        </div>
+
+        <div class="tut-sec" id="sec2">
+          <h2><span class="n">2</span> Instalação do R</h2>
+
+          <h3><i class="fab fa-windows" style="color:#00adef"></i> Windows</h3>
+          <ol>
+            <li>Acesse <strong>cran.r-project.org</strong> e clique em <em>"Download R for Windows"</em></li>
+            <li>Clique em <em>"base"</em> → <em>"Download R x.x.x for Windows"</em></li>
+            <li>Execute o instalador baixado (<code>.exe</code>) como administrador</li>
+            <li>Mantenha todas as opções padrão e finalize a instalação</li>
+          </ol>
+          <div class="tip"><i class="fas fa-check-circle"></i> Para verificar a instalação, abra o Prompt de Comando e digite <code>R --version</code></div>
+
+          <h3><i class="fab fa-apple" style="color:#555"></i> macOS</h3>
+          <ol>
+            <li>Acesse <strong>cran.r-project.org</strong> → <em>"Download R for macOS"</em></li>
+            <li>Baixe o arquivo <code>.pkg</code> adequado ao seu chip (Intel ou Apple Silicon/M1/M2/M3)</li>
+            <li>Execute o instalador e siga as instruções</li>
+          </ol>
+          <div class="warn"><i class="fas fa-exclamation-triangle"></i> Usuários de Mac com chip <strong>Apple Silicon (M1/M2/M3)</strong>: baixe a versão "Apple silicon (M1 and above)" para melhor desempenho.</div>
+
+          <h3><i class="fab fa-linux" style="color:#f90"></i> Linux (Ubuntu/Debian)</h3>
+          <div class="code-block">
+            <span class="lang-tag">Terminal</span>
+            <pre>sudo apt update
+sudo apt install r-base r-base-dev</pre>
+          </div>
+        </div>
+
+        <div class="tut-sec" id="sec3">
+          <h2><span class="n">3</span> Instalação do RStudio</h2>
+          <ol>
+            <li>Acesse <strong>posit.co/download/rstudio-desktop</strong></li>
+            <li>Clique em <em>"Download RStudio Desktop"</em> (versão gratuita)</li>
+            <li>Baixe o instalador para seu sistema operacional</li>
+            <li>Execute e instale (o RStudio detecta automaticamente o R instalado)</li>
+          </ol>
+          <div class="tip"><i class="fas fa-check-circle"></i> O RStudio possui 4 painéis: Editor de Script, Console, Ambiente/Histórico e Arquivos/Gráficos/Pacotes.</div>
+
+          <h3>Estrutura do RStudio</h3>
+          <ul>
+            <li><strong>Editor (superior esquerdo):</strong> escreva e salve seus scripts <code>.R</code></li>
+            <li><strong>Console (inferior esquerdo):</strong> executa comandos em tempo real</li>
+            <li><strong>Environment (superior direito):</strong> variáveis e objetos criados</li>
+            <li><strong>Plots/Files/Packages (inferior direito):</strong> gráficos, arquivos, pacotes</li>
+          </ul>
+        </div>
+
+        <div class="tut-sec" id="sec4">
+          <h2><span class="n">4</span> Primeiros Passos no R</h2>
+          <p>Ao abrir o RStudio, você pode digitar comandos diretamente no Console ou criar um script.</p>
+
+          <h3>Criando seu primeiro script</h3>
+          <p>Vá em <code>File → New File → R Script</code> ou pressione <code>Ctrl+Shift+N</code>.</p>
+
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre># Comentários começam com #
+
+# Operações básicas
+2 + 3          # soma
+10 / 4         # divisão
+2^8            # potência
+sqrt(144)      # raiz quadrada
+log(100, 10)   # log base 10
+
+# Criando variáveis
+concentracao <- c(0.1, 0.5, 1.0, 2.0, 5.0, 10.0)
+absorbancia  <- c(0.023, 0.112, 0.224, 0.447, 1.115, 2.231)
+
+# Ver os dados
+print(concentracao)
+length(concentracao)   # quantos elementos</pre>
+          </div>
+
+          <div class="tip"><i class="fas fa-keyboard"></i> Para executar uma linha: <code>Ctrl+Enter</code>. Para executar o script inteiro: <code>Ctrl+Shift+Enter</code>.</div>
+
+          <h3>Vetores e data frames</h3>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre># Criar um data frame (tabela de dados)
+dados <- data.frame(
+  concentracao = c(0.1, 0.5, 1.0, 2.0, 5.0, 10.0),
+  absorbancia  = c(0.023, 0.112, 0.224, 0.447, 1.115, 2.231),
+  replicata    = c(1, 1, 1, 1, 1, 1)
+)
+
+# Visualizar
+View(dados)     # abre tabela visual
+head(dados)     # primeiras 6 linhas
+str(dados)      # estrutura dos dados
+summary(dados)  # estatísticas resumidas</pre>
+          </div>
+        </div>
+
+        <div class="tut-sec" id="sec5">
+          <h2><span class="n">5</span> Pacotes Essenciais para Química</h2>
+          <p>Instale pacotes uma única vez com <code>install.packages()</code> e carregue-os em cada sessão com <code>library()</code>.</p>
+
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre># Instalar os principais pacotes (rode uma vez)
+install.packages(c(
+  "tidyverse",    # manipulação e visualização
+  "ggplot2",      # gráficos avançados
+  "readxl",       # importar Excel
+  "openxlsx",     # exportar Excel
+  "chemometrics", # quimiometria
+  "FactoMineR",   # PCA, AFD
+  "factoextra",   # visualização PCA
+  "dplyr",        # manipulação de dados
+  "corrplot",     # gráfico de correlação
+  "agricolae",    # ANOVA e pós-testes
+  "lmtest",       # testes de regressão
+  "car"           # diagnóstico de regressão
+))</pre>
+          </div>
+
+          <div class="pkg-grid">
+            <div class="pkg-card"><div class="pkg-name">tidyverse</div><p>Conjunto de pacotes para ciência de dados: ggplot2, dplyr, tidyr, readr</p></div>
+            <div class="pkg-card"><div class="pkg-name">ggplot2</div><p>Gráficos científicos de altíssima qualidade, baseados na Grammar of Graphics</p></div>
+            <div class="pkg-card"><div class="pkg-name">FactoMineR</div><p>PCA, AFC, AHC — análise multivariada completa</p></div>
+            <div class="pkg-card"><div class="pkg-name">factoextra</div><p>Visualização elegante de resultados de PCA e clustering</p></div>
+            <div class="pkg-card"><div class="pkg-name">chemometrics</div><p>Ferramentas quimiométricas: PLS, calibração, validação cruzada</p></div>
+            <div class="pkg-card"><div class="pkg-name">corrplot</div><p>Matrizes de correlação visualmente intuitivas</p></div>
+          </div>
+
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre># Carregar pacotes no início de cada script
+library(tidyverse)
+library(ggplot2)
+library(FactoMineR)
+library(factoextra)</pre>
+          </div>
+        </div>
+
+        <div class="tut-sec" id="sec6">
+          <h2><span class="n">6</span> Importar Dados</h2>
+          <h3>Importar CSV</h3>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre># CSV com separador vírgula (padrão internacional)
+dados <- read.csv("meus_dados.csv")
+
+# CSV com separador ponto-e-vírgula (padrão brasileiro/Excel)
+dados <- read.csv2("meus_dados.csv")
+
+# Especificando o caminho completo (Windows — use barras /)
+dados <- read.csv2("C:/Users/usuario/Documents/lab/dados.csv")</pre>
+          </div>
+
+          <h3>Importar Excel (.xlsx)</h3>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre">library(readxl)
+dados <- read_excel("planilha.xlsx", sheet = "Dados")
+
+# Verificar
+head(dados)
+dim(dados)   # linhas × colunas</pre>
+          </div>
+
+          <div class="tip"><i class="fas fa-lightbulb"></i> No RStudio, você também pode ir em <strong>Environment → Import Dataset</strong> para importar arquivos visualmente sem código.</div>
+        </div>
+
+        <div class="tut-sec" id="sec7">
+          <h2><span class="n">7</span> Estatística Descritiva</h2>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre>valores <- c(12.3, 11.8, 12.5, 12.1, 12.4, 11.9, 12.2)
+
+mean(valores)      # média
+median(valores)    # mediana
+sd(valores)        # desvio padrão
+var(valores)       # variância
+range(valores)     # mínimo e máximo
+quantile(valores)  # quartis
+
+# Coeficiente de variação (CV%)
+cv <- (sd(valores) / mean(valores)) * 100
+cat("CV% =", round(cv, 2), "%\n")
+
+# Erro padrão da média (SEM)
+sem <- sd(valores) / sqrt(length(valores))
+cat("SEM =", round(sem, 4), "\n")
+
+# Intervalo de confiança 95%
+t.test(valores)$conf.int</pre>
+          </div>
+
+          <h3>Teste de normalidade</h3>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre"># Shapiro-Wilk (recomendado para n < 50)
+shapiro.test(valores)
+# p > 0.05 → dados normalmente distribuídos
+
+# Q-Q plot visual
+qqnorm(valores)
+qqline(valores, col = "red")</pre>
+          </div>
+
+          <h3>Teste t e ANOVA</h3>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre># Teste t para comparar 2 grupos
+grupo_a <- c(12.3, 11.8, 12.5, 12.1)
+grupo_b <- c(13.1, 13.4, 12.9, 13.2)
+t.test(grupo_a, grupo_b)  # bicaudal
+
+# ANOVA para 3 ou mais grupos
+library(agricolae)
+grupos <- c(rep("A",4), rep("B",4), rep("C",4))
+respostas <- c(12.3,11.8,12.5,12.1, 13.1,13.4,12.9,13.2, 11.2,11.0,11.5,11.3)
+modelo <- aov(respostas ~ grupos)
+summary(modelo)
+# Pós-teste Tukey
+TukeyHSD(modelo)</pre>
+          </div>
+        </div>
+
+        <div class="tut-sec" id="sec8">
+          <h2><span class="n">8</span> Regressão Linear — Curva Analítica</h2>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre"># Dados de uma curva analítica
+concentracao <- c(0.1, 0.5, 1.0, 2.0, 5.0, 10.0)
+absorbancia  <- c(0.023, 0.112, 0.224, 0.447, 1.115, 2.231)
+
+# Regressão linear
+modelo <- lm(absorbancia ~ concentracao)
+summary(modelo)
+
+# Extrair parâmetros
+coef(modelo)           # intercepto e coeficiente angular
+summary(modelo)$r.squared   # R²
+
+# Coeficiente de correlação de Pearson
+cor(concentracao, absorbancia)
+
+# Calcular a concentração de uma amostra desconhecida (abs = 0.680)
+abs_amostra <- 0.680
+a <- coef(modelo)[2]   # coef. angular
+b <- coef(modelo)[1]   # intercepto
+conc_amostra <- (abs_amostra - b) / a
+cat("Concentração da amostra:", round(conc_amostra, 4), "\n")
+
+# Calcular Limite de Detecção (LD) e Limite de Quantificação (LQ)
+sigma <- summary(modelo)$sigma   # desvio padrão dos resíduos
+LD  <- (3.3 * sigma) / a
+LQ  <- (10  * sigma) / a
+cat("LD =", round(LD, 5), "| LQ =", round(LQ, 5), "\n")</pre>
+          </div>
+
+          <div class="tip"><i class="fas fa-chart-line"></i> Um R² ≥ 0.999 indica excelente linearidade para curvas analíticas em Química Analítica.</div>
+        </div>
+
+        <div class="tut-sec" id="sec9">
+          <h2><span class="n">9</span> Gráficos com ggplot2</h2>
+
+          <h3>Curva analítica com linha de regressão</h3>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre>library(ggplot2)
+
+concentracao <- c(0.1, 0.5, 1.0, 2.0, 5.0, 10.0)
+absorbancia  <- c(0.023, 0.112, 0.224, 0.447, 1.115, 2.231)
+dados <- data.frame(concentracao, absorbancia)
+
+ggplot(dados, aes(x = concentracao, y = absorbancia)) +
+  geom_point(size = 3, color = "#1a3560") +
+  geom_smooth(method = "lm", se = TRUE,
+              color = "#2a6496", fill = "#c7d7f0") +
+  labs(
+    title    = "Curva Analítica — Absorção Atômica",
+    subtitle = paste0("R² = ", round(summary(lm(absorbancia~concentracao))$r.squared, 5)),
+    x        = "Concentração (mg/L)",
+    y        = "Absorbância"
+  ) +
+  theme_classic(base_size = 13) +
+  theme(plot.title = element_text(face = "bold"))
+
+# Salvar em alta resolução (300 dpi — publicação)
+ggsave("curva_analitica.png", width = 8, height = 5, dpi = 300)</pre>
+          </div>
+
+          <h3>Boxplot comparativo</h3>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre>library(ggplot2)
+
+# Exemplo com 3 matrizes
+dados_box <- data.frame(
+  matriz  = rep(c("Água de Rio", "Sedimento", "Água Subterrânea"), each = 6),
+  conteudo = c(12.3,11.8,12.5,12.1,12.4,11.9,
+               18.2,17.9,18.6,18.1,18.4,17.8,
+               8.1, 7.9, 8.4, 8.0, 8.3, 7.8)
+)
+
+ggplot(dados_box, aes(x = matriz, y = conteudo, fill = matriz)) +
+  geom_boxplot(alpha = 0.8) +
+  geom_jitter(width = 0.15, size = 1.5, alpha = 0.6) +
+  scale_fill_manual(values = c("#1a3560","#2a6496","#27ae60")) +
+  labs(x = "Matriz Ambiental", y = "Concentração (µg/g)",
+       title = "Distribuição por Matriz") +
+  theme_classic(base_size = 13) +
+  theme(legend.position = "none")</pre>
+          </div>
+        </div>
+
+        <div class="tut-sec" id="sec10">
+          <h2><span class="n">10</span> Quimiometria — Análise de Componentes Principais (PCA)</h2>
+
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre>library(FactoMineR)
+library(factoextra)
+
+# Exemplo com dados de metais em amostras ambientais
+set.seed(42)
+metais <- data.frame(
+  Pb = c(12,14,11,45,48,43,8,7,9),
+  Cd = c(0.5,0.6,0.4,1.8,2.0,1.7,0.2,0.3,0.2),
+  Cu = c(25,27,24,40,42,38,18,19,17),
+  Zn = c(80,85,78,150,160,145,55,58,52),
+  Fe = c(500,520,490,800,850,790,400,420,390)
+)
+rownames(metais) <- paste0("Amostra_", 1:9)
+
+# Calcular PCA (escala padronizada = TRUE, recomendado)
+pca <- PCA(metais, scale.unit = TRUE, graph = FALSE)
+
+# Variância explicada
+fviz_eig(pca, addlabels = TRUE, ylim = c(0, 70),
+         barfill = "#1a3560", barcolor = "#1a3560") +
+  labs(title = "Variância Explicada por Componente")
+
+# Biplot: amostras + variáveis
+fviz_pca_biplot(pca,
+  col.ind = "#1a3560",   # cor dos pontos (amostras)
+  col.var = "#dc2626",   # cor das setas (variáveis)
+  repel   = TRUE         # evita sobreposição de textos
+) + theme_classic()
+
+# Contribuição das variáveis
+fviz_contrib(pca, choice = "var", axes = 1, fill = "#2a6496")</pre>
+          </div>
+
+          <div class="tip"><i class="fas fa-lightbulb"></i> Variáveis com contribuição acima da linha vermelha tracejada no gráfico de contribuições são as mais importantes para a componente principal.</div>
+
+          <h3>Análise de Cluster Hierárquico (HCA)</h3>
+          <div class="code-block">
+            <span class="lang-tag">R</span>
+            <pre>library(factoextra)
+
+# Calcular distâncias euclidianas (dados padronizados)
+metais_scaled <- scale(metais)
+distancias    <- dist(metais_scaled, method = "euclidean")
+
+# Agrupamento hierárquico Ward.D2
+hca <- hclust(distancias, method = "ward.D2")
+
+# Dendrograma
+fviz_dend(hca, k = 3,              # 3 clusters
+          cex = 0.9,
+          color_labels_by_k = TRUE,
+          rect = TRUE,
+          main = "Dendrograma — HCA Ward.D2"
+)</pre>
+          </div>
+        </div>
+
+        <div class="tut-sec" id="sec11">
+          <h2><span class="n">11</span> Recursos Adicionais</h2>
+          <ul>
+            <li><strong>R for Data Science (livro gratuito):</strong> <em>r4ds.had.co.nz</em></li>
+            <li><strong>CRAN Task View — Chemometrics:</strong> busque "ChemPhys" em cran.r-project.org/web/views</li>
+            <li><strong>Swirl (aprenda R interativamente no console):</strong> <code>install.packages("swirl"); library(swirl); swirl()</code></li>
+            <li><strong>Posit Cloud:</strong> <em>posit.cloud</em> — use R no navegador sem instalar nada</li>
+            <li><strong>Quick-R:</strong> <em>statmethods.net</em> — referência rápida de funções</li>
+            <li><strong>Cheatsheets do RStudio:</strong> <em>posit.co/resources/cheatsheets</em> — resumo visual de ggplot2, dplyr, etc.</li>
+          </ul>
+          <div class="info"><i class="fas fa-question-circle"></i> Dúvidas? Entre em contato com o LabQuim ou consulte o fórum Stack Overflow com a tag <code>[r]</code>.</div>
+        </div>
+
+      </div><!-- fim conteúdo -->
+    </div><!-- fim grid -->
+  </div>
+</section>
+
+<div id="footer-container"></div>
+<script src="../../assets/js/componentes.js"></script>
+<script src="../../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('header-container').innerHTML = gerarHeader('tutoriais');
+  document.getElementById('footer-container').innerHTML = gerarFooter();
+  inicializarNav();
+
+  // Highlight nav on scroll
+  const sections = document.querySelectorAll('.tut-sec');
+  const links    = document.querySelectorAll('.tut-nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+    links.forEach(l => l.classList.toggle('ativo', l.getAttribute('href') === '#' + cur));
+  });
+
+  // Copy buttons
+  document.querySelectorAll('.code-block').forEach(block => {
+    const btn = document.createElement('button');
+    btn.className = 'btn-copy'; btn.textContent = 'Copiar';
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(block.querySelector('pre').textContent);
+      btn.textContent = '✓ Copiado';
+      setTimeout(() => btn.textContent = 'Copiar', 1800);
+    });
+    block.appendChild(btn);
+  });
+});
+</script>
+</body>
+</html>

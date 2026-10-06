@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabela Periódica | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .hero-ferramenta{background:linear-gradient(135deg,#1a3560 0%,#2a6496 100%);padding:48px 0 36px;color:#fff}
+    .hero-ferramenta h1{font-family:'Merriweather',serif;font-size:1.9rem;margin:8px 0;color:#fff}
+    .hero-ferramenta p{opacity:.85;max-width:560px;font-size:1rem}
+    .badge-tool{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.8rem;margin-bottom:12px}
+
+    .sec-tabela{padding:36px 0 60px;background:#f4f6fb}
+
+    /* Controles */
+    .tbl-ctrl{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+    .search-wrap{position:relative;flex:1;min-width:200px;max-width:320px}
+    .search-wrap input{width:100%;padding:10px 38px 10px 14px;border:2px solid #dde3ed;border-radius:10px;font-size:.9rem;background:#fff;outline:none;transition:border .2s;box-sizing:border-box;font-family:inherit}
+    .search-wrap input:focus{border-color:#2a6496}
+    .search-wrap i{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa;pointer-events:none}
+    .sel-cat{padding:9px 14px;border:2px solid #dde3ed;border-radius:10px;font-size:.86rem;background:#fff;outline:none;cursor:pointer;font-family:inherit}
+    @media(max-width:768px){
+      .sec-tabela{padding:28px 0 44px}
+      .tbl-ctrl{gap:8px}
+      .search-wrap{max-width:100%;flex:1 1 100%}
+      .sel-cat{flex:1;width:100%}
+      .legend{gap:5px}
+      .leg{font-size:.68rem;padding:2px 7px}
+      .pt-outer{padding:10px 6px;border-radius:10px}
+      .pn{width:100%;top:auto;height:82vh;border-radius:18px 18px 0 0;transform:translateY(110%)}
+      .pn.on{transform:translateY(0)}
+    }
+    @media(max-width:480px){
+      .leg{font-size:.63rem}
+      .el .sy{font-size:.95rem}
+      .el .nm{font-size:.32rem}
+    }
+    .sel-cat:focus{border-color:#2a6496}
+    .res-count{font-size:.8rem;color:#888}
+
+    /* Legenda */
+    .legend{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+    .leg{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:600;color:#555;padding:3px 9px;border-radius:12px;border:1.5px solid transparent;cursor:pointer;transition:all .15s;user-select:none}
+    .leg:hover{border-color:#aaa}
+    .leg.sel{border-color:#1a3560;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+    .leg-dot{width:11px;height:11px;border-radius:2px;flex-shrink:0}
+
+    /* Tabela outer */
+    .pt-outer{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:16px 12px;overflow-x:auto}
+
+    /*
+      GRID LAYOUT:
+      - 19 colunas: col 1 = label período, cols 2-19 = grupos 1-18
+      - 12 linhas: rows 1-7 = períodos 1-7, row 8 = vazio, rows 9-10 = lantanídeos/actinídeos, row 11 = label grupos (cabeçalho no topo)
+      Usamos rows como: row1=grupo-labels, rows 2-8=períodos 1-7, row9=gap, rows10-11=lant/act
+    */
+    .pt-grid{
+      display:grid;
+      grid-template-columns: 28px repeat(18,42px);  /* col1=período label, 18 cols de grupo */
+      grid-template-rows: 22px repeat(7,44px) 10px repeat(2,44px);
+      gap:2px;
+      min-width:810px;
+    }
+
+    /* Célula de label (período/grupo) */
+    .lbl{display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:#999;font-family:'Source Sans 3',sans-serif;user-select:none}
+
+    /* Célula de elemento */
+    .el{
+      border-radius:5px;cursor:pointer;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      padding:2px 1px;
+      border:1.5px solid rgba(0,0,0,.06);
+      transition:transform .1s,box-shadow .1s,border-color .1s;
+      user-select:none;position:relative;
+    }
+    .el:hover{transform:scale(1.25);z-index:50;box-shadow:0 4px 16px rgba(0,0,0,.28);border-color:rgba(0,0,0,.35)}
+    .el.dim{opacity:.12;pointer-events:none}
+    .el.hi{border-color:#1a3560 !important;box-shadow:0 0 0 2px #1a3560;z-index:5}
+    .el .z{font-size:.48rem;color:rgba(0,0,0,.48);line-height:1;align-self:flex-start;padding-left:2px}
+    .el .sy{font-size:1.05rem;font-weight:800;color:rgba(0,0,0,.85);line-height:1.1}
+    .el .nm{font-size:.36rem;color:rgba(0,0,0,.58);line-height:1;margin-top:1px;max-width:40px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:center}
+    .el .aw{font-size:.35rem;color:rgba(0,0,0,.42)}
+
+    /* Placeholder lant/act */
+    .ph{border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:800;border:1.5px dashed rgba(0,0,0,.15)}
+
+    /* Separador f-block */
+    .gap-row{grid-column:1/-1}
+
+    /* CORES — mesmas do padrão IUPAC */
+    .c1{background:#ff9f9f}  /* metais alcalinos */
+    .c2{background:#ffc57a}  /* alcalino-terrosos */
+    .c3{background:#ffe09a}  /* lantanídeos */
+    .c4{background:#e8f5a3}  /* actinídeos */
+    .c5{background:#b3deff}  /* metais de transição */
+    .c6{background:#c6f9c6}  /* metais pós-transição */
+    .c7{background:#d4eec4}  /* semimetais */
+    .c8{background:#ffffa0}  /* não-metais reativos */
+    .c9{background:#e8d0ff}  /* gases nobres */
+    .c0{background:#e0e0e0}  /* desconhecido */
+
+    /* Painel lateral */
+    .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:400}
+    .ov.on{display:block}
+    .pn{
+      position:fixed;right:0;top:0;bottom:0;width:340px;
+      background:#fff;box-shadow:-4px 0 28px rgba(0,0,0,.18);
+      z-index:401;transform:translateX(110%);
+      transition:transform .28s cubic-bezier(.4,0,.2,1);
+      overflow-y:auto;display:flex;flex-direction:column;
+    }
+    .pn.on{transform:translateX(0)}
+    @media(max-width:760px){
+      .pn{width:100%;top:auto;height:80vh;border-radius:18px 18px 0 0;transform:translateY(110%)}
+      .pn.on{transform:translateY(0)}
+    }
+    .pn-top{padding:18px 18px 14px;border-bottom:1px solid #eef1f6;position:sticky;top:0;background:#fff;z-index:1}
+    .btn-cls{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;font-size:1.25rem;color:#bbb;padding:4px 7px;border-radius:6px}
+    .btn-cls:hover{color:#555}
+    .pn-sym{width:68px;height:68px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:10px}
+    .pn-sym .pz{font-size:.68rem;color:rgba(0,0,0,.42)}
+    .pn-sym .ps{font-size:2rem;font-weight:900;color:rgba(0,0,0,.85);line-height:1}
+    .pn-sym .pa{font-size:.58rem;color:rgba(0,0,0,.45);margin-top:2px}
+    .pn-nome{font-size:1.2rem;font-weight:800;color:#1a3560}
+    .pn-cat{font-size:.8rem;color:#888;margin-top:2px}
+    .pn-body{padding:18px;flex:1}
+    .pr{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid #f2f4f8}
+    .pr:last-child{border-bottom:none}
+    .pr-k{font-size:.82rem;color:#666}
+    .pr-v{font-size:.88rem;font-weight:700;color:#1a3560;font-family:'Courier New',monospace;text-align:right;max-width:56%;word-break:break-word}
+    .pn-desc{font-size:.8rem;color:#555;line-height:1.75;margin-top:14px;padding-top:12px;border-top:1px solid #eef1f6}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="componentes-header"></div>
+
+<section class="hero-ferramenta">
+  <div class="container">
+    <div class="badge-tool"><i class="fas fa-atom"></i> Ferramentas LabQuim</div>
+    <h1>🔬 Tabela Periódica Interativa</h1>
+    <p>Todos os 118 elementos químicos organizados corretamente. Clique em qualquer elemento para propriedades detalhadas.</p>
+  </div>
+</section>
+
+<section class="sec-tabela">
+  <div class="container" style="max-width:1020px">
+
+    <div class="tbl-ctrl">
+      <div class="search-wrap">
+        <input type="text" id="busca" placeholder="Nome, símbolo ou número atômico…">
+        <i class="fas fa-search"></i>
+      </div>
+      <select class="sel-cat" id="selCat">
+        <option value="">Todas as categorias</option>
+        <option value="Alkali metals">Metais alcalinos</option>
+        <option value="Alkaline earth metals">Metais alcalino-terrosos</option>
+        <option value="Transition metals">Metais de transição</option>
+        <option value="Post-transition metals">Metais pós-transição</option>
+        <option value="Metalloids">Semimetais</option>
+        <option value="Reactive nonmetals">Não-metais reativos</option>
+        <option value="Noble gases">Gases nobres</option>
+        <option value="Lanthanides">Lantanídeos</option>
+        <option value="Actinides">Actinídeos</option>
+      </select>
+      <span class="res-count" id="resCnt"></span>
+    </div>
+
+    <div class="legend" id="legend"></div>
+
+    <div class="pt-outer">
+      <div class="pt-grid" id="ptGrid"></div>
+    </div>
+    <p style="font-size:.75rem;color:#aaa;margin-top:10px;text-align:center">* Lantanídeos (57–71) e actinídeos (89–103) exibidos separadamente abaixo da tabela principal.</p>
+
+  </div>
+</section>
+
+<!-- Overlay + Painel -->
+<div class="ov" id="ov"></div>
+<div class="pn" id="pn">
+  <button class="btn-cls" id="btnCls">✕</button>
+  <div class="pn-top" id="pnTop">
+    <div class="pn-sym" id="pnSym"><span class="pz" id="pnZ"></span><span class="ps" id="pnS"></span><span class="pa" id="pnA"></span></div>
+    <div class="pn-nome" id="pnNome"></div>
+    <div class="pn-cat" id="pnCat"></div>
+  </div>
+  <div class="pn-body" id="pnBody"></div>
+</div>
+
+<div id="componentes-footer"></div>
+
+<script src="../../assets/js/elementos.js"></script>
+<script src="../../assets/js/element-extra.js"></script>
+<script src="../../assets/js/componentes.js"></script>
+<script>
+document.getElementById('componentes-header').innerHTML = gerarHeader('ferramentas');
+document.getElementById('componentes-footer').innerHTML = gerarFooter();
+inicializarNav();
+
+/* ══════════════════════════════════════
+   DADOS DE CONFIGURAÇÃO
+══════════════════════════════════════ */
+
+/* Série → classe CSS de cor */
+var SERIE_CLS = {
+  'Alkali metals':         'c1',
+  'Alkaline earth metals': 'c2',
+  'Lanthanides':           'c3',
+  'Lanthanoids':           'c3',
+  'Actinides':             'c4',
+  'Actinoids':             'c4',
+  'Transition metals':     'c5',
+  'Post-transition metals':'c6',
+  'Metalloids':            'c7',
+  'Reactive nonmetals':    'c8',
+  'Noble gases':           'c9',
+  'No series':             'c0',
+};
+
+/* Série → nome em português */
+var SERIE_PT = {
+  'Alkali metals':         'Metais alcalinos',
+  'Alkaline earth metals': 'Metais alcalino-terrosos',
+  'Lanthanides':           'Lantanídeos',
+  'Lanthanoids':           'Lantanídeos',
+  'Actinides':             'Actinídeos',
+  'Actinoids':             'Actinídeos',
+  'Transition metals':     'Metais de transição',
+  'Post-transition metals':'Metais pós-transição',
+  'Metalloids':            'Semimetais',
+  'Reactive nonmetals':    'Não-metais reativos',
+  'Noble gases':           'Gases nobres',
+  'No series':             'Sem classificação',
+};
+
+/* Cor de fundo por classe */
+var CLS_COR = {
+  c1:'#ff9f9f',c2:'#ffc57a',c3:'#ffe09a',c4:'#e8f5a3',
+  c5:'#b3deff',c6:'#c6f9c6',c7:'#d4eec4',c8:'#ffffa0',c9:'#e8d0ff',c0:'#e0e0e0'
+};
+
+/* Nomes em português */
+var PT = {
+  'Hydrogen':'Hidrogênio','Helium':'Hélio','Lithium':'Lítio','Beryllium':'Berílio',
+  'Berylium':'Berílio','Boron':'Boro','Carbon':'Carbono','Nitrogen':'Nitrogênio',
+  'Oxygen':'Oxigênio','Fluorine':'Flúor','Neon':'Neônio','Sodium':'Sódio',
+  'Magnesium':'Magnésio','Aluminium':'Alumínio','Aluminum':'Alumínio','Silicon':'Silício',
+  'Phosphorus':'Fósforo','Phosphorous':'Fósforo','Sulfur':'Enxofre','Chlorine':'Cloro',
+  'Argon':'Argônio','Potassium':'Potássio','Calcium':'Cálcio','Scandium':'Escândio',
+  'Titanium':'Titânio','Vanadium':'Vanádio','Chromium':'Cromo','Manganese':'Manganês',
+  'Iron':'Ferro','Cobalt':'Cobalto','Nickel':'Níquel','Copper':'Cobre','Zinc':'Zinco',
+  'Gallium':'Gálio','Germanium':'Germânio','Arsenic':'Arsênio','Selenium':'Selênio',
+  'Bromine':'Bromo','Krypton':'Criptônio','Rubidium':'Rubídio','Strontium':'Estrôncio',
+  'Yttrium':'Ítrio','Zirconium':'Zircônio','Niobium':'Nióbio','Molybdenum':'Molibdênio',
+  'Technetium':'Tecnécio','Ruthenium':'Rutênio','Rhodium':'Ródio','Palladium':'Paládio',
+  'Silver':'Prata','Cadmium':'Cádmio','Indium':'Índio','Tin':'Estanho',
+  'Antimony':'Antimônio','Tellurium':'Telúrio','Iodine':'Iodo','Xenon':'Xenônio',
+  'Cesium':'Césio','Barium':'Bário','Lanthanum':'Lantânio','Cerium':'Cério',
+  'Praseodymium':'Praseodímio','Neodymium':'Neodímio','Promethium':'Promécio',
+  'Samarium':'Samário','Europium':'Európio','Gadolinium':'Gadolínio','Terbium':'Térbio',
+  'Dysprosium':'Disprósio','Holmium':'Hólmio','Erbium':'Érbio','Thulium':'Túlio',
+  'Ytterbium':'Itérbio','Lutetium':'Lutécio','Hafnium':'Háfnio','Tantalum':'Tântalo',
+  'Tungsten':'Tungstênio','Rhenium':'Rênio','Osmium':'Ósmio','Iridium':'Irídio',
+  'Platinum':'Platina','Gold':'Ouro','Mercury':'Mercúrio','Thallium':'Tálio',
+  'Lead':'Chumbo','Bismuth':'Bismuto','Polonium':'Polônio','Astatine':'Astato',
+  'Radon':'Radônio','Francium':'Frâncio','Radium':'Rádio','Actinium':'Actínio',
+  'Thorium':'Tório','Protactinium':'Protactínio','Uranium':'Urânio',
+  'Neptunium':'Netúnio','Plutonium':'Plutônio','Americium':'Amerício',
+  'Curium':'Cúrio','Berkelium':'Berquélio','Californium':'Califórnio',
+  'Einsteinium':'Einstênio','Fermium':'Férmio','Mendelevium':'Mendelévio',
+  'Nobelium':'Nobélio','Lawrencium':'Laurêncio','Rutherfordium':'Rutherfórdio',
+  'Dubnium':'Dúbnio','Seaborgium':'Seabórgio','Bohrium':'Bório','Hassium':'Hássio',
+  'Meitnerium':'Meitnério','Darmstadtium':'Darmstádio','Roentgenium':'Roentgênio',
+  'Copernicium':'Copernício','Nihonium':'Nihônio','Flerovium':'Fleróvio',
+  'Moscovium':'Moscóvio','Livermorium':'Livermório','Tennessine':'Tenessino',
+  'Oganesson':'Oganessônio'
+};
+function nPT(en){ return PT[en]||en; }
+
+/* ══════════════════════════════════════
+   MAPA DE POSIÇÕES: Z → {row, col}
+   row 1 = grupo-labels
+   row 2-8 = períodos 1-7
+   row 9 = gap
+   row 10 = lantanídeos
+   row 11 = actinídeos
+
+   col 1 = label período
+   col 2-19 = grupos 1-18
+   (elemento do grupo 1 → col 2, grupo 18 → col 19)
+══════════════════════════════════════ */
+var GPOS = {};
+
+/* Período 1 */
+GPOS[1]  = {row:2, col:2};    /* H  grupo 1  */
+GPOS[2]  = {row:2, col:19};   /* He grupo 18 */
+
+/* Período 2 */
+GPOS[3]  = {row:3, col:2};
+GPOS[4]  = {row:3, col:3};
+GPOS[5]  = {row:3, col:14};
+GPOS[6]  = {row:3, col:15};
+GPOS[7]  = {row:3, col:16};
+GPOS[8]  = {row:3, col:17};
+GPOS[9]  = {row:3, col:18};
+GPOS[10] = {row:3, col:19};
+
+/* Período 3 */
+GPOS[11] = {row:4, col:2};
+GPOS[12] = {row:4, col:3};
+GPOS[13] = {row:4, col:14};
+GPOS[14] = {row:4, col:15};
+GPOS[15] = {row:4, col:16};
+GPOS[16] = {row:4, col:17};
+GPOS[17] = {row:4, col:18};
+GPOS[18] = {row:4, col:19};
+
+/* Período 4 */
+GPOS[19] = {row:5, col:2};
+GPOS[20] = {row:5, col:3};
+for(var z=21;z<=30;z++) GPOS[z]={row:5,col:z-21+4};  /* Sc-Zn grupos 3-12 → cols 4-13 */
+GPOS[31] = {row:5, col:14};
+GPOS[32] = {row:5, col:15};
+GPOS[33] = {row:5, col:16};
+GPOS[34] = {row:5, col:17};
+GPOS[35] = {row:5, col:18};
+GPOS[36] = {row:5, col:19};
+
+/* Período 5 */
+GPOS[37] = {row:6, col:2};
+GPOS[38] = {row:6, col:3};
+for(var z=39;z<=48;z++) GPOS[z]={row:6,col:z-39+4};  /* Y-Cd grupos 3-12 */
+GPOS[49] = {row:6, col:14};
+GPOS[50] = {row:6, col:15};
+GPOS[51] = {row:6, col:16};
+GPOS[52] = {row:6, col:17};
+GPOS[53] = {row:6, col:18};
+GPOS[54] = {row:6, col:19};
+
+/* Período 6 */
+GPOS[55] = {row:7, col:2};   /* Cs */
+GPOS[56] = {row:7, col:3};   /* Ba */
+/* 57-71 lantanídeos → row 10 */
+for(var z=57;z<=71;z++) GPOS[z]={row:10,col:z-57+4};  /* cols 4-18 */
+for(var z=72;z<=80;z++) GPOS[z]={row:7,col:z-72+4};   /* Hf-Hg grupos 4-12 → cols 4-12 → z-72+4: Hf=4,Ta=5,...Hg=12 */
+GPOS[81] = {row:7, col:14};
+GPOS[82] = {row:7, col:15};
+GPOS[83] = {row:7, col:16};
+GPOS[84] = {row:7, col:17};
+GPOS[85] = {row:7, col:18};
+GPOS[86] = {row:7, col:19};
+
+/* Período 7 */
+GPOS[87] = {row:8, col:2};   /* Fr */
+GPOS[88] = {row:8, col:3};   /* Ra */
+/* 89-103 actinídeos → row 11 */
+for(var z=89;z<=103;z++) GPOS[z]={row:11,col:z-89+4};
+for(var z=104;z<=112;z++) GPOS[z]={row:8,col:z-104+4}; /* Rf-Cn grupos 4-12 */
+GPOS[113]= {row:8, col:14};
+GPOS[114]= {row:8, col:15};
+GPOS[115]= {row:8, col:16};
+GPOS[116]= {row:8, col:17};
+GPOS[117]= {row:8, col:18};
+GPOS[118]= {row:8, col:19};
+
+/* ══════════════════════════════════════
+   CONSTRUIR MAPA E GRID
+══════════════════════════════════════ */
+var elMap = {};
+elementData.forEach(function(el){ elMap[el.atomicNumber] = el; });
+
+var grid = document.getElementById('ptGrid');
+var elDivs = {};   /* Z → div */
+
+/* Linha 1: labels de grupo (1-18) */
+/* col 1 = vazio */
+var lblVazio = document.createElement('div');
+grid.appendChild(lblVazio);
+for(var g=1;g<=18;g++){
+  var d=document.createElement('div');
+  d.className='lbl';
+  d.textContent=g;
+  grid.appendChild(d);
+}
+
+/* Linhas 2-11: montar por posição */
+/* Usamos uma matriz linha × col */
+var MAXROW=11, MAXCOL=19;
+var matriz = {};
+for(var r=2;r<=MAXROW;r++) for(var c=1;c<=MAXCOL;c++) matriz[r+','+c]=null;
+
+/* Preencher elementos */
+Object.keys(GPOS).forEach(function(z){
+  var pos=GPOS[z];
+  matriz[pos.row+','+pos.col]=parseInt(z);
+});
+
+/* Renderizar linhas 2-11 */
+for(var row=2;row<=MAXROW;row++){
+
+  /* row 9 = gap visual entre tabela principal e f-block */
+  if(row===9){
+    var gd=document.createElement('div');
+    gd.className='gap-row';
+    gd.style.gridRow=row;
+    gd.style.gridColumn='1/-1';
+    grid.appendChild(gd);
+    continue;
+  }
+
+  for(var col=1;col<=MAXCOL;col++){
+
+    var div=document.createElement('div');
+    div.style.gridRow=row;
+    div.style.gridColumn=col;
+
+    /* Col 1 = label de período */
+    if(col===1){
+      div.className='lbl';
+      /* Períodos: row2=P1, row3=P2, ..., row8=P7, row10=lant, row11=act */
+      var pLabel='';
+      if(row>=2&&row<=8) pLabel=row-1;
+      else if(row===10) pLabel='*';
+      else if(row===11) pLabel='**';
+      div.textContent=pLabel;
+      grid.appendChild(div);
+      continue;
+    }
+
+    /* Placeholder La/Ac */
+    if(row===7&&col===4){
+      /* La* já foi para row 10, mostrar placeholder */
+      /* (verificar se não tem elemento aqui) */
+    }
+
+    var z=matriz[row+','+col];
+    if(z){
+      var el=elMap[z];
+      if(!el){grid.appendChild(div);continue;}
+      var serie=el.series||'No series';
+      var cls=SERIE_CLS[serie]||'c0';
+      div.className='el '+cls;
+      div.dataset.z=z;
+      var nomePT=nPT(el.name);
+      var nomeCurto=nomePT.length>8?nomePT.slice(0,7)+'…':nomePT;
+      div.innerHTML=
+        '<span class="z">'+z+'</span>'+
+        '<span class="sy">'+el.symbol+'</span>'+
+        '<span class="nm">'+nomeCurto+'</span>'+
+        '<span class="aw">'+(el.atomicWeight?el.atomicWeight.toFixed(1):'')+'</span>';
+      div.addEventListener('click',(function(ez){return function(){abrirPainel(ez);};})(z));
+      elDivs[z]=div;
+    } else {
+      /* Célula vazia */
+      /* Placeholder para La/Ac referências */
+      if(row===7&&col===4){
+        div.className='ph c3';
+        div.style.fontSize='.45rem';div.style.color='rgba(0,0,0,.5)';
+        div.textContent='57-71*';
+      } else if(row===8&&col===4){
+        div.className='ph c4';
+        div.style.fontSize='.45rem';div.style.color='rgba(0,0,0,.5)';
+        div.textContent='89-103**';
+      }
+    }
+    grid.appendChild(div);
+  }
+}
+
+/* ══════════════════════════════════════
+   LEGENDA
+══════════════════════════════════════ */
+var legDiv=document.getElementById('legend');
+var _seenLeg = {};
+Object.keys(SERIE_PT).forEach(function(serie){
+  /* Skip duplicate normalized names */
+  var norm = serie.replace('Lanthanoids','Lanthanides').replace('Actinoids','Actinides');
+  if (_seenLeg[norm]) return;
+  _seenLeg[norm] = true;
+  var cls=SERIE_CLS[serie]||'c0';
+  var cor=CLS_COR[cls]||'#eee';
+  var li=document.createElement('div');
+  li.className='leg';
+  li.dataset.serie=serie;
+  li.innerHTML='<div class="leg-dot" style="background:'+cor+'"></div>'+SERIE_PT[serie];
+  li.addEventListener('click',function(es){return function(){
+    var sel=document.getElementById('selCat');
+    sel.value=(sel.value===es)?'':es;
+    filtrar();
+    sincLegenda();
+  };}(serie));
+  legDiv.appendChild(li);
+});
+
+function sincLegenda(){
+  var v=document.getElementById('selCat').value;
+  document.querySelectorAll('.leg').forEach(function(l){
+    l.classList.toggle('sel',l.dataset.serie===v&&v!=='');
+  });
+}
+
+/* ══════════════════════════════════════
+   PAINEL ELEMENTO
+══════════════════════════════════════ */
+var CONF = {
+  1:'1s¹',2:'1s²',3:'[He] 2s¹',4:'[He] 2s²',5:'[He] 2s² 2p¹',
+  6:'[He] 2s² 2p²',7:'[He] 2s² 2p³',8:'[He] 2s² 2p⁴',9:'[He] 2s² 2p⁵',
+  10:'[He] 2s² 2p⁶',11:'[Ne] 3s¹',12:'[Ne] 3s²',13:'[Ne] 3s² 3p¹',
+  14:'[Ne] 3s² 3p²',15:'[Ne] 3s² 3p³',16:'[Ne] 3s² 3p⁴',17:'[Ne] 3s² 3p⁵',
+  18:'[Ne] 3s² 3p⁶',19:'[Ar] 4s¹',20:'[Ar] 4s²',24:'[Ar] 3d⁵ 4s¹',
+  26:'[Ar] 3d⁶ 4s²',29:'[Ar] 3d¹⁰ 4s¹',47:'[Kr] 4d¹⁰ 5s¹',79:'[Xe] 4f¹⁴ 5d¹⁰ 6s¹',
+  78:'[Xe] 4f¹⁴ 5d⁹ 6s¹',46:'[Kr] 4d¹⁰',
+};
+
+/* Grupo e período por Z */
+var GRUPOS = {};
+Object.keys(GPOS).forEach(function(z){
+  var pos=GPOS[z];
+  var row=pos.row, col=pos.col;
+  var periodo=(row<=8)?row-1:(row===10?6:7);
+  var grupo=col-1; /* col2=grupo1, col19=grupo18 */
+  GRUPOS[z]={periodo:periodo, grupo:grupo};
+});
+
+function abrirPainel(z){
+  var el=elMap[z];
+  if(!el) return;
+  var serie=el.series||'No series';
+  var cls=SERIE_CLS[serie]||'c0';
+  var cor=CLS_COR[cls]||'#eee';
+  var g=GRUPOS[z]||{};
+  var nomePT=nPT(el.name);
+
+  document.getElementById('pnSym').style.background=cor;
+  document.getElementById('pnZ').textContent=z;
+  document.getElementById('pnS').textContent=el.symbol;
+  document.getElementById('pnA').textContent=el.atomicWeight?el.atomicWeight.toFixed(4)+' u':'—';
+  document.getElementById('pnNome').textContent=nomePT+' ('+el.name+')';
+  document.getElementById('pnCat').textContent=SERIE_PT[serie]||serie;
+
+  var props=[
+    ['Número Atômico',    z],
+    ['Símbolo',           el.symbol],
+    ['Massa Atômica',     el.atomicWeight?el.atomicWeight+' g/mol':'—'],
+    ['Período',           g.periodo||'—'],
+    ['Grupo',             (serie==='Lanthanides'||serie==='Actinides')?'f-block':(g.grupo||'—')],
+    ['Eletronegatividade',el.electronegativity!=null?el.electronegativity+' (Pauling)':'—'],
+    ['Ponto de Fusão',    el.mp!=null?el.mp+' °C':'—'],
+    ['Ponto de Ebulição', el.bp!=null?el.bp+' °C':'—'],
+    ['Config. Eletrônica',CONF[z]||(el.energyLevels?el.energyLevels.join('-'):'—')],
+    ['1ª Ionização',      el.ioniziationEnergies&&el.ioniziationEnergies[0]?el.ioniziationEnergies[0]+' kJ/mol':'—'],
+  ];
+
+  var html='';
+  props.forEach(function(p){
+    html+='<div class="pr"><span class="pr-k">'+p[0]+'</span><span class="pr-v">'+p[1]+'</span></div>';
+  });
+  if(el.description){
+    html+='<div class="pn-desc">'+el.description.slice(0,380)+(el.description.length>380?'…':'')+'</div>';
+  }
+  document.getElementById('pnBody').innerHTML=html;
+  document.getElementById('ov').classList.add('on');
+  document.getElementById('pn').classList.add('on');
+}
+
+function fecharPainel(){
+  document.getElementById('ov').classList.remove('on');
+  document.getElementById('pn').classList.remove('on');
+}
+document.getElementById('btnCls').addEventListener('click',fecharPainel);
+document.getElementById('ov').addEventListener('click',fecharPainel);
+document.addEventListener('keydown',function(e){if(e.key==='Escape')fecharPainel();});
+
+/* ══════════════════════════════════════
+   BUSCA E FILTRO
+══════════════════════════════════════ */
+function filtrar(){
+  var q=document.getElementById('busca').value.toLowerCase().trim();
+  var cat=document.getElementById('selCat').value;
+  var total=Object.keys(elDivs).length, found=0;
+
+  Object.keys(elDivs).forEach(function(z){
+    var el=elMap[parseInt(z)];
+    var div=elDivs[z];
+    if(!el){div.classList.add('dim');return;}
+    var nome=nPT(el.name).toLowerCase();
+    var mQ=!q||
+      String(el.atomicNumber).startsWith(q)||
+      el.symbol.toLowerCase().startsWith(q)||
+      nome.startsWith(q)||
+      nome.includes(q)||
+      el.name.toLowerCase().includes(q);
+    /* Normalize series names: Lanthanoids↔Lanthanides, Actinoids↔Actinides */
+    var elSerie = el.series||'';
+    var normSerie = elSerie.replace('Lanthanoids','Lanthanides').replace('Actinoids','Actinides');
+    var normCat   = (cat||'').replace('Lanthanoids','Lanthanides').replace('Actinoids','Actinides');
+    var mC = !cat || normSerie === normCat;
+    var show=mQ&&mC;
+    div.classList.toggle('dim',!show);
+    div.classList.toggle('hi',!!(q||cat)&&show);
+    if(show) found++;
+  });
+
+  var cnt=document.getElementById('resCnt');
+  cnt.textContent=(q||cat)?found+' de '+total+' elementos':'';
+}
+
+document.getElementById('busca').addEventListener('input',filtrar);
+document.getElementById('selCat').addEventListener('change',function(){filtrar();sincLegenda();});
+</script>
+</body>
+</html>

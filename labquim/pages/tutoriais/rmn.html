@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutorial: Softwares para Análise de RMN | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .tut-hero{background:linear-gradient(135deg,#1a3560 0%,#2a6496 100%);padding:52px 0 36px;color:#fff}
+    .tut-hero h1{font-family:'Merriweather',serif;font-size:1.9rem;color:#fff;margin-bottom:8px}
+    .tut-hero p{opacity:.85;max-width:600px;font-size:1rem}
+    .tut-body{padding:48px 0 64px;background:#f4f6fb}
+    .tut-grid{display:grid;grid-template-columns:240px 1fr;gap:32px;align-items:start}
+    @media(max-width:768px){.tut-grid{grid-template-columns:1fr}}
+    .tut-nav{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:20px;position:sticky;top:80px}
+    .tut-nav h4{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#aaa;margin-bottom:12px}
+    .tut-nav a{display:block;padding:7px 10px;font-size:.86rem;color:#555;text-decoration:none;border-radius:7px;transition:all .15s;border-left:3px solid transparent}
+    .tut-nav a:hover,.tut-nav a.ativo{background:#f0f5ff;color:#1a3560;border-left-color:#1a3560}
+    .tut-sec{background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.08);padding:32px;margin-bottom:24px}
+    .tut-sec h2{font-size:1.3rem;color:#1a3560;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+    .tut-sec h2 .n{width:32px;height:32px;background:#1a3560;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;flex-shrink:0}
+    .tut-sec h3{font-size:1rem;color:#1a3560;margin:20px 0 8px;padding-bottom:4px;border-bottom:2px solid #eef1f6}
+    .tut-sec p{font-size:.9rem;color:#444;line-height:1.8;margin-bottom:12px}
+    .tut-sec ul,.tut-sec ol{font-size:.9rem;color:#444;line-height:1.8;padding-left:20px;margin-bottom:12px}
+    .tut-sec li{margin-bottom:6px}
+    code{background:#eef2ff;color:#1a3560;border-radius:4px;padding:1px 6px;font-family:'Courier New',monospace;font-size:.88em}
+    .code-block{background:#1e2a3a;border-radius:10px;padding:16px 20px;margin:12px 0;position:relative;overflow-x:auto}
+    .code-block pre{margin:0;font-family:'Courier New',monospace;font-size:.84rem;color:#e8f0fe;white-space:pre;line-height:1.7}
+    .code-block .lang-tag{position:absolute;top:8px;right:12px;font-size:.7rem;color:#7a9cc0;font-weight:700;text-transform:uppercase}
+    .tip{background:#e8f5e9;border-left:4px solid #27ae60;border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:.88rem;color:#1e5c30}
+    .tip i{margin-right:6px;color:#27ae60}
+    .warn{background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:.88rem;color:#7c4700}
+    .warn i{margin-right:6px;color:#f59e0b}
+    .info{background:#e8f0fb;border-left:4px solid #1a3560;border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:.88rem;color:#1a3560}
+    .info i{margin-right:6px}
+
+    /* Software cards */
+    .sw-card{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:20px 24px;margin-bottom:16px}
+    .sw-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+    .sw-nome{font-size:1.1rem;font-weight:800;color:#1a3560}
+    .sw-badges{display:flex;gap:7px;flex-wrap:wrap}
+    .badge-free{background:#e6f4ea;color:#1e7e34;border-radius:10px;padding:3px 10px;font-size:.75rem;font-weight:700}
+    .badge-pago{background:#fff3e0;color:#e65100;border-radius:10px;padding:3px 10px;font-size:.75rem;font-weight:700}
+    .badge-win{background:#eef2ff;color:#1a3560;border-radius:10px;padding:3px 10px;font-size:.75rem;font-weight:600}
+    .badge-mac{background:#f3f4f6;color:#555;border-radius:10px;padding:3px 10px;font-size:.75rem;font-weight:600}
+    .badge-linux{background:#fef3c7;color:#92400e;border-radius:10px;padding:3px 10px;font-size:.75rem;font-weight:600}
+    .badge-online{background:#f0e8fb;color:#5b2d8e;border-radius:10px;padding:3px 10px;font-size:.75rem;font-weight:600}
+    .sw-desc{font-size:.88rem;color:#555;line-height:1.7;margin-bottom:10px}
+    .sw-pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:500px){.sw-pros-cons{grid-template-columns:1fr}}
+    .pros-box,.cons-box{background:#fff;border-radius:8px;padding:10px 12px;font-size:.82rem}
+    .pros-box{border-left:3px solid #27ae60}
+    .cons-box{border-left:3px solid #e74c3c}
+    .pros-box strong,.cons-box strong{display:block;margin-bottom:4px;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+    .pros-box strong{color:#27ae60}.cons-box strong{color:#e74c3c}
+    .pros-box li,.cons-box li{margin-bottom:3px;color:#444}
+    .btn-download{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;background:#1a3560;color:#fff;font-size:.84rem;font-weight:700;text-decoration:none;margin-top:8px;transition:background .2s}
+    .btn-download:hover{background:#0f2040;color:#fff}
+
+    /* Steps */
+    .step-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #eef1f6}
+    .step-item:last-child{border-bottom:none}
+    .step-n{width:28px;height:28px;background:#2a6496;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;margin-top:2px}
+    .step-body h4{font-size:.92rem;font-weight:700;color:#1a3560;margin-bottom:3px}
+    .step-body p{font-size:.86rem;color:#555;line-height:1.6;margin:0}
+
+    /* Comparativo table */
+    .comp-table{width:100%;border-collapse:collapse;font-size:.84rem;margin:16px 0}
+    .comp-table th{background:#1a3560;color:#fff;padding:10px 12px;text-align:left;font-weight:700}
+    .comp-table td{padding:9px 12px;border-bottom:1px solid #eef1f6;vertical-align:top}
+    .comp-table tr:hover td{background:#f8faff}
+    .comp-table .sim{color:#27ae60;font-weight:700}
+    .comp-table .nao{color:#ccc}
+    .comp-table .parc{color:#f59e0b;font-weight:600}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="header-container"></div>
+
+<section class="tut-hero">
+  <div class="container">
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.8rem;margin-bottom:12px">
+      <i class="fas fa-graduation-cap"></i> Tutoriais LabQuim
+    </div>
+    <h1>🔬 Softwares para Análise de RMN</h1>
+    <p>Guia completo sobre os principais programas para processamento, análise e elucidação estrutural por Ressonância Magnética Nuclear — do básico ao avançado.</p>
+  </div>
+</section>
+
+<section class="tut-body">
+  <div class="container">
+    <div class="tut-grid">
+
+      <!-- Índice -->
+      <div class="tut-nav">
+        <h4>Índice</h4>
+        <a href="#sec1">1. Introdução ao RMN</a>
+        <a href="#sec2">2. MestReNova</a>
+        <a href="#sec3">3. TopSpin (Bruker)</a>
+        <a href="#sec4">4. ACD/NMR (Free)</a>
+        <a href="#sec5">5. NMRium (Online)</a>
+        <a href="#sec6">6. SpinWorks</a>
+        <a href="#sec7">7. Comparativo</a>
+        <a href="#sec8">8. Formatos de arquivo</a>
+        <a href="#sec9">9. Fluxo de trabalho</a>
+        <a href="#sec10">10. Predição de espectros</a>
+      </div>
+
+      <!-- Conteúdo -->
+      <div>
+
+        <div class="tut-sec" id="sec1">
+          <h2><span class="n">1</span> Introdução ao Processamento de RMN</h2>
+          <p>A Ressonância Magnética Nuclear (RMN) é uma das ferramentas mais poderosas para elucidação estrutural de compostos orgânicos. Os espectros brutos gerados pelo espectrômetro precisam ser processados por softwares específicos antes da interpretação.</p>
+          <p>As etapas fundamentais do processamento são:</p>
+          <ol>
+            <li><strong>FT (Transformada de Fourier):</strong> converte o FID (Free Induction Decay) em espectro de frequências</li>
+            <li><strong>Correção de fase:</strong> ajusta a simetria dos picos (fase zero e primeira ordem)</li>
+            <li><strong>Correção de linha de base:</strong> nivelar a linha de referência do espectro</li>
+            <li><strong>Calibração do deslocamento químico (δ):</strong> referência interna (TMS = 0 ppm) ou solvente</li>
+            <li><strong>Integração dos sinais:</strong> área dos picos proporcional ao número de prótons</li>
+            <li><strong>Multiplicidade e constante de acoplamento (J):</strong> análise dos padrões de acoplamento spin-spin</li>
+          </ol>
+        </div>
+
+        <div class="tut-sec" id="sec2">
+          <h2><span class="n">2</span> MestReNova (Mnova)</h2>
+          <div class="sw-card">
+            <div class="sw-header">
+              <div class="sw-nome">MestReNova (Mnova) — Mestrelab Research</div>
+              <div class="sw-badges">
+                <span class="badge-pago">Licença paga</span>
+                <span class="badge-free">Trial 45 dias</span>
+                <span class="badge-win">Windows</span>
+                <span class="badge-mac">macOS</span>
+                <span class="badge-linux">Linux</span>
+              </div>
+            </div>
+            <p class="sw-desc">O software mais utilizado no mundo para processamento e análise de RMN em pesquisa acadêmica e industrial. Interface intuitiva, suporte a praticamente todos os formatos de espectrômetros e ferramentas avançadas de análise estrutural.</p>
+            <div class="sw-pros-cons">
+              <div class="pros-box"><strong>✓ Vantagens</strong><ul>
+                <li>Interface gráfica intuitiva</li>
+                <li>Suporte a 1H, 13C, COSY, HSQC, HMBC, NOESY</li>
+                <li>Plug-in de predição estrutural</li>
+                <li>Verificação automática de estrutura</li>
+                <li>Exporta para relatórios PDF/Word</li>
+                <li>Licença acadêmica acessível</li>
+              </ul></div>
+              <div class="cons-box"><strong>✗ Desvantagens</strong><ul>
+                <li>Software pago (licença anual)</li>
+                <li>Pesado em computadores antigos</li>
+                <li>Curva de aprendizado para recursos avançados</li>
+              </ul></div>
+            </div>
+            <a href="https://mestrelab.com/software/mnova/" target="_blank" class="btn-download"><i class="fas fa-download"></i> Download / Trial gratuito</a>
+          </div>
+
+          <h3>Fluxo básico no MestReNova</h3>
+          <div class="step-item"><div class="step-n">1</div><div class="step-body"><h4>Abrir o espectro</h4><p>Arraste o arquivo FID (pasta Bruker ou arquivo .fid, .jdf, .dx) para a janela do Mnova. O software realiza a FT automaticamente.</p></div></div>
+          <div class="step-item"><div class="step-n">2</div><div class="step-body"><h4>Correção de fase</h4><p>Clique em <code>Processing → Phase Correction</code> ou use o atalho <code>F</code>. Ajuste as alças "0" (fase zero) e "1" (primeira ordem) até todos os picos ficarem para cima com base simétrica.</p></div></div>
+          <div class="step-item"><div class="step-n">3</div><div class="step-body"><h4>Correção de linha de base</h4><p>Vá em <code>Processing → Baseline Correction</code>. Para espectros de ¹H, o método "Bernstein Polynomial" geralmente é suficiente.</p></div></div>
+          <div class="step-item"><div class="step-n">4</div><div class="step-body"><h4>Calibração</h4><p>Clique com o botão direito no pico de referência (TMS em 0 ppm, ou pico do solvente: CDCl₃ = 7.26 ppm para ¹H; 77.0 ppm para ¹³C) e selecione <code>Assign Reference</code>.</p></div></div>
+          <div class="step-item"><div class="step-n">5</div><div class="step-body"><h4>Integração</h4><p>Use a ferramenta <code>Integration</code> (ícone ∫ na barra). Arraste sobre cada sinal. Clique com o botão direito em uma integral e defina o número de prótons de referência para calibrar as demais.</p></div></div>
+          <div class="step-item"><div class="step-n">6</div><div class="step-body"><h4>Multiplicidade e J</h4><p>Ative <code>Analysis → Multiplet Analysis</code>. Clique sobre cada grupo de sinais. O Mnova identificará automaticamente o padrão (s, d, t, q, dd, etc.) e a constante J em Hz.</p></div></div>
+          <div class="step-item"><div class="step-n">7</div><div class="step-body"><h4>Exportar relatório</h4><p>Vá em <code>File → Save as PDF</code> ou <code>File → Report</code> para gerar relatório completo com espectros, integrais e tabela de multiplicidades.</p></div></div>
+
+
+          <h3>Atalhos úteis no Mnova</h3>
+          <table style="width:100%;font-size:.85rem;border-collapse:collapse;margin-top:8px">
+            <tr style="background:#f0f4ff"><td style="padding:6px 10px;font-weight:700;color:#1a3560">Atalho</td><td style="padding:6px 10px;font-weight:700;color:#1a3560">Função</td></tr>
+            <tr><td style="padding:6px 10px"><code>F</code></td><td style="padding:6px 10px">Correção de fase manual</td></tr>
+            <tr><td style="padding:6px 10px"><code>Ctrl+B</code></td><td style="padding:6px 10px">Correção de linha de base</td></tr>
+            <tr><td style="padding:6px 10px"><code>Ctrl+I</code></td><td style="padding:6px 10px">Ativar integração</td></tr>
+            <tr><td style="padding:6px 10px"><code>Ctrl+M</code></td><td style="padding:6px 10px">Análise de multiplicidade</td></tr>
+            <tr><td style="padding:6px 10px"><code>Ctrl+Z</code></td><td style="padding:6px 10px">Desfazer</td></tr>
+            <tr><td style="padding:6px 10px"><code>+/-</code></td><td style="padding:6px 10px">Zoom in/out vertical</td></tr>
+          </table>
+        </div>
+
+        <div class="tut-sec" id="sec3">
+          <h2><span class="n">3</span> TopSpin (Bruker)</h2>
+          <div class="sw-card">
+            <div class="sw-header">
+              <div class="sw-nome">TopSpin — Bruker BioSpin</div>
+              <div class="sw-badges">
+                <span class="badge-free">Gratuito para academia</span>
+                <span class="badge-win">Windows</span>
+                <span class="badge-mac">macOS</span>
+                <span class="badge-linux">Linux</span>
+              </div>
+            </div>
+            <p class="sw-desc">Software oficial da Bruker, gratuito para uso acadêmico. É o padrão de controle dos espectrômetros Bruker e o mais utilizado no LABAREMN/UEFS. Possui interface de linha de comando e GUI.</p>
+            <div class="sw-pros-cons">
+              <div class="pros-box"><strong>✓ Vantagens</strong><ul>
+                <li>Gratuito para academia</li>
+                <li>Padrão Bruker — controla o espectrômetro</li>
+                <li>Processamento robusto e preciso</li>
+                <li>Suporte completo a todos experimentos Bruker</li>
+                <li>Scriptável (Python e Jython)</li>
+              </ul></div>
+              <div class="cons-box"><strong>✗ Desvantagens</strong><ul>
+                <li>Interface menos intuitiva</li>
+                <li>Curva de aprendizado íngreme</li>
+                <li>Apenas arquivos Bruker nativamente</li>
+              </ul></div>
+            </div>
+            <a href="https://www.bruker.com/en/products-and-solutions/mr/nmr-software/topspin.html" target="_blank" class="btn-download"><i class="fas fa-download"></i> Registro gratuito + Download</a>
+          </div>
+
+          <h3>Comandos essenciais do TopSpin</h3>
+          <div class="code-block">
+            <span class="lang-tag">TopSpin</span>
+            <pre># Processar espectro 1H
+ef          # expft — Fourier Transform
+apk         # correção de fase automática
+abs         # correção de linha de base
+.ref        # calibrar referência
+
+# Expandir região
+.md          # modo expansão com mouse
+.gr          # voltar à visão completa
+
+# Integração
+int          # abre modo de integração
+.reta        # ajustar linha de base das integrais
+.cl          # limpar integrais
+
+# Processamento 2D (COSY, HSQC, HMBC)
+xf2          # FT em ambas dimensões
+abs2         # correção de linha de base 2D
+
+# Exportar
+topp         # exportar para impressão/PDF</pre>
+          </div>
+
+          <div class="warn"><i class="fas fa-exclamation-triangle"></i> Para usar o TopSpin gratuito, você precisará registrar uma conta no site da Bruker com e-mail institucional (.edu.br ou .uefs.br) e inserir o código de licença no software.</div>
+        </div>
+
+        <div class="tut-sec" id="sec4">
+          <h2><span class="n">4</span> ACD/NMR Processor Academic Edition</h2>
+          <div class="sw-card">
+            <div class="sw-header">
+              <div class="sw-nome">ACD/NMR Processor Academic Edition</div>
+              <div class="sw-badges">
+                <span class="badge-free">Gratuito</span>
+                <span class="badge-win">Windows</span>
+              </div>
+            </div>
+            <p class="sw-desc">Versão gratuita do software ACD/Labs para processamento básico de espectros de RMN 1D e 2D. Ideal para iniciantes e para uso em computadores com Windows sem licença de software comercial.</p>
+            <div class="sw-pros-cons">
+              <div class="pros-box"><strong>✓ Vantagens</strong><ul>
+                <li>Completamente gratuito</li>
+                <li>Interface amigável</li>
+                <li>Suporta múltiplos formatos</li>
+                <li>Bom para aprendizado</li>
+              </ul></div>
+              <div class="cons-box"><strong>✗ Desvantagens</strong><ul>
+                <li>Apenas Windows</li>
+                <li>Funcionalidades limitadas na versão free</li>
+                <li>Sem suporte ao LABAREMN</li>
+              </ul></div>
+            </div>
+            <a href="https://www.acdlabs.com/resources/freeware/" target="_blank" class="btn-download"><i class="fas fa-download"></i> Download gratuito</a>
+          </div>
+        </div>
+
+        <div class="tut-sec" id="sec5">
+          <h2><span class="n">5</span> NMRium — Solução Online Gratuita</h2>
+          <div class="sw-card">
+            <div class="sw-header">
+              <div class="sw-nome">NMRium</div>
+              <div class="sw-badges">
+                <span class="badge-free">Gratuito</span>
+                <span class="badge-online">Navegador (sem instalação)</span>
+                <span class="badge-free">Open Source</span>
+              </div>
+            </div>
+            <p class="sw-desc">Solução moderna e gratuita para processamento de RMN diretamente no navegador, sem necessidade de instalação. Desenvolvido pela comunidade científica e mantido pela Cheminfo. Excelente para visualização rápida e análise básica.</p>
+            <div class="sw-pros-cons">
+              <div class="pros-box"><strong>✓ Vantagens</strong><ul>
+                <li>Sem instalação — funciona no navegador</li>
+                <li>100% gratuito e open source</li>
+                <li>Multiplataforma (qualquer OS)</li>
+                <li>Suporte a Bruker, JCAMP-DX, NMReDATA</li>
+                <li>Interface moderna e intuitiva</li>
+                <li>Integração com bancos de dados</li>
+              </ul></div>
+              <div class="cons-box"><strong>✗ Desvantagens</strong><ul>
+                <li>Recursos mais limitados que o Mnova</li>
+                <li>Requer conexão com internet</li>
+                <li>Em desenvolvimento contínuo</li>
+              </ul></div>
+            </div>
+            <a href="https://www.nmrium.org" target="_blank" class="btn-download"><i class="fas fa-external-link-alt"></i> Acessar nmrium.org</a>
+          </div>
+
+          <h3>Como usar o NMRium</h3>
+          <ol>
+            <li>Acesse <strong>nmrium.org</strong> em qualquer navegador moderno</li>
+            <li>Arraste a pasta do espectro Bruker (pasta contendo <code>fid</code>, <code>acqus</code>, <code>procs</code>) ou arquivo <code>.jdx</code> / <code>.dx</code></li>
+            <li>O NMRium realiza a FT automaticamente</li>
+            <li>Use o painel lateral para ajustar processamento, integrar e atribuir sinais</li>
+            <li>Exporte os dados em formato NMReDATA para publicação</li>
+          </ol>
+          <div class="tip"><i class="fas fa-star"></i> O NMRium é a ferramenta recomendada para <strong>visualização rápida</strong> e para uso em computadores sem licença do Mnova.</div>
+        </div>
+
+        <div class="tut-sec" id="sec6">
+          <h2><span class="n">6</span> SpinWorks</h2>
+          <div class="sw-card">
+            <div class="sw-header">
+              <div class="sw-nome">SpinWorks — Universidade de Manitoba</div>
+              <div class="sw-badges">
+                <span class="badge-free">Gratuito</span>
+                <span class="badge-win">Windows</span>
+              </div>
+            </div>
+            <p class="sw-desc">Software gratuito desenvolvido pela Universidade de Manitoba (Canadá). Muito utilizado em análise de simulação de espectros e análise de constantes de acoplamento. Ideal para estudos de multiplicidade complexa.</p>
+            <div class="sw-pros-cons">
+              <div class="pros-box"><strong>✓ Vantagens</strong><ul>
+                <li>Gratuito</li>
+                <li>Excelente para simulação de espectros</li>
+                <li>Análise detalhada de acoplamentos</li>
+                <li>Processamento de espectros de spin complexos</li>
+              </ul></div>
+              <div class="cons-box"><strong>✗ Desvantagens</strong><ul>
+                <li>Apenas Windows</li>
+                <li>Interface desatualizada</li>
+                <li>Menos suporte a experimentos 2D</li>
+              </ul></div>
+            </div>
+            <a href="https://home.cc.umanitoba.ca/~wolowiec/spinworks/" target="_blank" class="btn-download"><i class="fas fa-download"></i> Download gratuito</a>
+          </div>
+        </div>
+
+        <div class="tut-sec" id="sec7">
+          <h2><span class="n">7</span> Tabela Comparativa</h2>
+          <div style="overflow-x:auto">
+            <table class="comp-table">
+              <thead>
+                <tr><th>Software</th><th>Custo</th><th>Windows</th><th>macOS</th><th>Linux</th><th>1D</th><th>2D</th><th>Predição</th><th>Ideal para</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>MestReNova</strong></td><td>Pago*</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td>Pesquisa avançada</td></tr>
+                <tr><td><strong>TopSpin</strong></td><td>Grátis</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td class="nao">—</td><td>Usuários Bruker</td></tr>
+                <tr><td><strong>NMRium</strong></td><td>Grátis</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td><td class="parc">Parcial</td><td class="nao">—</td><td>Visualização rápida</td></tr>
+                <tr><td><strong>ACD Free</strong></td><td>Grátis</td><td class="sim">✓</td><td class="nao">—</td><td class="nao">—</td><td class="sim">✓</td><td class="parc">Limitado</td><td class="nao">—</td><td>Iniciantes (Win)</td></tr>
+                <tr><td><strong>SpinWorks</strong></td><td>Grátis</td><td class="sim">✓</td><td class="nao">—</td><td class="nao">—</td><td class="sim">✓</td><td class="parc">Limitado</td><td class="parc">Simulação</td><td>Análise de J</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size:.78rem;color:#aaa;margin-top:4px">* Licença acadêmica disponível com desconto.</p>
+        </div>
+
+        <div class="tut-sec" id="sec8">
+          <h2><span class="n">8</span> Formatos de Arquivo de RMN</h2>
+          <ul>
+            <li><strong>Bruker (pasta FID):</strong> pasta com arquivos <code>fid</code>, <code>acqus</code>, <code>acqu2s</code> (2D) e subpasta <code>pdata/1/</code> com processados. Este é o formato do LABAREMN.</li>
+            <li><strong>JCAMP-DX (.jdx, .dx):</strong> formato aberto e universal. Compatível com quase todos os softwares.</li>
+            <li><strong>Varian/Agilent (.fid):</strong> pasta com arquivos <code>fid</code>, <code>procpar</code>, <code>text</code></li>
+            <li><strong>JEOL (.jdf):</strong> formato nativo dos espectrômetros JEOL</li>
+            <li><strong>NMReDATA (.nmredata):</strong> formato moderno para deposição em publicações científicas com atribuição completa dos sinais</li>
+          </ul>
+          <div class="info"><i class="fas fa-info-circle"></i> Os espectros do LABAREMN são fornecidos em formato <strong>Bruker</strong>. O MestReNova e o NMRium abrem este formato diretamente.</div>
+        </div>
+
+        <div class="tut-sec" id="sec9">
+          <h2><span class="n">9</span> Fluxo de Trabalho Recomendado</h2>
+
+          <h3>Para análise rotineira (¹H e ¹³C)</h3>
+          <div class="step-item"><div class="step-n">1</div><div class="step-body"><h4>Receber os dados do espectrômetro</h4><p>Copie a pasta completa do experimento Bruker (ex: <code>sample_001/</code>) para seu computador.</p></div></div>
+          <div class="step-item"><div class="step-n">2</div><div class="step-body"><h4>Abrir no MestReNova ou NMRium</h4><p>Arraste a pasta para o software. Inspecione o FID para verificar qualidade da aquisição (decaimento suave sem artefatos).</p></div></div>
+          <div class="step-item"><div class="step-n">3</div><div class="step-body"><h4>Processar (FT → fase → baseline)</h4><p>Aplique janela de apodização adequada (LB = 0.3 Hz para ¹H; 1-3 Hz para ¹³C), FT, correção de fase e baseline.</p></div></div>
+          <div class="step-item"><div class="step-n">4</div><div class="step-body"><h4>Calibrar deslocamento químico</h4><p>Ajuste o pico do solvente como referência: CDCl₃ = 7.26/77.0 ppm; DMSO-d₆ = 2.50/39.5 ppm; D₂O = 4.79 ppm (¹H).</p></div></div>
+          <div class="step-item"><div class="step-n">5</div><div class="step-body"><h4>Integrar e atribuir sinais</h4><p>Integre cada sinal do ¹H e calibre com o grupo mais simples (ex: CH₃ = 3H). Realize a análise de multiplicidade para obter δ, multiplicidade, J e número de H.</p></div></div>
+          <div class="step-item"><div class="step-n">6</div><div class="step-body"><h4>Correlacionar experimentos 2D</h4><p>Use COSY (H-H), HSQC (H-C direto, 1 ligação) e HMBC (H-C longa distância, 2-3 ligações) para atribuir todos os carbonos e confirmar a estrutura.</p></div></div>
+          <div class="step-item"><div class="step-n">7</div><div class="step-body"><h4>Exportar para publicação</h4><p>Gere figuras em 300 dpi (PNG/TIFF) ou vetoriais (SVG/PDF). Para submissão: exporte os dados em NMReDATA ou inclua dados brutos como material suplementar.</p></div></div>
+
+          <h3>Referência de solventes deuterados</h3>
+          <table style="width:100%;font-size:.84rem;border-collapse:collapse;margin-top:8px">
+            <tr style="background:#f0f4ff"><td style="padding:7px 10px;font-weight:700;color:#1a3560">Solvente</td><td style="padding:7px 10px;font-weight:700;color:#1a3560">δ ¹H (ppm)</td><td style="padding:7px 10px;font-weight:700;color:#1a3560">δ ¹³C (ppm)</td></tr>
+            <tr><td style="padding:6px 10px">CDCl₃</td><td style="padding:6px 10px">7.26</td><td style="padding:6px 10px">77.0 (tripleto)</td></tr>
+            <tr style="background:#f8faff"><td style="padding:6px 10px">DMSO-d₆</td><td style="padding:6px 10px">2.50</td><td style="padding:6px 10px">39.5</td></tr>
+            <tr><td style="padding:6px 10px">CD₃OD</td><td style="padding:6px 10px">3.31</td><td style="padding:6px 10px">49.0</td></tr>
+            <tr style="background:#f8faff"><td style="padding:6px 10px">D₂O</td><td style="padding:6px 10px">4.79</td><td style="padding:6px 10px">—</td></tr>
+            <tr><td style="padding:6px 10px">Piridina-d₅</td><td style="padding:6px 10px">7.22, 7.58, 8.74</td><td style="padding:6px 10px">123.5, 135.5, 149.9</td></tr>
+            <tr style="background:#f8faff"><td style="padding:6px 10px">CD₂Cl₂</td><td style="padding:6px 10px">5.32</td><td style="padding:6px 10px">53.8</td></tr>
+          </table>
+        </div>
+
+        <div class="tut-sec" id="sec10">
+          <h2><span class="n">10</span> Predição de Espectros de RMN</h2>
+          <p>Para confirmar atribuições ou prever deslocamentos químicos de compostos sintéticos/naturais, utilize ferramentas de predição:</p>
+
+          <div class="sw-card">
+            <div class="sw-header"><div class="sw-nome">NMRshiftDB</div><div class="sw-badges"><span class="badge-free">Gratuito</span><span class="badge-online">Online</span></div></div>
+            <p class="sw-desc">Banco de dados gratuito com mais de 50.000 espectros experimentais e predição por analogia estrutural. Acesse em <strong>nmrshiftdb2.nmr.uni-koeln.de</strong></p>
+          </div>
+
+          <div class="sw-card">
+            <div class="sw-header"><div class="sw-nome">SDBS (AIST, Japão)</div><div class="sw-badges"><span class="badge-free">Gratuito</span><span class="badge-online">Online</span></div></div>
+            <p class="sw-desc">Banco de dados espectroscópicos do AIST com RMN ¹H e ¹³C, IV, MS e Raman para milhares de compostos. Acesse em <strong>sdbs.db.aist.go.jp</strong></p>
+          </div>
+
+          <div class="sw-card">
+            <div class="sw-header"><div class="sw-nome">MestReNova + NIST WebBook</div><div class="sw-badges"><span class="badge-free">Parcialmente gratuito</span></div></div>
+            <p class="sw-desc">O MestReNova tem módulo de predição de ¹H e ¹³C integrado. Combine com o banco NIST WebBook (webbook.nist.gov) para comparar espectros experimentais e preditos.</p>
+          </div>
+
+          <div class="tip"><i class="fas fa-lightbulb"></i> Para compostos de produtos naturais, consulte também o <strong>Dictionary of Natural Products (DNP)</strong> via UEFS e o <strong>SciFinder</strong> para busca por deslocamento químico.</div>
+        </div>
+
+      </div><!-- fim conteúdo -->
+    </div><!-- fim grid -->
+  </div>
+</section>
+
+<div id="footer-container"></div>
+<script src="../../assets/js/componentes.js"></script>
+<script src="../../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('header-container').innerHTML = gerarHeader('tutoriais');
+  document.getElementById('footer-container').innerHTML = gerarFooter();
+  inicializarNav();
+
+  const sections = document.querySelectorAll('.tut-sec');
+  const links    = document.querySelectorAll('.tut-nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
+    links.forEach(l => l.classList.toggle('ativo', l.getAttribute('href') === '#' + cur));
+  });
+});
+</script>
+</body>
+</html>

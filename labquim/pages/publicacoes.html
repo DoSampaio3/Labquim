@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publicações | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .pub-abas{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;border-bottom:2px solid #eef1f6;margin-bottom:24px}
+    .pub-abas::-webkit-scrollbar{display:none}
+    .pub-aba{padding:13px 22px;border:none;background:none;cursor:pointer;font-size:.88rem;font-weight:600;color:#888;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:inherit;transition:all .2s}
+    .pub-aba.ativa{color:#1a3560;border-bottom-color:#1a3560}
+    .pub-aba:hover:not(.ativa){color:#444;background:#f8fafc}
+    .pub-panel{display:none}.pub-panel.ativo{display:block}
+
+    .aviso-box{background:#fff8e1;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:12px 18px;margin-bottom:24px;display:flex;align-items:flex-start;gap:11px;font-size:.84rem;color:#92400e}
+    .aviso-box i{flex-shrink:0;margin-top:2px;color:#f59e0b}
+    .aviso-box a{color:#92400e;text-decoration:underline}
+
+    .prof-header{display:flex;align-items:center;gap:16px;background:#fff;border-radius:12px;padding:18px 22px;margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+    .prof-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;color:#fff;flex-shrink:0}
+    .prof-header h2{font-size:1.05rem;color:#1a3560;margin:0 0 4px;font-weight:800}
+    .prof-header p{font-size:.8rem;color:#888;margin:0}
+    .ph-links{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap}
+    .ph-link{font-size:.73rem;padding:3px 10px;border-radius:8px;background:#eef2ff;color:#1a3560;text-decoration:none;font-weight:700;transition:background .15s}
+    .ph-link:hover{background:#1a3560;color:#fff}
+    .stat-pill{background:#e6f4ea;color:#1e7e34;border-radius:8px;padding:3px 10px;font-size:.73rem;font-weight:700;cursor:default}
+
+    /* Acordeão */
+    .acc{margin-bottom:10px;border:1.5px solid #eef1f6;border-radius:12px;overflow:hidden}
+    .acc-head{display:flex;justify-content:space-between;align-items:center;padding:12px 17px;background:#f8fafc;cursor:pointer;user-select:none;transition:background .12s}
+    .acc-head:hover{background:#f0f4ff}
+    .acc-head h3{font-size:.84rem;font-weight:700;color:#1a3560;margin:0;display:flex;align-items:center;gap:8px}
+    .acc-head h3 i{font-size:.82rem}
+    .acc-count{font-size:.72rem;background:#1a3560;color:#fff;border-radius:20px;padding:2px 8px;font-weight:700}
+    .acc-chevron{font-size:.72rem;color:#aaa;transition:transform .2s}
+    .acc-head.open .acc-chevron{transform:rotate(180deg)}
+    .acc-body{display:none;padding:2px 0}
+    .acc-body.open{display:block}
+
+    /* Item publicação */
+    .pi{padding:12px 17px;border-bottom:1px solid #f2f4f8;transition:background .1s}
+    .pi:last-child{border-bottom:none}
+    .pi:hover{background:#fafbff}
+    .pi-ref{font-size:.84rem;color:#333;line-height:1.7;margin:0}
+    .pi-ref em{color:#2a6496;font-style:italic}
+    .pi-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+    .tag-ano{background:#eef2ff;color:#1a3560;border-radius:6px;padding:2px 8px;font-size:.7rem;font-weight:700}
+    .tag-cit{background:#e6f4ea;color:#1e7e34;border-radius:6px;padding:2px 8px;font-size:.7rem;font-weight:700}
+    .tag-doi{background:#fff3e0;color:#e65100;border-radius:6px;padding:2px 8px;font-size:.7rem;font-weight:600}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="header-container"></div>
+<div id="breadcrumb-container"></div>
+
+<div style="background:linear-gradient(135deg,#1a3560,#2d5a9e);padding:52px 0 36px;color:#fff">
+  <div class="container">
+    <h1 style="font-size:2rem;color:#fff;margin-bottom:8px"><i class="fas fa-book-open" style="margin-right:10px;opacity:.8"></i>Publicações</h1>
+    <p style="opacity:.82">Produção científica completa dos pesquisadores do LabQuim — UEFS</p>
+    <div style="display:flex;gap:24px;margin-top:18px;flex-wrap:wrap">
+      <div style="text-align:center"><div style="font-size:1.9rem;font-weight:800">77</div><div style="font-size:.75rem;opacity:.75">Artigos em Periódicos</div></div>
+      <div style="text-align:center"><div style="font-size:1.9rem;font-weight:800">6</div><div style="font-size:.75rem;opacity:.75">Capítulos de Livros</div></div>
+      <div style="text-align:center"><div style="font-size:1.9rem;font-weight:800">3</div><div style="font-size:.75rem;opacity:.75">Livros</div></div>
+      <div style="text-align:center"><div style="font-size:1.9rem;font-weight:800">5</div><div style="font-size:.75rem;opacity:.75">Pesquisadores</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-padded" style="background:#f4f6fb">
+  <div class="container">
+
+    
+
+    <div class="pub-abas">
+      <button class="pub-aba ativa" data-p="clayton">Clayton Q. Alves</button>
+      <button class="pub-aba" data-p="humbervania">Humbervânia R. G. Silva</button>
+      <button class="pub-aba" data-p="ivanice">Ivanice F. Santos</button>
+      <button class="pub-aba" data-p="marcos">Marcos O. Melo</button>
+      <button class="pub-aba" data-p="vania">Vânia Rastelly</button>
+    </div>
+
+    <!-- ══ CLAYTON ══ -->
+    <div class="pub-panel ativo" id="panel-clayton">
+      <div class="prof-header">
+        <div class="prof-av" style="background:linear-gradient(135deg,#1a3560,#2a6496)">CQ</div>
+        <div>
+          <h2>Prof. Dr. Clayton Queiroz Alves</h2>
+          <p>Fitoquímica · Produtos Naturais · Atividade Biológica</p>
+          <div class="ph-links">
+            <a href="http://lattes.cnpq.br/9188574132632625" target="_blank" class="ph-link"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <a href="https://orcid.org/0000-0002-3242-3230" target="_blank" class="ph-link">ORCID: 0000-0002-3242-3230</a>
+            <span class="stat-pill">WoS: 257 cit. · H-8</span>
+            <span class="stat-pill">Scopus: 330 cit.</span>
+            <span class="stat-pill" style="background:#eef2ff;color:#1a3560">Atualizado: 20/06/2026</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head open" onclick="tog(this)"><h3><i class="fas fa-file-alt"></i>Artigos em Periódicos <span class="acc-count">36</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body open">
+          <div class="pi"><p class="pi-ref">FERREIRA, ADRIANNE; AGUIAR, ROSANE; BRANDÃO, HUGO; SANTOS, RAULDENIS; DE FREITAS, HUMBERTO; TELES, CATHARINE; REIS, JOICE; DE SOUZA, JESSICA; ALVES, CLAYTON. CHEMICAL CONSTITUENTS OF Amburana acreana Ducke A. C. Sm. LEAVES. <em>QUIMICA NOVA</em>, v. 48, p. 1-6, 2025.</p><div class="pi-meta"><span class="tag-cit">1 cit. WoS · 1 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">S. BARRETO, RUBENS; M. DA COSTA, DIEGO; S. SOUSA, JAILAN; S. DE JESUS, VILISAIMON; P. DA SILVA, AGNALDO; S. BUONAFINA-PAZ, MARIA DANIELA; A. G. DOS SANTOS, FRANZ; P. NEVES, REJANE; F. B. PASTORE, JOSÉ; S. ANDRADE, BRUNO; R. A. SOARES, WAGNER; N. BRANDÃO, HUGO; M. AGUIAR, ROSANE; Q. ALVES, CLAYTON. In vitro and in silico Antifungal Activity of Metabolites from Bredemeyera brevifolia (Benth.) Klotzsch ex A.W. Benn. <em>JOURNAL OF THE BRAZILIAN CHEMICAL SOCIETY</em>, v. 36, p. 1-12, 2025.</p></div>
+          <div class="pi"><p class="pi-ref">BARRETO, RUBENS SANTOS; SANTOS, NAIANE OLIVEIRA; DE JESUS, VILISAIMON DA SILVA; SOARES, WAGNER RODRIGUES DE ASSIS; DA SILVA, DANIELLE FIGUERÊDO; AGUIAR, ROSANE MOURA; BRANDÃO, HUGO NEVES; ALVES, CLAYTON QUEIROZ. Willd.: an integrative review of its therapeutic potential and chemical aspects. <em>NATURAL PRODUCT RESEARCH</em>, v. 00, p. 1-10, 2025.</p><div class="pi-meta"><span class="tag-cit">1 cit. WoS · 1 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">CARDONA, H. R. A.; SILVA, B. C. DA; LIMA, F. O. DE; LEITE, F. H. A.; SOUZA, BRUNO C. DE; BRANDÃO, H. N.; DAVID, J. M.; ALVES, C. Q.; KIJJOA, A. Hydroxytakakiamide and Other Constituents from a Marine Sponge-Associated Fungus Aspergillus fischeri MMERU23, and Antinociceptive Activity of Ergosterol Acetate, Acetylaszonalenin and Helvolic Acid. <em>Marine Drugs</em>, v. 22, p. 97, 2024.</p><div class="pi-meta"><span class="tag-cit">4 cit. WoS · 4 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DE SOUZA, JÉSSICA LIMA; FERREIRA, ADRIANNE BASTOS; PAULO, ELINALVA MACIEL; ALVES, CLAYTON QUEIROZ; DE CARVALHO, CARLOS ALFREDO LOPES; DIAS, FÁBIO DE SOUZA; DE FREITAS SANTOS JUNIOR, ANIBAL; BRANDÃO, HUGO NEVES; DE FREITAS, HUMBERTO FONSECA. Analysing chemical composition and antimicrobial activity of geopropolis from Melipona scutellaris: HPLC-DAD and in vitro/in silico investigations. <em>NATURAL PRODUCT RESEARCH</em>, v. 38, p. 1-7, 2024.</p><div class="pi-meta"><span class="tag-cit">2 cit. WoS · 3 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DA SILVA, ELIEZER P.; DAVID, JORGE M.; DAVID, JUCENI P.; ALVES, CLAYTON Q.; MOREIRA, BRUNO O. Chalcone dimers from Astronium graveolens (Anacardiaceae) and their biological activities. <em>Phytochemistry Letters</em>, v. 63, p. 38-42, 2024.</p></div>
+          <div class="pi"><p class="pi-ref">DA SILVA, DANIELLE FIGUERÊDO; DE SOUZA, JÉSSICA LIMA; DA COSTA, DIEGO MOTA; COSTA, DAVID BACELAR; MOREIRA, PAULO OTÁVIO LOURENÇO; FONSECA, AMANDA LUISA DA; VAROTTI, FERNANDO DE PILLA; CRUZ, JORDDY NEVES; DOS SANTOS, CLEYDSON BRENO RODRIGUES; ALVES, CLAYTON QUEIROZ; LEITE, FRANCO HENRIQUE ANDRADE; BRANDÃO, HUGO NEVES. Antiplasmodial activity of coumarins isolated from : and studies. <em>JOURNAL OF BIOMOLECULAR STRUCTURE & DYNAMICS</em>, v. 10, p. 1-21, 2023.</p><div class="pi-meta"><span class="tag-cit">20 cit. WoS · 16 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">NECO, G. L. P. L.; SANTANA, A. R.; SILVA, D. F. DA; COSTA, D. M.; BRANDÃO, H. N.; ALVES, C. Q.; JESUS, O. N. Atividade biológica e toxicidade frente à Artemia salina do acesso BGP 152 de Passiflora suberosa L. <em>Revista RG News</em>, v. 8 (2), p. 16-23, 2022.</p></div>
+          <div class="pi"><p class="pi-ref">NECO, G. L. P. L.; SILVA, D. F. DA; SANTANA, A. R.; BRANDÃO, H. N.; ALVES, C. Q. Avaliação in vitro do potencial biológico da espécie Passiflora suberosa L. <em>Revista RG News</em>, v. 8 (2), p. 24, 2022.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, D. F. DA; SOUZA, J. L. DE; DA ROCHA, J. L. C.; BRANDÃO, H. N.; ALVES, C. Q. Caracterização química e estudo biomonitorado de extratos de Polygala boliviensis A.W. Benn (Polygalaceae). <em>Revista RG News</em>, v. 8 (2), p. 32, 2022.</p></div>
+          <div class="pi"><p class="pi-ref">DA ROCHA, J. L. C.; SILVA, D. F. DA; OLIVEIRA, I. K. P. DE; COSTA, D. M.; PASTORE, JOSÉ FLORIANO BARÊA; BRANDÃO, H. N.; ALVES, C. Q. Chemical analysis and evaluation of antioxidant, antiacetylcholinesterase activity and Artemia salina lethality by Asemeia ovata (Polygalaceae). <em>Revista RG News</em>, v. 8 (2), p. 44, 2022.</p></div>
+          <div class="pi"><p class="pi-ref">DE ANDRADE, CARINE RAISA BARBOSA; OLIVEIRA, L. A. R.; SILVA, D. F. DA; ALVES, C. Q.; BRANDÃO, H. N. Correlação entre composição química de folhas de Zanthoxylum caribaeum Lam (Rutaceae) e atividade antioxidante. <em>Revista RG News</em>, v. 8 (2), p. 69, 2022.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, D. F. DA; SILVA, C. A. P.; OLIVEIRA, L. A. R.; BRANDÃO, H. N.; ALVES, C. Q. Isolamento e identificação de metabólitos secundários de Polygala boliviensis A.W. Benn (Polygalaceae). <em>Revista RG News</em>, v. 8 (2), p. 102, 2022.</p></div>
+          <div class="pi"><p class="pi-ref">CARDONA, HAROL R. ARIAS; FROES, THAMIRES Q.; SOUZA, BRUNO C. DE; LEITE, FRANCO H. A.; BRANDÃO, HUGO NEVES; BUARUANG, JAMREARN; KIJJOA, ANAKE; ALVES, CLAYTON Q. Thermal shift assays of marine-derived fungal metabolites from Aspergillus fischeri MMERU 23 against Leishmania major pteridine reductase 1 and molecular dynamics studies. <em>JOURNAL OF BIOMOLECULAR STRUCTURE & DYNAMICS</em>, v. 00, p. 1-9, 2021.</p><div class="pi-meta"><span class="tag-cit">6 cit. WoS · 6 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">GOMES, ANGÉLICA F.; MOREIRA, BRUNO O.; YATSUDA, REGIANE; DE SOUZA, ÉRIKA P.; DAVID, JORGE M.; ALVES, CLAYTON Q.; MACEDO, GUADALUPE E. DE L.; CORREIA, SUZIMONE DE J.; DE PAULA, VANDERLÚCIA F. Chemical constituents, antioxidant, anti-inflammatory and, antinociceptive activities of. <em>NATURAL PRODUCT RESEARCH</em>, v. 34, p. 1-5, 2020.</p><div class="pi-meta"><span class="tag-cit">7 cit. WoS · 7 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">SILVA, DAYSE; DA COSTA, DIEGO; OLIVEIRA, LARISSA; BRANDÃO, HUGO; ALVES, CLAYTON; SANTOS JR., ANÍBAL; DOS SANTOS JR., MANOELITO. Identification of Flavonoids as Inhibitors of Plasmodium falciparum Enoyl-ACP Reductase by Hierarchical Virtual Screening. <em>JOURNAL OF THE BRAZILIAN CHEMICAL SOCIETY</em>, v. 00, p. 1-9, 2020.</p><div class="pi-meta"><span class="tag-cit">2 cit. WoS · 2 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">VILLARREAL, CRISTIANE F.; SANTOS, DOURIVALDO S.; LAURIA, PEDRO S. S.; GAMA, KELLY B.; ESPÍRITO-SANTO, RENAN F.; JUIZ, PAULO J. L.; ALVES, CLAYTON Q.; DAVID, JORGE M.; SOARES, MILENA B. P. Bergenin Reduces Experimental Painful Diabetic Neuropathy by Restoring Redox and Immune Homeostasis in the Nervous System. <em>INTERNATIONAL JOURNAL OF MOLECULAR SCIENCES</em>, v. 21, p. 4850, 2020.</p><div class="pi-meta"><span class="tag-cit">32 cit. WoS · 35 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">RODRIGUES, CAROLINE ISSLER; COSTA, DIEGO MOTA DA; SANTOS, ACIDÁLIA CARINE VIEIRA; BATATINHA, MARIA JOSÉ MOREIRA; SOUZA, FERNANDA VIDIGAL DUARTE; DE SOUZA, EVERTON HILO; BOTURA, MARIANA BORGES; ALVES, CLAYTON QUEIROZ; SOARES, TALIANE LEILA; BRANDÃO, HUGO NEVES. Assessment of in vitro anthelmintic activity and bio-guided chemical analysis of BRS Boyrá pineapple leaf extracts. <em>VETERINARY PARASITOLOGY</em>, v. 00, p. 109219, 2020.</p><div class="pi-meta"><span class="tag-cit">16 cit. WoS · 14 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DE ANDRADE, CARINE RAISA BARBOSA; MARTINS, FABIANO MACHADO; BRANDÃO, HUGO NEVES; ALVES, CLAYTON QUEIROZ; DE FREITAS-SILVA, LARISSE. Leaf anatomy and histochemistry of secretory structures of Zanthoxylum caribaeum Lam. (Rutaceae). <em>Brazilian Journal of Botany</em>, v. 43, p. 1, 2020.</p><div class="pi-meta"><span class="tag-cit">7 cit. WoS · 7 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">R. CARDOSO, ANDRESSA; Q. ALVES, CLAYTON; N. BRANDÃO, HUGO; C. DOS SANTOS JUNIOR, MANOELITO; RODRIGUES MOREIRA PEREIRA, LEANE; A. A. SILVA, DAYSE. In silico Evaluation of the Inhibitory Potential of Luteolin in Dioclea virgata Against Enoil-ACP-Reductase of Plasmodium falciparum. <em>REVISTA VIRTUAL DE QUÍMICA</em>, v. 11, p. 488-497, 2019.</p><div class="pi-meta"><span class="tag-cit">1 citação</span></div></div>
+          <div class="pi"><p class="pi-ref">MOREIRA, BRUNO OLIVEIRA; DE CARVALHO, ANAILDES LAGO; ALVES, CLAYTON QUEIROZ; MORBECK, LORENA LÔBO BRITO; CRUZ, MARILUZE PEIXOTO; YATSUDA, REGIANE; DAVID, JUCENI PEREIRA; DAVID, J. M. Evaluation of anti-inflammatory, antinociceptive and biological activities of standardized extracts and determination and quantification of the main metabolites. <em>RSC Advances</em>, v. 9, p. 41256-41268, 2019.</p><div class="pi-meta"><span class="tag-cit">5 cit. WoS · 5 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; DAVID, JORGE MAURICIO; DAVID, JUCENI PEREIRA; KIJJOA, ANAKE. Flavonoids and other compounds from Dioclea virgata (Rich.) Amsh. <em>BIOCHEMICAL SYSTEMATICS AND ECOLOGY</em>, v. 78, p. 43-45, 2018.</p><div class="pi-meta"><span class="tag-cit">2 cit. WoS · 3 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DA ROCHA, JOSÉ LUIZ CARNEIRO; DA SILVA, DANIELLE FIGUERÊDO; DE SANTANA, ANNE RAMOS; DA COSTA, DIEGO MOTA; PASTORE, JOSÉ FLORIANO BARÊA; ALVES, CLAYTON QUEIROZ; SANTOS, MANOELITO COELHO SANTOS; BRANDÃO, HUGO NEVES. Asemeia ovata (Polygalaceae): quantitative determination and evaluation in silico of identified substances by HPLC-DAD. <em>COMPUTATIONAL BIOLOGY AND CHEMISTRY</em>, v. 75, p. 65-73, 2018.</p><div class="pi-meta"><span class="tag-cit">1 cit. WoS · 1 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">MEDEIROS, JAND; ALVES, CLAYTON; PINTO, LARISSA; DAVID, JORGE; MASCARENHAS, YVONNE; BATISTA, LARISSA; MAFUD, ANA; NICOLAU, LUCAS; DA SILVA OLIVEIRA, GEORGE; DE OLIVEIRA, GUILHERME. Bergenin from Peltophorum dubium: Isolation, Characterization, and Antioxidant Activities in Non-Biological Systems and Erythrocytes. <em>Medicinal Chemistry</em>, v. 13, p. 1-1, 2017.</p><div class="pi-meta"><span class="tag-cit">11 cit. WoS · 12 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">SILVA, DANIELLE F.; ALVES, CLAYTON Q.; BRANDÃO, HUGO N.; DAVID, JORGE M.; DAVID, JUCENI P.; SILVA, RANGEL L.; FRANCHIN, MARCELO; CUNHA, THIAGO M.; MARTINS, FELIPE T.; OLIVEIRA, CECILIA M.A. Poligalen, a new coumarin from Polygala boliviensis, reduces the release of TNF and IL-6 independent of NF-kB downregulation. <em>Fitoterapia</em>, v. 113, p. 139-143, 2016.</p><div class="pi-meta"><span class="tag-cit">9 cit. WoS · 9 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DE REZENDE, LARISSA C.; JUCK, DÉBORA B.F.; DAVID, JORGE M.; DAVID, JUCENI P.; LIMA, MARCOS V.B.; LIMA, LUCIANO S.; ALVES, CLAYTON Q. New flavans isolated from the leaves and stems of Cratylia mollis (Leguminosae). <em>Phytochemistry Letters</em>, v. 14, p. 165-169, 2015.</p><div class="pi-meta"><span class="tag-cit">6 cit. WoS · 7 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">CARDOSO, MANUELA P.; LIMA, LUCIANO S.; DAVID, JUCENI P.; MOREIRA, BRUNO O.; SANTOS, EDLENE O.; DAVID, JORGE M.; ALVES, CLAYTON Q. A New Biflavonoid from Schinopsis brasiliensis (Anacardiaceae). <em>Journal of the Brazilian Chemical Society</em>, v. 26, p. 1527-1531, 2015.</p><div class="pi-meta"><span class="tag-cit">13 cit. WoS · 12 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">SANTANA, L. C. L. R.; BRITO, M. DOS R. M.; OLIVEIRA, G. L. DA S.; ALVES, C. Q.; DAVID, J. M.; DAVID, J. P.; FREITAS, R. M. DE. Mikania glomerata: Phytochemical, Pharmacological, and Neurochemical Study. <em>Evidence-Based Complementary and Alternative Medicine</em>, v. 2014, p. 1-11, 2014.</p><div class="pi-meta"><span class="tag-cit">13 cit. WoS · 22 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DE FREITAS, RIZÂNGELA; DA SILVA OLIVEIRA, GEORGE; DE FREITAS, RIVELILSON; BARREIROS, ANDRÉ; DAVID, JUCENI; ALVES, CLAYTON; PINTO, CHARLESTON; DAVID, JORGE. In Vitro Effects of Arylhydrocoumarin on Free Radicals and Oxidative Stress in Erythrocytes and Saccharomyces cerevisiae. <em>Current Pharmaceutical Biotechnology</em>, v. 15, p. 1-1, 2014.</p><div class="pi-meta"><span class="tag-cit">6 citações</span></div></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON Q.; LIMA, LUCIANO S.; DAVID, JORGE M.; LIMA, MARCOS V. B.; DAVID, JUCENI P.; LIMA, FERNANDA W. M.; PEDROZA, KELLY C. M. C.; QUEIROZ, LUCIANO P. acetylcholinesterase activity of peptide derivatives isolated from two species of Leguminosae. <em>Pharmaceutical Biology</em>, v. 51, p. 936-939, 2013.</p><div class="pi-meta"><span class="tag-cit">5 cit. WoS · 7 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; BRANDÃO, H. N.; DAVID, J. M.; DAVID, J. P.; KIJJOA, A. Megastigmanes and phenolic compounds from Dioclea virgata (Rich.) Amsh. (Leguminosae). <em>PLANTA MEDICA</em>, v. 79, p. 6, 2013.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; BRANDÃO, H. N.; DA SILVA, D. F.; DAVID, J. M.; DAVID, J. P. An unusual coumarin derivative from Polygala boliviensis A.W. Benn (Polygalaceae). <em>PLANTA MEDICA</em>, v. 79, p. 5, 2013.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P.; VILLAREAL, C. F.; QUEIROZ, L. P. DE; AGUIAR, R. M. Flavonoids and other bioactive phenolics isolated from Cenostigma macrophyllum (Leguminosae). <em>Química Nova</em>, v. 35, p. 1137-1140, 2012.</p><div class="pi-meta"><span class="tag-cit">24 cit. WoS · 24 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">AGUIAR, R. M.; ALVES, CLAYTON QUEIROZ; DAVID, J. M.; REZENDE, L. C. DE; LIMA, L. DA S.; DAVID, J. P.; QUEIROZ, L. P. DE. Antioxidant activities of isolated compounds from stems of Mimosa invisa Mart. ex Colla. <em>Química Nova</em>, v. 35, p. 567-570, 2012.</p><div class="pi-meta"><span class="tag-cit">11 cit. WoS · 12 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DAVID, J. M.; ALVES, CLAYTON QUEIROZ; DAVID, J. P.; AGUIAR, R. M.; BAHIA, M. V. Métodos para determinação de atividade antioxidante in vitro em substratos orgânicos. <em>Química Nova</em>, v. 33, p. 2202-2210, 2010.</p><div class="pi-meta"><span class="tag-cit">127 cit. WoS · 151 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P.; LIMA, L. DA S.; BRANDÃO, H. N. Avaliação da Atividade Antioxidante de Flavonóides. <em>Diálogos & Ciência</em>, v. 12, p. 81-89, 2007.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-book-open"></i>Capítulos de Livros <span class="acc-count">4</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">CERQUEIRA, M. A.; ALVES, C. Q. Química no Ensino Remoto: Experiência e Aprendizado. In: Ana Maria Carvalho dos Santos, Edson Oliveira da Silva, Eliana Carlota Mota Marques Lima, Nayana Sepúlvda Suzart (Org.). <em>Trilhas da Esperança - Experiências pedagógicas durante a pandemia de covid-19</em>. 1.ed. Feira de Santana: Eduefs, 2025, v. 1, p. 147-157.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; BRANDÃO, H. N.; DAVID, J. M. Avanços na Química de Produtos Naturais de Plantas do Semiárido Baiano. In: Vanessa G. P. Severino; Otília D. L. Pessoa; João H. G. Lago; Hector H. F. Koolen; Maique W. Biavatti; Claudia M. de Rezende; Paulo C. Vieira (Org.). <em>Química de produtos naturais do Brasil: trajetória, atualidades e perspectivas</em>. 1.ed. Goiás: Cegraf UFG, 2025, v. 1, p. 512-532.</p></div>
+          <div class="pi"><p class="pi-ref">SANTOS, J. S.; CRUZ, N. C.; ALVES, C. Q. Sabão: uma Arma Química Contra a Covid-19 e Preservação do Meio Ambiente. In: Juracir Silva Santos; Airam Oliveira Santos (Org.). <em>A importância da Educação, Ciência e Tecnologia no Enfrentamento à covid-19: Ações do IF Baiano, Campus Senhor do Bonfim</em>. 1.ed. Curitiba: Appris, 2022, v. 1, p. 67-104.</p></div>
+          <div class="pi"><p class="pi-ref">SANTOS, ADÍLIO MACEDO; TEIXEIRA, ADONIAS DE OLIVEIRA; JESUS, VILISAIMON DA SILVA DE; SANTOS, LUAN SOUZA; SANTOS, MOACY SELIS; ALVES, CLAYTON QUEIROZ; OLIVEIRA, DJALMA MENEZES DE; AGUIAR, ROSANE MOURA. AVALIAÇÃO SAZONAL DA COMPOSIÇÃO QUÍMICA E INIBIÇÃO DE ACETILCOLINESTERASE DO ÓLEO ESSENCIAL DE ALOYSIA GRATISSIMA. In: Érica de Melo Azevedo (Org.). <em>O Conhecimento Científico na Química 2</em>. 2.ed. Ponta Grossa: Atena Editora, 2020, v. 2, p. 180-191.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-lightbulb"></i>Patentes <span class="acc-count">2</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">ASSIS, S. A.; GONCALVES, P. A.; LUZ, E. D. M. N.; SANTOS JÚNIOR, M. C.; ALVES, C. Q. USO DE BERGENINA, COMPOSIÇÃO ANTIMICROBIANA E MÉTODOS PARA RETARDAR E PARA PREVENIR O CRESCIMENTO FÚNGICO EM PLANTAS. Brasil, 2020. Patente de Invenção (INPI), nº BR10202001359. Depósito: 02/07/2020.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; MEIRA, M.; DAVID, J. M.; DAVID, J. P.; LIMA, L. DA S. Método para obtenção de extrato, compostos e composição que possuem atividade inibidora da enzima acetilcolinesterase. Brasil, 2011. Patente de Invenção (INPI), nº PI011110000661. Depósito: 04/10/2011.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-file-powerpoint"></i>Trabalhos Completos em Congressos <span class="acc-count">5</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">SUZART, N. S.; ALVES, C. Q.; EVANGELISTA, A. L. Gestão das estratégias de aprendizagem do Projeto Universidade para Todos. In: VII Seminário Nacional e III Seminário Internacional Políticas Públicas, Gestão e Práxis Educacional, 2019.</p></div>
+          <div class="pi"><p class="pi-ref">SUZART, N. S.; EVANGELISTA, A. L.; ALVES, C. Q. A monitoria no Projeto Universidade para Todos - UEFS: aspectos motivacionais. In: XII Colóquio Internacional: Educação e Contemporaneidade, 2018.</p></div>
+          <div class="pi"><p class="pi-ref">SUZART, N. S.; ALVES, C. Q.; EVANGELISTA, A. L. O perfil dos monitores integrantes do Projeto Universidade Para Todos UEFS. In: XIII Congresso Nacional de Psicologia Escolar e Educacional: Pela Democratização da Educação, 2017, Salvador.</p></div>
+          <div class="pi"><p class="pi-ref">SUZART, N. S.; ALVES, C. Q.; EVANGELISTA, A. L. Percepção dos docentes acerca dos fatores que dificultam a aprendizagem escolar. In: XIII Congresso Nacional de Psicologia Escolar e Educacional: Pela Democratização da Educação, 2017, Salvador.</p></div>
+          <div class="pi"><p class="pi-ref">SUZART, N. S.; EVANGELISTA, A. L.; ALVES, C. Q. A Educação de jovens e adultos no Projeto Universidade para Todos: uma análise do perfil dos alunos cursistas. In: IV Congresso Nacional de Educação, 2017, João Pessoa.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-list-ul"></i>Resumos em Congressos <span class="acc-count">78</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; SILVA, S. M.; BRANDÃO, H. N. Antimicrobial Xanthone Isolated from Senega trichosperma (Polygalaceae). In: The 8th Current Drug Development (CDD) International Conference, 2026, Phuket - Thailand.</p></div>
+          <div class="pi"><p class="pi-ref">BRANDÃO, H. N.; ALVES, C. Q.; CARNEIRO NETO, J. E.; SANTANA, R. P. S. E. MS/MS Identification of Secondary Metabolites in Melipona quadrifasciata anthidioides Geopropolis from Bahia's Semi-arid Region, Brazil. In: The 8th Current Drug Development (CDD) International Conference, 2026, Phuket - Thailand.</p></div>
+          <div class="pi"><p class="pi-ref">CARNEIRO NETO, J. E.; BRANDÃO, H. N.; SANTOS JÚNIOR, M. C.; ALVES, C. Q. Geo-Prolib: A geopropolis-derived compound library and its application in COMT inhibitor screening. In: Brazilian Symposium on Medicinal Chemistry (BrazMedChem 2025), 2025, Búzios - RJ.</p></div>
+          <div class="pi"><p class="pi-ref">SANTANA, R. P. S. E.; FERREIRA, A. B.; BRANDÃO, HUGO; ALVES, C. Q. Evaluation of the biological activity of mangiferolic acid isolated from geopropolis from Bahia - Brazil. In: Brazilian Conference on Natural Product, 2025, Belo Horizonte - MG.</p></div>
+          <div class="pi"><p class="pi-ref">SANTOS, K. S.; SANTOS JÚNIOR, M. C.; CARNEIRO NETO, J. E.; ALVES, C. Q. Análise computacional de compostos de Cenostigma macrophyllum Tul. frente à acetilcolinesterase. In: VI Congresso Internacional de Produtos Naturais, 2025, Maceió.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; BRANDÃO, H. N.; MIRANDA, F. M.; AGUIAR, R. M. Chemical Characterization and Antimicrobial Activity Evaluation of Essential Oils from Leaves and Fruits of Mimosa verrucosa Benth. In: 4th International Conference on Natural Products and Human Health, 2024, Aveiro, p. 52.</p></div>
+          <div class="pi"><p class="pi-ref">SANTANA, R. P. S. E.; BRANDÃO, H. N.; ALVES, C. Q. Phytochemical Study of Geopropolis from Melipona scutellaris Collected in Brazil. In: 4th International Conference on Natural Products and Human Health, 2024, Aveiro - Portugal.</p></div>
+          <div class="pi"><p class="pi-ref">MOURA, R. F.; ALVES, C. Q.; SILVA JUNIOR, M. M. Determinação simultânea de pesticidas multiclasses em amostras de águas superficiais no extremo sul da Bahia. In: XV LASEAC - X ENQAmb 2024, 2024, Ouro Preto - MG.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, D. F. DA; BRANDÃO, H. N.; ALVES, C. Q. Variação sazonal da composição química e das atividades biológicas de Polygala boliviensis A.W. Benn (Polygalaceae). In: XIV Simpósio Brasileiro de Farmacognosia, 2023, São Luís - MA.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; BRANDÃO, H. N.; FERREIRA, A. B. Metabólitos especiais isolados do extrato foliar de Amburana acreana Ducke. In: XIV Simpósio Brasileiro de Farmacognosia, 2023, São Luís - MA.</p></div>
+          <div class="pi"><p class="pi-ref">SOUZA, J. L. DE; BRANDÃO, H. N.; ALVES, C. Q. Origem Botânica de Geoprópolis Produzida por Melipona scutellaris Coletada em Cruz das Almas, BA. In: XIV Simpósio Brasileiro de Farmacognosia, 2023, São Luís - MA.</p></div>
+          <div class="pi"><p class="pi-ref">SOUZA, J. L. DE; BRANDÃO, H. N.; ALVES, C. Q. Influência Sazonal na Composição Química de Geoprópolis Produzida por Melipona scutellaris Coletada em Mata de São João - BA. In: XIV Simpósio Brasileiro de Farmacognosia, 2023, São Luís - MA.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; FREITAS, G. A. O.; FERREIRA, A. B.; BRANDÃO, H. N.; LEITE, F. H. A. Amburana acreana Ducke: secondary metabolites and inhibitory potential of Brazilian leishmaniasis. In: The 9th International Mediterranean Symposium on Medicinal and Aromatic Plants, 2023, Ankara - Turquia.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, D. F. DA; ALVES, C. Q.; BRANDÃO, H. N. Isolamento e identificação de xantona em Polygala boliviensis A.W. Benn (Polygalaceae). In: V Simpósio Nacional em Ciências Farmacêuticas (V SINCIFAR), 2023, Belo Horizonte - MG.</p></div>
+          <div class="pi"><p class="pi-ref">OLIVEIRA, A. C. S.; ALVES, C. Q. Estudo Fitoquímico e Avaliação in vitro dos Extratos Polares da Passiflora malacophylla. In: XXVII Seminário de Iniciação Científica da UEFS, 2023, Feira de Santana - BA.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; FREITAS, G. A. O.; BRANDÃO, H. N.; SILVA, D. F. DA; BARRETO, R. S. Phytochemical Study of Polygala trichosperma. In: 9th Brazilian Conference on Natural Products, 2023, Salvador.</p></div>
+          <div class="pi"><p class="pi-ref">BARRETO, R. S.; AGUIAR, R. M.; ALVES, C. Q. Análise fitoquímica preliminar de extratos de Bredemeyera brevifolia. In: VIII SECITEC - Semana de Educação, Ciência e Tecnologia do IFBA, 2022, Jequié.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; BRANDÃO, H. N. Phytochemical study and in vitro anticholinesterasic activity of extracts of Dioclea virgata (Rich.) Amshoff. In: The 8th International Mediterranean Symposium on Medicinal and Aromatic Plants, 2022, İzmir - Turquia.</p></div>
+          <div class="pi"><p class="pi-ref">BRANDÃO, H. N.; ALVES, C. Q.; SOUZA, J. L. DE. Evaluation of the pollen types presents in geopropolis produced by Melipona scutellaris collected in Costa do Sauípe-BA (Brazil). In: The 8th International Mediterranean Symposium on Medicinal and Aromatic Plants, 2022, İzmir - Turquia.</p></div>
+          <div class="pi"><p class="pi-ref">BRANDÃO, H. N.; ALVES, C. Q.; SOUZA, J. L. DE. Evaluation of the presence of potentially toxic elements in geopropolis collected at Bahia's Recôncavo, Brazil. In: The 8th International Mediterranean Symposium on Medicinal and Aromatic Plants, 2022, İzmir - Turquia.</p></div>
+          <div class="pi"><p class="pi-ref">SANTOS, V. V.; ALVES, C. Q. Estudo fitoquímico e avaliação in vitro de Passiflora malacophylla. In: XXV Seminário de Iniciação Científica da UEFS, 2021, Feira de Santana.</p></div>
+          <div class="pi"><p class="pi-ref">REIS, JOICE; ALVES, C. Q. Estudo fitoquímico e avaliação das atividades anticolinesterásica e letalidade frente à Artemia salina de extratos de Passiflora spp. In: XXIII Seminário de Iniciação Científica da UEFS, 2019, Feira de Santana.</p></div>
+          <div class="pi"><p class="pi-ref">CARDONA, H. R. A.; ALVES, C. Q.; LIMA, F. O. DE. Evaluation of the anti-inflammatory activity of Aspergillus fischeri. In: BrazMedChem, 2019, Pirenópolis.</p></div>
+          <div class="pi"><p class="pi-ref">SANTOS, ADÍLIO MACEDO; AGUIAR, R. M.; ALVES, C. Q.; JESUS, VILISAIMON DA SILVA DE. Estudo da composição química do óleo essencial de Aloysia gratissima (Verbenaceae) e seu potencial anticolinesterásico. In: 10º Simpósio Brasileiro de Óleos Essenciais, 2019, Brasília.</p></div>
+          <div class="pi"><p class="pi-ref">OLIVEIRA, L. A. R.; BRANDÃO, H. N.; SILVA, D. F. DA; ALVES, C. Q. Avaliação da letalidade frente à Artemia salina do extrato hexânico de Polygala boliviensis. In: II Simpósio Internacional em Investigações Químico-Farmacêuticas, 2019, Itajaí.</p></div>
+          <div class="pi"><p class="pi-ref">EVANGELISTA, A. L.; SUZART, N. S.; ALVES, C. Q. Regulação emocional e trabalho do professor: um relato de experiência no Projeto Universidade para Todos. In: VI Congresso Nacional de Educação, 2019, Fortaleza.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, D. F. DA; BRANDÃO, H. N.; ALVES, C. Q. Análise sazonal da composição química de Polygala boliviensis por CLAE-DAD. In: II Simpósio Internacional em Investigações Químico-Farmacêuticas, 2019, Itajaí.</p></div>
+          <div class="pi"><p class="pi-ref">CARDONA, H. R. A.; ALVES, C. Q.; BRANDÃO, H. N. Marine-Derived Fungi: A Chemical Characterization of Aspergillus fischeri. In: II Simpósio Internacional em Investigações Químico-Farmacêuticas, 2019, Itajaí.</p></div>
+          <div class="pi"><p class="pi-ref">CARDONA, H. R. A.; ALVES, C. Q. Caracterização química e avaliação da atividade antinociceptiva do fungo Aspergillus fischeri. In: VII Simpósio Plantas Medicinais do Vale do São Francisco, 2019, Juazeiro.</p></div>
+          <div class="pi"><p class="pi-ref">SANTANA, A. R.; BRANDÃO, H. N.; ALVES, C. Q. Avaliação da atividade ansiolítica de híbrido interespecífico de Passiflora suberosa L. através do teste labirinto em cruz elevado. In: II Simpósio Internacional em Investigações Químico-Farmacêuticas, 2019, Itajaí.</p></div>
+          <div class="pi"><p class="pi-ref">SANTANA, A. R.; SILVA, D. F. DA; BRANDÃO, H. N.; ALVES, C. Q. Validação de método para quantificação de flavonoides em extratos de Passiflora suberosa e híbrido por CLAE-DAD. In: XXV Simpósio de Plantas Medicinais do Brasil, 2018, São Paulo.</p></div>
+          <div class="pi"><p class="pi-ref">SUZART, N. S.; EVANGELISTA, A. L.; ALVES, C. Q. Monitoria no Projeto Universidade para Todos - UEFS: aspectos motivacionais. In: XII Colóquio Internacional "Educação e Contemporaneidade", 2018, São Cristóvão.</p></div>
+          <div class="pi"><p class="pi-ref">CARDOSO, A. R.; SILVA, D. A. A.; ALVES, C. Q.; SANTOS JÚNIOR, M. C.; BRANDÃO, H. N. Avaliação do potencial inibitório de flavonoides identificados em Dioclea virgata (Rich.) Amsh (Leguminosae) frente a enoil-ACP-redutase de Plasmodium falciparum. In: VI Simpósio Plantas Medicinais do Vale do São Francisco, 2017, Juazeiro.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, D. F. DA; ALVES, CLAYTON Q.; BRANDÃO, H. N. Seasonal variation in the antioxidant activity of Polygala boliviensis. In: 6th BCNP Brazilian Conference on Natural Products / XXXII RESEM, 2017, Vitória - ES.</p></div>
+          <div class="pi"><p class="pi-ref">SANTANA, A. R.; DA ROCHA, J. L. C.; JESUS, O. N.; ALVES, C. Q.; BRANDÃO, H. N. Chemical profile of extracts Passiflora suberosa and Hybrid via HPLC-DAD. In: 6th BCNP Brazilian Conference on Natural Products / XXXII RESEM, 2017, Vitória - ES.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, C. A. P.; COSTA, D. M.; ALVES, C. Q.; SOUZA, V. R. DE. Quantificação de flavonoides totais e atividade antioxidante de Dioclea virgata. In: XI Simpósio Brasileiro de Farmacognosia e XVI Simpósio Latino-americano de Farmacobotânica, 2017, Curitiba - PR.</p></div>
+          <div class="pi"><p class="pi-ref">PALMA, N.; ALVES, C. Q.; JESUS, O. N. Estudo morfoanatômico de Passiflora malacophylla. In: XI Simpósio Brasileiro de Farmacognosia e XVI Simpósio Latino-americano de Farmacobotânica, 2017, Curitiba - PR.</p></div>
+          <div class="pi"><p class="pi-ref">OLIVEIRA, J. C. S. DE; ALVES, C. Q.; DAVID, JORGE M. Anticholinesterase activity of biflavonoids isolated from the bark root of Poincianella pyramidalis (Fabaceae). In: VII Simpósio Ibero-americano de Plantas Medicinais e III Simpósio Ibero-americano de Investigação em Câncer, 2016, Itajaí - SC.</p></div>
+          <div class="pi"><p class="pi-ref">SANTANA, A. R.; DA ROCHA, J. L. C.; ALVES, C. Q.; BRANDÃO, H. N. Quantificação de flavonoides e fenólicos totais em extratos de folha de Passiflora racemosa, Passiflora mucronata e híbrido (Passifloraceae). In: 10º Simpósio de Recursos Genéticos para a América Latina e o Caribe - 10º SIRGEALC, 2015.</p></div>
+          <div class="pi"><p class="pi-ref">COSTA, P. P.; SILVA, D. F. DA; ALVES, C. Q.; BRANDÃO, H. N. Atividade anticolinesterásica dos extratos e frações de Polygala boliviensis. In: 67ª Reunião Anual da SBPC, 2015, São Carlos - SP.</p></div>
+          <div class="pi"><p class="pi-ref">DA ROCHA, J. L. C.; ALVES, C. Q.; BRANDÃO, H. N. Determinação quantitativa de ácidos fenólicos e flavonoides identificados em Asemeia ovata (Polygalaceae). In: 10º Simpósio de Recursos Genéticos para a América Latina e o Caribe - 10º SIRGEALC, 2015, Bento Gonçalves - RS.</p></div>
+          <div class="pi"><p class="pi-ref">PINTO, L. S.; OLIVEIRA, J. C. S. DE; DAVID, J. M.; ALVES, C. Q. Avaliação preliminar das atividades biológicas de extratos de Cliona varians (Porifera). In: Semana Kirimurê 2014 - Seminário de Pesquisa Baías da Bahia, 2014, São Francisco do Conde.</p></div>
+          <div class="pi"><p class="pi-ref">PINTO, L. S.; DAVID, J. M.; ALVES, C. Q. Estudo fitoquímico preliminar das cascas das raízes de Peltophorum dubium (Sprengel) Taubert. In: VII Simpósio Iberoamericano de Plantas Medicinais, 2014, Ilhéus - BA.</p></div>
+          <div class="pi"><p class="pi-ref">GOMES, A. F.; MOREIRA, B. O.; ALVES, C. Q. Potential Biological Activity of Tricilia ramalhoi. In: VII Simpósio Iberoamericano de Plantas Medicinais, 2014, Ilhéus - BA.</p></div>
+          <div class="pi"><p class="pi-ref">DA ROCHA, J. L. C.; ALVES, C. Q.; BRANDÃO, H. N. Estudo da citotoxicidade e da atividade anticolinesterásica de Asemeia ovata. In: XXIII Simpósio de Plantas Medicinais do Brasil, 2014, Goiânia - GO.</p></div>
+          <div class="pi"><p class="pi-ref">NEVES, M. S.; BRANDÃO, H. N.; ALVES, C. Q. Avaliação da atividade anticolinesterásica e determinação do teor de flavonoides totais em extratos de Mimosa tenuiflora (Willd.) Poiret. In: XXIII Simpósio de Plantas Medicinais do Brasil, 2014, Goiânia - GO.</p></div>
+          <div class="pi"><p class="pi-ref">OLIVEIRA, I. K. P. DE; ALVES, C. Q.; DA ROCHA, J. L. C.; BRANDÃO, H. N. Avaliação do teor de flavonoides, fenólicos totais e atividade antioxidante em Asemeia ovata. In: XVIII SEMIC, 2014, Feira de Santana - BA.</p></div>
+          <div class="pi"><p class="pi-ref">SOUZA, J. L. DE; SILVA, D. F. DA; BRANDÃO, H. N.; ALVES, C. Q. Estudo fitoquímico e avaliação da atividade antioxidante de Polygala boliviensis. In: XVIII SEMIC, 2014, Feira de Santana - BA.</p></div>
+          <div class="pi"><p class="pi-ref">COSTA, P. P.; ALVES, C. Q.; SILVA, D. F. DA; BRANDÃO, H. N. Atividade anticolinesterásica dos extratos e frações de Polygala boliviensis. In: XVIII SEMIC, 2014, Feira de Santana - BA.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; BRANDÃO, H. N.; DAVID, J. M.; DAVID, J. P. An unusual coumarin derivative from Polygala boliviensis A.W. Benn (Polygalaceae). In: 61st International Congress and Annual Meeting of the Society for Medicinal Plant and Natural Product Research, 2013, Münster. Planta Medica, v. 13, p. 1181.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, C. Q.; BRANDÃO, H. N.; KIJJOA, A.; DAVID, J. M.; DAVID, J. P. Megastigmanes and phenolic compounds from Dioclea virgata (Rich.) Amsh (Leguminosae). In: 61st International Congress and Annual Meeting of the Society for Medicinal Plant and Natural Product Research, 2013, Münster. Planta Medica, v. 13, p. 1182.</p></div>
+          <div class="pi"><p class="pi-ref">BRANDÃO, H. N.; ALVES, C. Q.; DAVID, J. M.; DAVID, J. P. Phytochemistry study of the polar extracts of Cenostigma macrophyllum Tul. (Leguminosae). In: 61st International Congress and Annual Meeting of the Society for Medicinal Plant and Natural Product Research, 2013, Münster. Planta Medica, v. 13, p. 1185.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P.; LIMA, L. DA S. Benzoic Acid Derivatives and Others Phenolic Compounds from Dioclea virgata Amsh. In: 3rd Brazilian Conference on Natural Products, 2011, Ouro Preto - MG.</p></div>
+          <div class="pi"><p class="pi-ref">REZENDE, L. C. DE; ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P. Preliminary Study of Chemical Constituents of Dichloromethane Extract of Seeds of Spondias mombin L. In: 3rd Brazilian Conference on Natural Products, 2011, Ouro Preto - MG.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; REZENDE, L. C. DE; DAVID, J. M.; DAVID, J. P. Fenólicos de Dioclea virgata Amsh. (Leguminosae). In: 34ª Reunião Anual da Sociedade Brasileira de Química, 2011, Florianópolis - SC.</p></div>
+          <div class="pi"><p class="pi-ref">MOREIRA, B. O.; ALVES, CLAYTON QUEIROZ; LIMA, L. DA S.; DAVID, J. M.; DAVID, J. P. Megastigmanes from Three Endemic Species of Brazilian Caatinga. In: 3rd Brazilian Conference on Natural Products, 2011, Ouro Preto - MG.</p></div>
+          <div class="pi"><p class="pi-ref">LIMA, L. DA S.; ALVES, CLAYTON QUEIROZ; MOREIRA, B. O.; DAVID, J. M.; DAVID, J. P.; AGUIAR, R. M. Preliminar Screening in Research of Natural Inhibitory Compounds of Acetylcholinesterase and Butyrylcholinesterase. In: 3rd Brazilian Conference on Natural Products, 2011, Ouro Preto - MG.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P.; KIJJOA, A. Flavonoids and benzoic acid derivatives from Dioclea virgata Amsh. In: 58th International Congress and Annual Meeting of the Society for Medicinal Plant and Natural Products Research, 2010, Berlin.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; REZENDE, L. C. DE; SANTOS, P. DE A.; DAVID, J. M.; DAVID, J. P. Flavonóides de Dioclea virgata Amsh. (Leguminosae). In: 32ª Reunião Anual da Sociedade Brasileira de Química, 2009, Fortaleza - CE.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P.; VILLAREAL, C. F.; SOARES, M. B. Substâncias bioativas de Cenostigma gardnerianum Tul. (Leguminosae). In: 32ª Reunião Anual da Sociedade Brasileira de Química, 2009, Fortaleza - CE.</p></div>
+          <div class="pi"><p class="pi-ref">DAVID, J. M.; DAVID, J. P.; ALVES, CLAYTON QUEIROZ; LIMA, L. DA S.; BRANDÃO, H. N. Otimização de processos de extração de agatisflavona das folhas de Caesalpinia pyramidalis. In: 32ª Reunião Anual da Sociedade Brasileira de Química, 2009, Fortaleza - CE.</p></div>
+          <div class="pi"><p class="pi-ref">REZENDE, L. C. DE; OLIVEIRA, T. S.; ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P. Fenólicos totais e atividade antioxidante de frutas tropicais da Bahia. In: 32ª Reunião Anual da Sociedade Brasileira de Química, 2009, Fortaleza - CE.</p></div>
+          <div class="pi"><p class="pi-ref">AGUIAR, R. M.; REZENDE, L. C. DE; ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P. Relação estrutura-atividade antioxidante de quercetina e seus derivados glicosilados. In: 32ª Reunião Anual da Sociedade Brasileira de Química, 2009, Fortaleza - CE.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; LIMA, L. DA S.; DAVID, J. M.; DAVID, J. P.; LIMA, M. V. B. Peptides from Cratylia mollis and Cenostigma gardnerianum (Leguminosae) Inhibits Acetylcholinesterase. In: 2nd Brazilian Conference on Natural Products, 2009, São Pedro - SP.</p></div>
+          <div class="pi"><p class="pi-ref">REZENDE, L. C. DE; ALVES, CLAYTON QUEIROZ; DAVID, J. M.; DAVID, J. P. Novos flavonóides do caule de Cratylia mollis (Leguminosae). In: 30ª Reunião Anual da Sociedade Brasileira de Química, 2007, Águas de Lindóia - SP.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; REZENDE, L. C. DE; DAVID, J. M.; DAVID, J. P. Flavonóides galoil e p-cumaroil glicosilados de Cenostigma gardnerianum. In: 30ª Reunião Anual da Sociedade Brasileira de Química, 2007, Águas de Lindóia - SP.</p></div>
+          <div class="pi"><p class="pi-ref">DAVID, J. M.; ALVES, CLAYTON QUEIROZ; LIMA, L. DA S.; DAVID, J. P. Peptides derivatives from two species of Leguminosae. In: 1st Brazilian Conference on Natural Products, 2007, São Pedro - SP.</p></div>
+          <div class="pi"><p class="pi-ref">LIMA, L. DA S.; ALVES, CLAYTON QUEIROZ; MARTINS, L. C.; LIMA, M. V. B.; DAVID, J. M.; DAVID, J. P. Triterpenos isolados do caule de Eriope blanchetii. In: XIX Simpósio de Plantas Medicinais do Brasil, 2006, Salvador - BA.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; LIMA, L. DA S.; DAVID, J. P.; DAVID, J. M. Constituintes fenólicos isolados das folhas da Cenostigma gardnerianum. In: XIX Simpósio de Plantas Medicinais do Brasil, 2006, Salvador - BA.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; BARROS, J. M.; SANTOS, M. J. S. DOS; MOREIRA, B. O. Avaliação: concepções e práticas no ensino de Química. In: 28ª Reunião Anual da Sociedade Brasileira de Química, 2005, Poços de Caldas - MG.</p></div>
+          <div class="pi"><p class="pi-ref">SOUZA, L. A. G. DE; ALVES, CLAYTON QUEIROZ; SANTOS, M. J. S. DOS; FRANÇA, R. S.; VIEIRA, D. R. Calor de combustão do caroço de umbu. In: 28ª Reunião Anual da Sociedade Brasileira de Química, 2005, Poços de Caldas - MG.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; MOREIRA, B. O.; BARROS, J. M. O ensino de Química de acordo com alguns professores do Ensino Médio do município de Jequié - BA. In: 28ª Reunião Anual da Sociedade Brasileira de Química, 2005, Poços de Caldas - MG.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; MOREIRA, B. O.; BARROS, J. M.; QUADROS, A. L. Formação continuada: responsabilidade de todos. In: 28ª Reunião Anual da Sociedade Brasileira de Química, 2005, Poços de Caldas - MG.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; SOUZA, L. A. G. DE; SANTOS, M. J. S. DOS; GAMA, E. M. Trabalhando com cálculos termoquímicos em xilenos. In: 28ª Reunião Anual da Sociedade Brasileira de Química, 2005, Poços de Caldas - MG.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; SOUZA, L. A. G. DE; SANTOS, M. J. S. DOS. Estudo comparativo estrutural e energético do alfa e beta pineno. In: CONPEX - Congresso de Pesquisa e Extensão, 2004, Itapetinga - BA.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; SOUZA, L. A. G. DE; SANTOS, M. J. S. DOS. Estudo termoquímico experimental e teórico em alguns hidrocarbonetos aromáticos. In: CONPEX - Congresso de Pesquisa e Extensão, 2004, Itapetinga - BA.</p></div>
+          <div class="pi"><p class="pi-ref">ALVES, CLAYTON QUEIROZ; BARROS, J. M.; SANTOS, M. J. S. DOS. Avaliação e o processo de ensino aprendizagem. In: CONPEX - Congresso de Pesquisa e Extensão, 2004, Itapetinga - BA.</p></div>
+          <div class="pi"><p class="pi-ref">PAULA, VANDERLÚCIA FONSECA DE; ROCHA, MARCELO EÇA; BARBOSA, L. C. DE A.; ALVES, CLAYTON QUEIROZ. Aquatidial: um novo composto isolado da raiz de Pachira aquatica. In: VIII CONPEX / VIII Seminário de Iniciação Científica, 2004, Itapetinga - BA. Vitória da Conquista: UESB, 2004. (resumo expandido)</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ HUMBERVÂNIA ══ -->
+    <div class="pub-panel" id="panel-humbervania">
+      <div class="prof-header">
+        <div class="prof-av" style="background:linear-gradient(135deg,#5a4a2d,#8a7040)">HG</div>
+        <div>
+          <h2>Profa. Dra. Humbervânia Reis Gonçalves da Silva</h2>
+          <p>Espectrofluorimetria · Quimiometria · Biocombustíveis · Propriedade Intelectual</p>
+          <div class="ph-links">
+            <a href="http://lattes.cnpq.br/8221392220498277" target="_blank" class="ph-link"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <span class="stat-pill">Scopus: 52 cit.</span>
+            <span class="stat-pill" style="background:#f0e8ff;color:#5b2d8e">10 patentes INPI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head open" onclick="tog(this)"><h3><i class="fas fa-file-alt"></i>Artigos em Periódicos <span class="acc-count">15</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body open">
+          <div class="pi"><p class="pi-ref">SANTOS, W. D. A.; OLIVEIRA, T. V. S. F.; SANTOS, I. F.; SILVA, HUMBERVÂNIA R. G. Prospecção de Tecnologias Usada na Detecção de Metais e Metaloides em Águas Subterrâneas. <em>CADERNOS DE PROSPECÇÃO</em>, v. 19, p. 218-228, 2026.</p></div>
+          <div class="pi"><p class="pi-ref">QUINTELLA, C. M.; SANTOS, L. N.; ARAUJO, V. C. S.; GONÇALVES, H. R.; RAMOS-DE-SOUZA, E.; CARVALHO, E. B.; HANNA, S. A. SCIENTIFIC AND TECHNOLOGICAL ASSESSMENT OF XANTHAN AND HPAM IN THE LOW ENVIRONMENTAL IMPACT FLUIDS FOR ADVANCED OIL RECOVERY (EOR). <em>REVISTA INGI</em>, v. 7, p. 2255-2270, 2023.</p></div>
+          <div class="pi"><p class="pi-ref">AMORIM, M. G. S.; OLIVEIRA, P. C. C. A.; GONÇALVES, H. R.; QUINTELLA, C. M. Mapeamento Científico e Tecnológico do Uso de Glicerina e Soapstock como Fluido de Recuperação Avançada de Petróleo. <em>CADERNOS DE PROSPECÇÃO</em>, v. 15, p. 1340-1353, 2022.</p></div>
+          <div class="pi"><p class="pi-ref">GONÇALVES, H. R.; QUINTELLA, C. M. Estudo Prospectivo das Tecnologias Utilizadas para Redução das Emissões de Poluentes Causadas pelos Veículos a Diesel. <em>CADERNOS DE PROSPECÇÃO</em>, v. 14, p. 1186-1200, 2021.</p></div>
+          <div class="pi"><p class="pi-ref">DA SILVA, HUMBERVÂNIA REIS GONÇALVES; QUINTELLA, CRISTINA M.; MEIRA, MARILENA. Separation and Identification of Functional Groups of Molecules Responsible for Fluorescence of Biodiesel using FTIR Spectroscopy and principal-component analysis. <em>JOURNAL OF THE BRAZILIAN CHEMICAL SOCIETY</em>, v. 00, p. 1-9, 2017.</p><div class="pi-meta"><span class="tag-cit">9 cit. WoS · 13 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">MEIRA, MARILENA; QUINTELLA, CRISTINA M.; RIBEIRO, ERIKA M. O.; SILVA, HUMBERVÂNIA R. G.; GUIMARÃES, ALEXANDRE K.; LUNA, SAIONARA; SILVA, WEIDSON L.; BRITO, IRLANE J. DE. Determination of Adulterants in Diesel by Integration of LED Fluorescence Spectra. <em>Journal of the Brazilian Chemical Society</em>, v. 00, p. 1-6, 2015.</p><div class="pi-meta"><span class="tag-cit">4 cit. WoS · 5 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">SILVA, HUMBERVÂNIA REIS G.; DEL CID, ALEXANDRE LOPEZ; QUINTELLA, CRISTINA M. PROSPECÇÃO TECNOLÓGICA DE PATENTES PARA IDENTIFICAÇÃO E QUANTIFICAÇÃO DOS COMPONENTES RESPONSÁVEIS PELA FLUORESCÊNCIA POSSÍVEIS DE SEREM ENCONTRADOS NO BIODIESEL. <em>Cadernos de Prospecção</em>, v. 8, p. 700-712, 2015.</p></div>
+          <div class="pi"><p class="pi-ref">MEIRA, M.; QUINTELLA, C. M.; RIBEIRO, E. M. O.; SILVA, H. R. G.; GUIMARÃES, A. K. Overview of the challenges in the production of biodiesel. <em>Biomass Conversion and Biorefinery</em>, v. 1, p. 1-26, 2014.</p><div class="pi-meta"><span class="tag-cit">34 cit. WoS · 43 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">MEIRA, MARILENA; QUINTELLA, CRISTINA M.; PEPE, IURI M.; COSTA NETO, PEDRO R.; SANTOS TANAJURA, ALESSANDRA; SILVA, HUMBERVÂNIA REIS GONÇALVES. Prediction of properties of biodiesel-diesel blends using spectrofluorimetry and multivariate calibration. <em>CENTRAL EUROPEAN JOURNAL OF CHEMISTRY</em>, v. 10, p. 1328-1337, 2012.</p><div class="pi-meta"><span class="tag-cit">4 cit. WoS · 3 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">TANAJURA, ALESSANDRA S.; MEIRA, MARILENA; RIBEIRO, ERIKA M. DE O.; GONÇALVES, HUMBERVÂNIA R.; QUINTELLA, CRISTINA M. PROSPECÇÃO TECNOLÓGICA SOBRE MÉTODOS PARA DETERMINAÇÃO DA OXIDAÇÃO DE ÓLEOS E BIOCOMBUSTÍVEIS COM ÊNFASE EM MÉTODOS ÓTICOS. <em>Cadernos de Prospecção</em>, v. 5, p. 141-151, 2012.</p></div>
+          <div class="pi"><p class="pi-ref">MEIRA, MARILENA; QUINTELLA, CRISTINA M.; TANAJURA, ALESSANDRA DOS SANTOS; GONÇALVES, H. R.; FERNANDO, JAQUES D'ERASMO SANTOS; DA COSTA NETO, PEDRO R.; PEPE, IURI M.; SANTOS, MARIANA ANDRADE; NASCIMENTO, LUCIANA LORDELO. Determination of the oxidation stability of biodiesel and oils by spectrofluorimetry and multivariate calibration. <em>Talanta</em>, v. 85, p. 430-434, 2011.</p><div class="pi-meta"><span class="tag-cit">55 cit. WoS · 61 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">MEIRA, MARILENA; QUINTELLA, CRISTINA M.; FERRER, TIAGO M.; SILVA, HUMBERVÂNIA R. GONÇALVES DA; GUIMARÃES, ALEXANDRE K.; SANTOS, MARIANA ANDRADE; COSTA NETO, PEDRO R. DA; PEPE, IURI M. Identificação de adulteração de biocombustível por adição de óleo residual ao diesel por espectrofluorimetria total 3D e análise das componentes principais. <em>Química Nova</em>, v. 34, p. 621-624, 2011.</p><div class="pi-meta"><span class="tag-cit">19 cit. WoS · 20 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">QUINTELLA, CRISTINA M.; MEIRA, M.; GUIMARÃES, A. K.; SANTOS TANAJURA, ALESSANDRA; GONÇALVES, H. R. Prospecção Tecnológica como uma Ferramenta Aplicada em Ciência e Tecnologia para se Chegar à Inovação. <em>Revista Virtual de Química</em>, v. 3, p. 406-415, 2011.</p><div class="pi-meta"><span class="tag-cit">20 cit.</span></div></div>
+          <div class="pi"><p class="pi-ref">GONÇALVES, HUMBERVÂNIA; CID, ALEXANDRE DEL; TANAJURA, ALESSANDRA; MIYAZAKI, SABRINA; MEIRA, MARILENA; QUINTELLA, CRISTINA M. PROSPECÇÃO TECNOLÓGICA DE PATENTES PARA DETERMINAÇÃO DE MASSA ESPECÍFICA E VISCOSIDADE DE ÓLEOS, BIOCOMBUSTÍVEIS E COMBUSTÍVEIS POR MÉTODOS ÓTICOS. <em>Cadernos de Prospecção</em>, v. 4, p. 12-22, 2011.</p></div>
+          <div class="pi"><p class="pi-ref">DA SILVA, HUMBERVÂNIA REIS GONÇALVES; PORFIRIO, L. N.; QUINTELLA, C. M. Gás Natural Liquefeito e Criogênico. <em>Cadernos de Prospecção</em>, v. 1, p. 17-19, 2008.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-book"></i>Livros <span class="acc-count">1</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">OLIVEIRA, C. S. B.; OLIVEIRA, T. V. S. F.; SANTOS, K. S.; SILVA, H. R. G. Desafios e estratégias no processo de ensino-aprendizagem de físico-química: lições de uma experiência de monitoria universitária. 1.ed. SC: Schreiben, 2025. 223-242p.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-book-open"></i>Capítulos de Livros <span class="acc-count">1</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">QUINTELLA, CRISTINA M.; MEIRA, MARILENA; ARAÚJO, EDNA MAURA P. DE; DAVID, JUCENI P.; TANAJURA, ALESSANDRA DOS S.; SILVA, HUMBERVÂNIA R. G. DA; GUIMARÃES, ALEXANDRE K.; GUARÍN, WEIDSON L. SILVA e RODOLFO R. Identificação de substâncias puras ou em formulações através de análise espectral e quimiometria. In: Biotecnologia Aplicada à Agro&Indústria - Vol. 4. 4.ed. São Paulo: Editora Blucher, 2017, v. 4, p. 51-102.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-file-powerpoint"></i>Trabalhos em Congressos <span class="acc-count">4</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">GONÇALVES, H. R.; TANAJURA, A. S.; MEIRA, MARILENA; QUINTELLA, C. M. Prospecção Tecnológica de Patentes para Determinação de Métodos de Análises Ópticos para Predizer a Estabilidade Oxidativa dos Óleos e biocombustíveis. In: V ENAPID - Encontro Acadêmico de Propriedade Intelectual, Inovação e Desenvolvimento, 2012, Rio de Janeiro.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, HUMBERVÂNIA R. GONÇALVES DA; MEIRA, MARILENA; QUINTELLA, C. M.; COSTA NETO, PEDRO R. Prospecção tecnológica de métodos e aparelhos para análise de adulteração de diesel. In: III ENAPID - Encontro Acadêmico de Propriedade Intelectual, Inovação e Desenvolvimento, 2012, Rio de Janeiro.</p></div>
+          <div class="pi"><p class="pi-ref">QUINTELLA, CRISTINA M.; FERRER, TIAGO M.; NASCIMENTO, PAULO H.; CERQUEIRA, GABRIELA S.; DA SILVA, DAIANE B.; GONÇALVES, H. R.; TANAJURA, ALESSANDRA. Mapeamento tecnológico e identificação de oportunidades de investimentos para usos de CO2. In: 1° Congresso de CO2 na Indústria do Petróleo, Gás e Biocombustíveis, 2011, Rio de Janeiro.</p></div>
+          <div class="pi"><p class="pi-ref">GONÇALVES, H. R.; TANAJURA, A. S.; MEIRA, M.; QUINTELLA, CRISTINA M. Prospecção tecnológica de patentes para determinação de massa específica e viscosidade de óleos, biocombustíveis e combustíveis por métodos óticos. In: IV ENAPID - Encontro Acadêmico de Propriedade Intelectual, Inovação e Desenvolvimento, 2011, Rio de Janeiro.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ IVANICE ══ -->
+    <div class="pub-panel" id="panel-ivanice">
+      <div class="prof-header">
+        <div class="prof-av" style="background:linear-gradient(135deg,#2d5a4e,#3d7a6a)">IF</div>
+        <div>
+          <h2>Profa. Dra. Ivanice Ferreira dos Santos</h2>
+          <p>Química Analítica Ambiental · Especiação de Metais · Quimiometria</p>
+          <div class="ph-links">
+            <a href="http://lattes.cnpq.br/3393553125456224" target="_blank" class="ph-link"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <a href="https://orcid.org/0000-0002-0390-2005" target="_blank" class="ph-link">ORCID: 0000-0002-0390-2005</a>
+            <span class="stat-pill">WoS: 563 cit. · H-12</span>
+            <span class="stat-pill" style="background:#eef2ff;color:#1a3560">Atualizado: 06/05/2026</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head open" onclick="tog(this)"><h3><i class="fas fa-file-alt"></i>Artigos em Periódicos <span class="acc-count">24</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body open">
+          <div class="pi"><p class="pi-ref">SANTOS, W. D. A.; OLIVEIRA, T. V. S. F.; DOS SANTOS, IVANICE FERREIRA; VICENTE, H. R. G. Prospecção de Tecnologias Usada na Detecção de Metais e Metaloides em Águas Subterrâneas. <em>CADERNOS DE PROSPECÇÃO</em>, v. 19, p. 218-228, 2026.</p></div>
+          <div class="pi"><p class="pi-ref">COUTINHO, JOSELANIO JESUS; SANTOS, LUANA BASTOS; MELO, ANDERSON SILVA; FELIX, CAIO SILVA ASSIS; DOS SANTOS, IVANICE FERREIRA; LEMOS, VALFREDO AZEVEDO; FERREIRA, SERGIO LUIS COSTA. Health risk assessment of trace elements in chicken liver samples sold in Salvador, Brazil. <em>JOURNAL OF FOOD COMPOSITION AND ANALYSIS</em>, v. 153, p. 109162, 2026.</p></div>
+          <div class="pi"><p class="pi-ref">DE SENA, EDNA SANTANA; COSTA, SAMANTHA SERRA; DOS SANTOS, IVANICE FERREIRA; NEPOMUCENO, ANA FLÁVIA SOUTO FIGUEIREDO; DE JESUS PORTO, MURILO; DOS SANTOS, LIZ OLIVEIRA. Assessment of the authenticity of coconut water (Cocos nucifera L.) samples using digital images and chemometric techniques. <em>FOOD CHEMISTRY</em>, v. 483, p. 144281, 2025.</p><div class="pi-meta"><span class="tag-cit">1 citação</span></div></div>
+          <div class="pi"><p class="pi-ref">CRUZ, LÍCIA P. S.; MOREIRA, MATEUS S.; DOS SANTOS, IVANICE F.; DA ROCHA, FRANCIELE O. C.; ASSUNÇÃO, DANILLO L.; SANTANA, REJANE P. J.; DA CRUZ FILHO, BASÍLIO E. Chemometrics and Human Health Risk Assessment Associated with BTEX Compounds in Groundwater at Gas Stations. <em>WATER AIR AND SOIL POLLUTION</em>, v. 236, p. 377, 2025.</p></div>
+          <div class="pi"><p class="pi-ref">ANDRADE, JAILSON; NASCIMENTO, MADSON M.; NASCIMENTO, MELISE LEMOS; DOS ANJOS, JEANCARLO PEREIRA; CUNHA, RICARDO LEAL; ROCHA, GISELE; DOS SANTOS, IVANICE FERREIRA; DE PAULA PEREIRA, PEDRO AFONSO. A Novel Method for the Determination of Illicit Drugs in Wastewater and Surface Waters based on a New Semi-Automated Liquid-Liquid Microextraction Device. <em>SSRN Electronic Journals</em>, v. 1, p. 41, 2023.</p></div>
+          <div class="pi"><p class="pi-ref">FERREIRA, SERGIO L.C.; AZEVEDO, RAVENA S.A.; DA SILVA JUNIOR, JUCELINO B.; TEIXEIRA, LEONARDO S.G.; DOS SANTOS, IVANICE F.; DOS SANTOS, WALTER N.L.; QUEIROZ, ANTONIO F.S.; OLIVEIRA, OLIVIA M.C. DE; GUARIEIRO, LILIAN L.N. et al. Emerging contaminants - general aspects: sources, substances involved, and quantification. <em>APPLIED SPECTROSCOPY REVIEWS</em>, v. 58, p. 1-20, 2023.</p><div class="pi-meta"><span class="tag-cit">8 cit. WoS · 7 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">NASCIMENTO, MADSON MOREIRA; NASCIMENTO, MELISE LEMOS; PEREIRA DOS ANJOS, JEANCARLO; CUNHA, RICARDO LEAL; DA ROCHA, GISELE OLIMPIO; FERREIRA DOS SANTOS, IVANICE; PEREIRA, PEDRO AFONSO DE PAULA; DE ANDRADE, JAILSON BITTENCOURT. A green method for the determination of illicit drugs in wastewater and surface waters-based on a semi-automated liquid-liquid microextraction device. <em>JOURNAL OF CHROMATOGRAPHY A</em>, v. 58, p. 464230, 2023.</p><div class="pi-meta"><span class="tag-cit">12 cit. WoS · 10 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DA SILVA JUNIOR, JUCELINO B.; DE CARVALHO, VANESSA S.; SOUSA, DANIELE S.; DOS SANTOS, IVANICE F.; BRITO, GEYSA B.; QUEIROZ, ANTÔNIO F.S.; FERREIRA, SÉRGIO L.C. A risk assessment by metal contamination in a river used for public water supply. <em>MARINE POLLUTION BULLETIN</em>, v. 179, p. 113730, 2022.</p><div class="pi-meta"><span class="tag-cit">9 cit. WoS · 10 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">FERREIRA, SERGIO L.C.; DA SILVA, JUCELINO B.; DOS SANTOS, IVANICE FERREIRA; DE OLIVEIRA, OLIVIA M.C.; CERDA, VICTOR; QUEIROZ, ANTONIO F.S. Use of pollution indices and ecological risk in the assessment of contamination from chemical elements in soils and sediments - Practical aspects. <em>TRENDS IN ENVIRONMENTAL ANALYTICAL CHEMISTRY</em>, v. 35, p. e00169, 2022.</p><div class="pi-meta"><span class="tag-cit">150 cit. WoS · 126 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">SALES DE CARVALHO, VANESSA; FERREIRA DOS SANTOS, IVANICE; ALMEIDA, LUCAS CINTRA; TAVARES DE SOUZA, CHEILANE; BALBINO DA SILVA JÚNIOR, JUCELINO; SOUZA, LAÍS ARAÚJO; DOS SANTOS, LIZ O.; FERREIRA, SERGIO L.C. Spatio-temporal assessment, sources and health risks of water pollutants at trace levels in public supply river using multivariate statistical techniques. <em>CHEMOSPHERE</em>, v. 282, p. 130942, 2021.</p><div class="pi-meta"><span class="tag-cit">17 cit. WoS · 15 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DOS SANTOS, IVANICE F.; SANTOS, DEBORA CORREIA; CORTES JUNIOR, LAILTON PASSOS. Models for conduction electric in electrolytic solution proposed for graduation students. <em>Brazilian Journal of Development</em>, v. 7, p. 50271-50287, 2021.</p></div>
+          <div class="pi"><p class="pi-ref">CRUZ, LÍCIA P.S.; SANTOS, DANIELA F.; DOS SANTOS, IVANICE F.; GOMES, ÍCARO V.S.; SANTOS, AKÁCIA V.S.; SOUZA, KELIANE S.P.P. Exploratory analysis of the atmospheric levels of BTEX, criteria air pollutants and meteorological parameters in a tropical urban area in Northeastern Brazil. <em>MICROCHEMICAL JOURNAL</em>, v. 152, p. 104265, 2020.</p><div class="pi-meta"><span class="tag-cit">52 cit. WoS · 44 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">ALMEIDA, L.; DA SILVA JR, J. B.; SANTOS, I. F.; CARVALHO, V. S.; SANTOS, A de S.; FERREIRA, S.L.C. Assessment of toxicity of metals in river sediments for human supply: distribution, evaluation of pollution and sources identification. <em>MARINE POLLUTION BULLETIN</em>, v. 158, p. 111423, 2020.</p><div class="pi-meta"><span class="tag-cit">30 cit. WoS · 27 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">SANTANA, FRANCIELE O.; CAMPOS, VÂNIA P.; SANTOS, IVANICE F.; CRUZ, LÍCIA P.S.; BRITO, ANNE VALESCA S. Seasonal quimiometric study of formaldehyde and acetaldehide atmospheric levels and health risk assessment, in urban areas of Salvador-Bahia, Brazil. <em>MICROCHEMICAL JOURNAL</em>, v. 147, p. 524-531, 2019.</p><div class="pi-meta"><span class="tag-cit">26 cit. WoS · 29 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">SANTOS, A de S.; SANTOS I F; SANTOS, L. O.; FERREIRA, S.L.C. Application of chemometric tools for homogeneity and stability evaluation during the preparation of a powdered milk laboratory reference material for inorganic analysis. <em>Analytical Methods</em>, v. 152, p. 1-9, 2019.</p><div class="pi-meta"><span class="tag-cit">5 cit. WoS · 6 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DOS SANTOS, ANA M.P.; LIMA, JEANE S.; SANTOS, I. F.; SILVA, EMMANUELLE F.R.; DE SANTANA, FERNANDA A.; DE ARAUJO, DOMINIQUE G.G.R.; SANTOS, L. O. Mineral and centesimal composition evaluation of conventional and organic cultivars sweet potato (Ipomoea batatas (L.) Lam) using chemometric tools. <em>FOOD CHEMISTRY</em>, v. 273, p. 166-171, 2019.</p><div class="pi-meta"><span class="tag-cit">51 cit. WoS · 52 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">DOS SANTOS, IVANICE F.; FERREIRA, SÉRGIO L.C.; DOMÍNGUEZ, CARMEM; BAYONA, JOSEP M. Analytical strategies for determining the sources and ecotoxicological risk of PAHs in river sediment. <em>MICROCHEMICAL JOURNAL</em>, v. 137, p. 90-97, 2017.</p><div class="pi-meta"><span class="tag-cit">27 cit. WoS · 26 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">BARBOSA, UENDERSON A.; DOS SANTOS, IVANICE F.; DOS SANTOS, ANA M. P.; FERREIRA, SERGIO L. C. Determination of Lead in Iron Supplements by Electrothermal Atomization Atomic Absorption Spectrometry. <em>Analytical Letters</em>, v. 49, p. 799-807, 2016.</p><div class="pi-meta"><span class="tag-cit">9 cit. WoS · 9 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">BARBOSA, UENDERSON ARAUJO; DOS SANTOS, IVANICE FERREIRA; FERREIRA, SERGIO LUIS COSTA; DOS SANTOS, ANA MARIA PINTO. Determination of micro and macro elements in iron supplements used for treatment of anemia and evaluation employing chemometric analysis tools. <em>RSC Advances</em>, v. 5, p. 54046-54052, 2015.</p><div class="pi-meta"><span class="tag-cit">7 cit. WoS · 7 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">SERGIO, L.C. FERREIRA; SANTOS, W. N. L.; SANTOS, I. F.; MARIO M.S. JUNIOR; SILVA, L. O. B.; BARBOSA, U. A.; SANTANA, FERNANDA A.; QUEIROZ, A. F. S. Strategies of sample preparation for speciation analysis of inorganic antimony using hydride generation atomic spectrometry. <em>Microchemical Journal</em>, v. 114, p. 22-31, 2014.</p><div class="pi-meta"><span class="tag-cit">46 cit. WoS · 46 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">BARBOSA, U.A.; BASTOS, LAIANA O.; SANTOS, I. F.; SERGIO, L.C. FERREIRA; SANTOS, A. M. P. Determination of Mercury in Iron Supplement Using Slurry Sampling and Cold Vapor Atomic Absorption Spectrometry. <em>Current Analytical Chemistry</em>, v. 11, p. 44-49, 2014.</p><div class="pi-meta"><span class="tag-cit">16 cit. WoS · 16 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">ANA, M.P. DOS SANTOS; CAMELLO, R. D.; VALE, A. E.; LIMA, J. S.; SANTOS IF; BARBOSA, U. A. Microscopic and Chemical Characterization of Flour of Fruits: An Alternative Source for Supplemental Feeding. <em>Journal of Food Processing & Technology</em>, v. 5, p. 386-392, 2014.</p></div>
+          <div class="pi"><p class="pi-ref">SANTOS, I. F.; BARBOSA, U.A.; SANTOS, A. M. P.; SANTOS, D. C.; LIMA, J. S.; MATOS, G. D. Multivariate analysis of the mineral content of raw and cooked okra (Abelmoschus esculentus L.). <em>Microchemical Journal</em>, v. 110, p. 439-443, 2013.</p><div class="pi-meta"><span class="tag-cit">34 cit. WoS · 40 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">BARBOSA, UENDERSON ARAUJO; SANTOS, IVANICE FERREIRA; SANTOS, ANA MARIA PINTO; SANTOS, DEBORA CORREIA; COSTA, GRENIVEL MOTA. Determination and Evaluation of the Metals and Metalloids in the Chapeu-de-couro (Echinodorus macrophyllus (Kunth) Micheli). <em>Biological Trace Element Research</em>, v. 154, p. 412-417, 2013.</p><div class="pi-meta"><span class="tag-cit">4 cit. WoS · 4 Scopus</span></div></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-book"></i>Capítulos de Livros <span class="acc-count">1</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">SOUZA, ELICLEIDE MOREIRA DE; SANTOS, IVANICE FERREIRA DOS. QUÍMICO EMPREENDEDOR: UMA PROPOSTA DE JOGO DIDÁTICO COMO FERRAMENTA DE ENSINO E APRENDIZAGEM DE QUÍMICA. In: Químico Empreendedor: Uma proposta de jogo didático como ferramenta de ensino e aprendizagem de química. 1.ed. Piracanjuba: Editora Conhecimento Livre, 2020, v. 1, p. 208-218.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-file-alt"></i>Outras Produções Bibliográficas <span class="acc-count">2</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; GIL, J. M.; GIL, F. J. M. Nuevas Tecnologías del Medio Ambiente. Valladolid: E.T.S. Ingenieros Industriales, 1996 (artigo).</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; GIL, F. J. M.; GIL, J. M. Métodos de depuración de efluyentes gaseosos, 1996 (artigo).</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MARCOS ══ -->
+    <div class="pub-panel" id="panel-marcos">
+      <div class="prof-header">
+        <div class="prof-av" style="background:linear-gradient(135deg,#1e4d8c,#2a6dd9)">MM</div>
+        <div>
+          <h2>Prof. Dr. Marcos de Oliveira Melo</h2>
+          <p>Fotocatálise · Nanomateriais · Adsorção · Química Ambiental</p>
+          <div class="ph-links">
+            <a href="http://lattes.cnpq.br/1777128013209684" target="_blank" class="ph-link"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <span class="stat-pill" style="background:#eef2ff;color:#1a3560">Atualizado: 27/04/2026</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head open" onclick="tog(this)"><h3><i class="fas fa-file-alt"></i>Artigos em Periódicos <span class="acc-count">2 + 1 aceito</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body open">
+          <div class="pi"><p class="pi-ref">ANJOS, T.T.; MELO, M.O.; SANTOS, K.; DE JESUS, T.B.; BRAGA, V.S.B.S. Photocatalytic degradation of cyanide species in cassava wastewater (Manipueira) using cobalt-doped titanium dioxide. <em>Next Research</em>, 2026.</p><div class="pi-meta"><span class="tag-doi">Aceito para publicação</span></div></div>
+          <div class="pi"><p class="pi-ref">MELO, M. O.; SILVA, L. A. Visible light-induced hydrogen production from glycerol aqueous solution on hybrid Pt–CdS–TiO2 photocatalysts. <em>Journal of Photochemistry and Photobiology A: Chemistry</em>, v. 226, p. 36-41, 2011.</p><div class="pi-meta"><span class="tag-cit">57 cit. WoS · 62 Scopus</span></div></div>
+          <div class="pi"><p class="pi-ref">MELO, M. O.; SILVA, L. A. Photocatalytic production of hydrogen: an innovative use for biomass derivatives. <em>JOURNAL OF THE BRAZILIAN CHEMICAL SOCIETY</em>, p. 1399, 2011.</p><div class="pi-meta"><span class="tag-cit">54 cit. WoS</span></div></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-book"></i>Livros <span class="acc-count">2</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">FERREIRA, M. R. J.; MELO, M. O.; FONSECA, J. S. L. Educação ao longo da vida: movimentos, perspectivas e possibilidades emancipatórias. 1.ed. Itapiranga-SC: Editora Schreiben, 2024. v. 1. 409p.</p></div>
+          <div class="pi"><p class="pi-ref">MELO, M. O. Educação e diversidade: itinerários formativos docentes e trajetórias para a formação cidadã. 1.ed. Itapiranga-SC: Schreiben, 2022.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VÂNIA ══ -->
+    <div class="pub-panel" id="panel-vania">
+      <div class="prof-header">
+        <div class="prof-av" style="background:linear-gradient(135deg,#5b2d8e,#8e44ad)">VR</div>
+        <div>
+          <h2>Profa. Dra. Vânia Rastelly de Sousa</h2>
+          <p>Química de Produtos Naturais · Fitoquímica · Gerenciamento de Resíduos Químicos</p>
+          <div class="ph-links">
+            <a href="http://lattes.cnpq.br/9550613321460915" target="_blank" class="ph-link"><i class="fas fa-external-link-alt"></i> Lattes</a>
+            <span class="stat-pill" style="background:#eef2ff;color:#1a3560">Atualizado: 26/08/2025</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head open" onclick="tog(this)"><h3><i class="fas fa-file-powerpoint"></i>Trabalhos Completos em Congressos <span class="acc-count">5</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body open">
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; BARBOSA, P. R.; OLIVEIRA, J. S. DESCARTE DE MEDICAMENTOS DOMICILIARES: NÍVEL DE CONHECIMENTO E HÁBITOS DE ALUNOS DE GRADUAÇÃO. In: I Congresso Sul-Americano de Resíduos Sólidos e Sustentabilidade, 2018, Gramado. <em>Sustentabilidade na Gestão de Resíduos Sólidos</em>, 2018.</p></div>
+          <div class="pi"><p class="pi-ref">FREITAS, E. M. P. C.; SOUSA, V. R.; BARBOSA, P. R. Avaliação de resíduos químicos em hortas comunitárias de Feira de Santana. In: VIII Congresso Brasileiro de Gestão Ambiental, 2017, Campo Grande. <em>Gestão Ambiental: Integração Cerrado/Pantanal</em>, 2017. v. 8.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; BARBOSA, P. R. Gestão de resíduos sólidos nas capitais brasileiras. In: VI Congresso Brasileiro de Gestão Ambiental, 2015, Porto Alegre. <em>Uso sustentável da água</em>, 2015. v. 6.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; ALMEIDA, M. O.; NOGUEIRA, E. M.; P. DE C., M.; SOUSA, L. A. Inventário dos resíduos químicos dos laboratórios de graduação da Universidade Estadual de Feira de Santana. In: V Congresso Brasileiro de Gestão Ambiental, 2014, Belo Horizonte. <em>Gestão Ambiental - Ações e comportamento</em>, 2014.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; ALMEIDA, M. O.; NOGUEIRA, E. M.; BARBOSA, P. R.; SOUSA, L. A. Diagnóstico dos resíduos químicos em almoxarifados da Universidade Estadual de Feira de Santana. In: V Congresso Brasileiro de Gestão Ambiental, 2014, Belo Horizonte. <em>Gestão Ambiental - Ações e comportamento</em>, 2014.</p></div>
+        </div>
+      </div>
+
+      <div class="acc">
+        <div class="acc-head" onclick="tog(this)"><h3><i class="fas fa-list-ul"></i>Resumos em Congressos <span class="acc-count">16</span></h3><i class="fas fa-chevron-down acc-chevron"></i></div>
+        <div class="acc-body">
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; ROCHA, D. L.; MIEDEMA, P.S.M. Conhecendo o solo e sua importância para a preservação ambiental. In: 13ª Jornada de Extensão da UEFS, 2019, Feira de Santana. v. 1.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; OLIVEIRA, V. M. M. Plásticos: o que mais precisamos saber sobre eles?. In: 13ª Jornada de Extensão da UEFS, 2019, Feira de Santana. v. 1.</p></div>
+          <div class="pi"><p class="pi-ref">SILVA, C. A. P.; ALVES, C. Q.; SOUSA, V. R.; MOTA, D. C. Quantificação de flavonoides totais e atividade antioxidante de Dioclea virgata. In: XI Simpósio Brasileiro de Farmacognosia e XVI Simpósio Latino-americano de Farmacobotânica, 2017, Curitiba.</p></div>
+          <div class="pi"><p class="pi-ref">DAVID, J. P.; MEDRADO, H. H.; SOARES, H. P.; SOUSA, V. R.; DAVID, J. M.; SOARES, D.; LOPEZ, J. A. Relação entre atividade antioxidante e teor de ácido rosmarínico em folhas de Plectranthus ornathus cultivadas in vitro. In: 34 Reunião Anual da SBQ, 2011, Florianópolis.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; CRUZ, FREDERICO GUARÉ; GUEDES, M. L. S. Derivados poliprenilados do floroglucinol de Kielmeyera coriacea. In: 29 Reunião Anual da SBQ, 2006, Águas de Lindóia. v. PN-209.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; CRUZ, FREDERICO GUARÉ; GUEDES, M. L. S. Novas xantonas de Kielmeyera lathrophyton. In: 29 Reunião da SBQ, 2006, Águas de Lindóia. v. PN-211.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; SOUSA, THYARA SABACK; LUCHESE, ANGÉLICA; BARBOSA, P. R.; GUEDES, MARIA LENISE S. Óleo essencial dos galhos de Sebastiania corniculata. In: II Simpósio Brasileiro de Óleos Essenciais, 2003, Campinas. v. 74, p. 179.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; LUCHESE, ANGÉLICA; BARBOSA, P. R.; ROQUE, NIDIA FRANCA; FREITAS, L. N.; QUEIROZ, L. P. Análise comparativa dos óleos essenciais de folhas, caule e inflorescências de Hyptis leucocephala (Labiatae). In: II Simpósio Brasileiro de Óleos Essenciais, 2003, Campinas. v. 74, p. 178.</p></div>
+          <div class="pi"><p class="pi-ref">MIRANDA, J. A.; QUEIROZ, L. P.; SOUSA, V. R.; LUCHESE, ANGÉLICA. Óleo essencial de Hyptis rugosa. In: II Simpósio Brasileiro de Óleos Essenciais, 2003, Campinas. v. 01, p. 177.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; CRUZ, FREDERICO GUARÉ; GUEDES, MARIA LENISE S.; SANTOS, NELSON ANTÔNIO SÁ. 4-fenilcumarinas preniladas de Kielmeyera argentea. In: 24ª Reunião Anual da SBQ, 2001, Poços de Caldas.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; CRUZ, FREDERICO GUARÉ. Confirmação da estrutura da xantona inédita: 1,7,8-triidroxi-2,2´-dimetilpirano(2´,3´:3,2)xantona. In: 53ª Reunião Anual da SBPC, 2001, Salvador.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; CRUZ, FREDERICO GUARÉ; GUEDES, M. L. S. Terpenos, Bifenil e Xantonas do caule com cascas de Kielmeyera sp (Clusiaceae). In: 23ª Reunião Anual da SBQ, 2000, Poços de Caldas.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; CRUZ, FREDERICO GUARÉ; GUEDES, M. L. S. Estudo fitoquímico de Kielmeyera sp. In: 22ª Reunião Anual da SBQ, 1999, Poços de Caldas.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; CRUZ, FREDERICO GUARÉ. Estudo fitoquímico do extrato da espécie Kielmeyera reticulata. In: XV Seminário Estudantil de Pesquisa, 1996, Salvador.</p></div>
+          <div class="pi"><p class="pi-ref">SOUSA, V. R.; CRUZ, FREDERICO GUARÉ. Estudo Químico das folhas de Escheweilera ovata. In: XIV Seminário Estudantil de Pesquisa, 1995, Salvador.</p></div>
+          <div class="pi"><p class="pi-ref">CRUZ, F. G.; SOUSA, V. R. Estudo Químico dos frutos de Escheweilera ovata. In: XIII Seminário Estudantil de Pesquisa, 1994, Salvador.</p></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="footer-container"></div>
+<script src="../assets/js/componentes.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('header-container').innerHTML = gerarHeader('publicacoes');
+  document.getElementById('footer-container').innerHTML = gerarFooter();
+  document.getElementById('breadcrumb-container').innerHTML = gerarBreadcrumb([
+    { texto: 'Home', href: '../index.html' },
+    { texto: 'Publicações', href: '#' },
+  ]);
+  inicializarNav();
+  document.querySelectorAll('.pub-aba').forEach(aba => {
+    aba.addEventListener('click', () => {
+      document.querySelectorAll('.pub-aba').forEach(a => a.classList.remove('ativa'));
+      document.querySelectorAll('.pub-panel').forEach(p => p.classList.remove('ativo'));
+      aba.classList.add('ativa');
+      document.getElementById('panel-' + aba.dataset.p).classList.add('ativo');
+    });
+  });
+});
+function tog(h){
+  h.classList.toggle('open');
+  h.nextElementSibling.classList.toggle('open');
+}
+</script>
+</body>
+</html>

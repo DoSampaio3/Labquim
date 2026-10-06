@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisador IC₅₀ | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <style>
+    .hero-ferramenta{background:linear-gradient(135deg,var(--azul-principal,#1a3560) 0%,var(--azul-medio,#2a6496) 100%);padding:48px 0 36px;color:#fff}
+    .hero-ferramenta h1{font-family:'Merriweather',serif;font-size:1.9rem;margin:8px 0;color:#fff}
+    .hero-ferramenta p{opacity:.85;max-width:600px;font-size:1rem;line-height:1.6}
+    .badge-tool{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 14px;font-size:.8rem;margin-bottom:12px}
+    .ic50-sec{padding:40px 0 60px;background:#f4f6fb}
+    .ic50-wrap{display:grid;grid-template-columns:280px 1fr;gap:22px;align-items:start}
+    @media(max-width:900px){
+      .ic50-wrap{grid-template-columns:1fr}
+      .side{order:2}
+      .main{order:1}
+    }
+    @media(max-width:768px){
+      .ic50-sec{padding:28px 0 44px}
+      .side-body{padding:12px}
+      .main-body{padding:12px}
+      .tbl-actions{gap:6px}
+      .tbtn{padding:8px 10px;font-size:.8rem}
+      .chart-area{height:280px}
+      .metrics{grid-template-columns:1fr}
+      .cards3{grid-template-columns:1fr}
+      .howto-sec{padding:36px 0 44px}
+    }
+    @media(max-width:480px){
+      .mtabs,.stabs{flex-wrap:wrap}
+      .mtab,.stab{flex:1;min-width:calc(50% - 3px)}
+      .metric{padding:10px 11px}
+      .met-val{font-size:1.15rem}
+    }
+
+    /* Sidebar */
+    .side{display:flex;flex-direction:column;gap:14px}
+    .side-card{background:#fff;border-radius:12px;box-shadow:0 3px 16px rgba(0,0,0,.07);overflow:hidden}
+    .side-head{padding:10px 14px;border-bottom:1px solid #eef1f6;font-size:.78rem;font-weight:700;color:#1a3560;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:6px}
+    .side-body{padding:14px}
+
+    /* Model tabs */
+    .mtabs{display:flex;gap:5px;margin-bottom:12px}
+    .mtab{flex:1;padding:8px 4px;border:1.5px solid #dde3ed;border-radius:8px;background:#f8fafc;color:#666;cursor:pointer;font-size:.78rem;font-weight:600;font-family:inherit;text-align:center;line-height:1.3;transition:all .15s}
+    .mtab.on{background:#1a3560;color:#fff;border-color:#1a3560}
+    .stabs{display:flex;gap:5px;margin-bottom:4px}
+    .stab{flex:1;padding:7px;border:1.5px solid #dde3ed;border-radius:8px;background:#f8fafc;color:#666;cursor:pointer;font-size:.78rem;font-weight:600;font-family:inherit;text-align:center;transition:all .15s}
+    .stab.on{background:#1a3560;color:#fff;border-color:#1a3560}
+    .cfg-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f0f3f8;font-size:.82rem}
+    .cfg-row:last-child{border-bottom:none}
+    .cfg-row label{color:#555}
+    .cfg-row select{padding:3px 7px;border:1.5px solid #dde3ed;border-radius:5px;font-size:.8rem;background:#f8fafc;font-family:inherit;cursor:pointer;outline:none}
+    .sample-btn{width:100%;padding:8px 10px;border:1.5px solid #dde3ed;border-radius:8px;background:#f8fafc;color:#444;cursor:pointer;font-size:.82rem;font-weight:600;font-family:inherit;transition:all .15s;text-align:left;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+    .sample-btn:last-child{margin-bottom:0}
+    .sample-btn:hover{background:#eef2ff;border-color:#1a3560;color:#1a3560}
+    .btn-export{width:100%;padding:11px;background:#1a3560;color:#fff;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s}
+    .btn-export:hover{background:#0f2040}
+    .btn-export:disabled{background:#aaa;cursor:not-allowed}
+
+    /* Main panel */
+    .main{display:flex;flex-direction:column;gap:18px}
+    .main-card{background:#fff;border-radius:12px;box-shadow:0 3px 16px rgba(0,0,0,.07);overflow:hidden}
+    .main-head{padding:11px 16px;border-bottom:1px solid #eef1f6;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+    .main-head-title{font-size:.82rem;font-weight:700;color:#1a3560;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:6px}
+    .main-body{padding:16px}
+
+    /* Data table */
+    .tbl-wrap{overflow-x:auto}
+    .dtbl{width:100%;border-collapse:collapse;font-size:.85rem}
+    .dtbl th{background:#f0f4ff;color:#1a3560;font-weight:700;padding:7px 9px;text-align:center;border-bottom:2px solid #c7d2fe;white-space:nowrap;font-size:.76rem;text-transform:uppercase;letter-spacing:.03em}
+    .dtbl th.left{text-align:left}
+    .dtbl td{padding:3px 4px;border-bottom:1px solid #eef1f6}
+    .dtbl tr:hover td{background:#f8faff}
+    .dtbl .rn{text-align:center;font-size:.75rem;color:#bbb;padding:3px 6px}
+    .dtbl input[type=number]{width:100%;padding:6px 7px;border:1.5px solid #dde3ed;border-radius:6px;font-size:.85rem;font-family:'Courier New',monospace;background:#fafbff;outline:none;text-align:center;-moz-appearance:textfield;transition:border .15s;box-sizing:border-box}
+    .dtbl input::-webkit-inner-spin-button{-webkit-appearance:none}
+    .dtbl input:focus{border-color:#2a6496;background:#fff}
+    .dtbl input.bad{border-color:#ef4444;background:#fff5f5}
+    .btn-delrow{background:none;border:none;cursor:pointer;color:#ddd;font-size:.9rem;padding:4px 6px;border-radius:4px;transition:color .15s}
+    .btn-delrow:hover{color:#ef4444}
+    .col-hd{display:flex;align-items:center;justify-content:center;gap:4px}
+    .btn-delcol{background:none;border:none;cursor:pointer;color:#ccc;font-size:.7rem;padding:1px 3px;transition:color .15s}
+    .btn-delcol:hover{color:#ef4444}
+    .btn-addcol{background:#eef2ff;border:1.5px dashed #c7d2fe;border-radius:5px;color:#2a6496;cursor:pointer;font-size:.72rem;font-weight:700;padding:2px 7px;font-family:inherit;transition:all .15s;white-space:nowrap}
+    .btn-addcol:hover{background:#1a3560;color:#fff;border-color:#1a3560}
+
+    .tbl-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .tbtn{padding:7px 14px;border-radius:7px;border:1.5px solid #dde3ed;background:#f8fafc;color:#444;cursor:pointer;font-size:.82rem;font-weight:600;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px}
+    .tbtn:hover{background:#eef2ff;border-color:#1a3560;color:#1a3560}
+    .tbtn.run{background:#1a3560;color:#fff;border-color:#1a3560}
+    .tbtn.run:hover{background:#0f2040}
+    .count-lbl{font-size:.78rem;color:#888}
+
+    /* Error box */
+    .err{display:none;background:#fff3f3;border:1.5px solid #fca5a5;border-radius:8px;padding:9px 13px;color:#c0392b;font-size:.83rem;align-items:center;gap:7px;margin-top:10px}
+    .err.on{display:flex}
+
+    /* Chart */
+    .chart-area{position:relative;width:100%;height:360px;background:#fafbff;border-radius:10px;border:2px dashed #dde3ed;overflow:hidden}
+    .chart-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#ccc;font-size:.9rem;text-align:center;pointer-events:none}
+    .chart-placeholder i{font-size:2.2rem;opacity:.35}
+    #ic50-canvas{display:block;width:100%!important;height:100%!important}
+
+    /* Results */
+    .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+    @media(max-width:560px){.metrics{grid-template-columns:1fr}}
+    .metric{background:#f0f5ff;border:1.5px solid #c7d2fe;border-radius:10px;padding:11px 13px}
+    .metric.hl{background:#e6f0ff;border-color:#1a3560}
+    .met-label{font-size:.68rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+    .met-val{font-size:1.35rem;font-weight:800;color:#1a3560;font-family:'Courier New',monospace;line-height:1}
+    .met-ci{font-size:.72rem;color:#666;margin-top:3px;font-family:'Courier New',monospace}
+    .met-sub{font-size:.75rem;color:#555;margin-top:3px}
+    .eq-box{background:#f0f5ff;border:1.5px solid #c7d2fe;border-radius:8px;padding:11px 14px;font-family:'Courier New',monospace;font-size:.86rem;color:#1a3560;line-height:1.85;white-space:pre-wrap;word-break:break-word}
+    .summ-tbl{width:100%;border-collapse:collapse;font-size:.84rem}
+    .summ-tbl th{background:#f0f4ff;color:#1a3560;font-weight:700;padding:7px 10px;text-align:left;border-bottom:2px solid #c7d2fe;font-size:.76rem;text-transform:uppercase}
+    .summ-tbl td{padding:6px 10px;border-bottom:1px solid #eef1f6;font-family:'Courier New',monospace;font-size:.8rem}
+    .summ-tbl tr:last-child td{border-bottom:none}
+
+    /* How-to section */
+    .howto-sec{padding:48px 0 60px;background:#fff}
+    .sec-h2{font-family:'Merriweather',serif;font-size:1.55rem;color:#1a3560;margin-bottom:8px}
+    .sec-sub{font-size:.97rem;color:#666;max-width:580px;margin-bottom:32px}
+    .steps{display:flex;flex-direction:column;gap:0}
+    .step{display:flex;gap:14px;padding:15px 0;border-bottom:1px solid #eef1f6}
+    .step:last-child{border-bottom:none}
+    .step-n{width:30px;height:30px;background:#1a3560;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.88rem;flex-shrink:0;margin-top:2px}
+    .step-body h4{font-size:.92rem;font-weight:700;color:#1a3560;margin-bottom:4px}
+    .step-body p{font-size:.85rem;color:#555;line-height:1.65}
+    .ic-inline{font-family:'Courier New',monospace;background:#eef2ff;border-radius:3px;padding:1px 5px;font-size:.85em;color:#1a3560}
+    .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+    @media(max-width:720px){.cards3{grid-template-columns:1fr}}
+    .info-card{background:#f8fafc;border-radius:12px;border:1.5px solid #e2e8f0;padding:22px}
+    .info-card .ico{font-size:1.9rem;margin-bottom:10px}
+    .info-card h4{font-size:.95rem;font-weight:700;color:#1a3560;margin-bottom:8px}
+    .info-card p,.info-card li{font-size:.86rem;color:#555;line-height:1.7}
+    .info-card ul{padding-left:16px}
+    .info-card li{margin-bottom:4px}
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+<div id="componentes-header"></div>
+
+<!-- Hero -->
+<section class="hero-ferramenta">
+  <div class="container">
+    <div class="badge-tool"><i class="fas fa-chart-line"></i> Ferramentas LabQuim</div>
+    <h1>📈 Analisador IC₅₀</h1>
+    <p>Insira dados de inibição manualmente, ajuste a curva dose-resposta (4PL ou regressão linear), calcule o IC₅₀ e exporte o gráfico em PNG.</p>
+  </div>
+</section>
+
+<!-- Ferramenta -->
+<section class="ic50-sec">
+  <div class="container">
+    <div class="ic50-wrap">
+
+      <!-- ── SIDEBAR ── -->
+      <div class="side">
+
+        <!-- Modelo -->
+        <div class="side-card">
+          <div class="side-head"><i class="fas fa-cogs"></i> Modelo e Escala</div>
+          <div class="side-body">
+            <div style="font-size:.75rem;font-weight:700;color:#888;margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em">Modelo de ajuste</div>
+            <div class="mtabs">
+              <button class="mtab on" data-m="4pl">Sigmoidal<br><small>4PL</small></button>
+              <button class="mtab" data-m="linear">Linear</button>
+              <button class="mtab" data-m="log">Log-<br>Linear</button>
+            </div>
+            <div style="font-size:.75rem;font-weight:700;color:#888;margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em">Escala eixo X</div>
+            <div class="stabs">
+              <button class="stab on" data-s="log">Logarítmica</button>
+              <button class="stab" data-s="lin">Linear</button>
+            </div>
+            <div style="margin-top:12px">
+              <div class="cfg-row"><label>Intervalo de confiança</label><select id="cfgCI"><option value="0.05">95%</option><option value="0.1">90%</option></select></div>
+              <div class="cfg-row"><label>Iterações (4PL)</label><select id="cfgIt"><option value="300">300</option><option value="500">500</option><option value="150">150</option></select></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Exemplos -->
+        <div class="side-card">
+          <div class="side-head"><i class="fas fa-flask"></i> Dados de Exemplo</div>
+          <div class="side-body">
+            <button class="sample-btn" id="btnS4pl"><i class="fas fa-play" style="font-size:.7rem;color:#2a6496"></i> Curva Sigmoidal (4PL)</button>
+            <button class="sample-btn" id="btnSlin"><i class="fas fa-play" style="font-size:.7rem;color:#2a6496"></i> Regressão Linear</button>
+            <p style="font-size:.75rem;color:#aaa;margin-top:6px">Clique para preencher a tabela com dados demonstrativos.</p>
+          </div>
+        </div>
+
+        <!-- Exportar -->
+        <div class="side-card">
+          <div class="side-head"><i class="fas fa-download"></i> Exportar</div>
+          <div class="side-body">
+            <button class="btn-export" id="btnPNG" disabled>
+              <i class="fas fa-image"></i> Exportar gráfico em PNG
+            </button>
+            <p style="font-size:.74rem;color:#aaa;margin-top:8px;text-align:center">Disponível após gerar o gráfico.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── MAIN ── -->
+      <div class="main">
+
+        <!-- Tabela de entrada -->
+        <div class="main-card">
+          <div class="main-head">
+            <span class="main-head-title"><i class="fas fa-table"></i> Entrada de Dados</span>
+            <span class="count-lbl" id="countLbl"></span>
+          </div>
+          <div class="main-body">
+            <div class="tbl-wrap">
+              <table class="dtbl" id="dtbl">
+                <thead><tr id="thead"></tr></thead>
+                <tbody id="tbody"></tbody>
+              </table>
+            </div>
+            <div class="err" id="errBox"><i class="fas fa-exclamation-circle"></i><span id="errMsg">Erro.</span></div>
+            <div class="tbl-actions">
+              <button class="tbtn" id="btnAddRow"><i class="fas fa-plus"></i> Linha</button>
+              <button class="tbtn" id="btnClear"><i class="fas fa-trash-alt"></i> Limpar</button>
+              <button class="tbtn run" id="btnRun"><i class="fas fa-play"></i> Analisar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico -->
+        <div class="main-card">
+          <div class="main-head">
+            <span class="main-head-title" id="chartTitle"><i class="fas fa-chart-line"></i> Curva Dose-Resposta</span>
+          </div>
+          <div class="main-body">
+            <div class="chart-area" id="chartArea">
+              <div class="chart-placeholder" id="chartEmpty">
+                <i class="fas fa-chart-line"></i>
+                <span>Preencha a tabela e clique em <strong>Analisar</strong></span>
+              </div>
+              <canvas id="ic50Canvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resultados (oculto até análise) -->
+        <div id="resPanel" style="display:none;display:flex;flex-direction:column;gap:18px">
+
+          <div class="main-card">
+            <div class="main-head"><span class="main-head-title"><i class="fas fa-calculator"></i> Parâmetros do Modelo</span></div>
+            <div class="main-body">
+              <div class="metrics" id="metricsGrid"></div>
+              <div class="eq-box" id="eqBox"></div>
+            </div>
+          </div>
+
+          <div class="main-card">
+            <div class="main-head"><span class="main-head-title"><i class="fas fa-list"></i> Resumo por Concentração</span></div>
+            <div class="main-body" style="overflow-x:auto">
+              <table class="summ-tbl">
+                <thead><tr><th>Concentração</th><th>Média</th><th>Desv. Padrão</th><th>SEM</th><th>N</th></tr></thead>
+                <tbody id="summTbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Como Usar -->
+<section class="howto-sec">
+  <div class="container">
+    <h2 class="sec-h2">Como Usar o Analisador IC₅₀</h2>
+    <p class="sec-sub">Siga os passos abaixo para inserir seus dados e obter a curva dose-resposta com o IC₅₀ calculado.</p>
+
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-body"><h4>Escolha o modelo</h4><p>No painel lateral, selecione <strong>Sigmoidal 4PL</strong> para curvas típicas dose-resposta (recomendado para IC₅₀), <strong>Linear</strong> para relações proporcionais, ou <strong>Log-Linear</strong> para eixo logarítmico. Defina também a escala do eixo X.</p></div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-body"><h4>Insira os dados na tabela</h4><p>Preencha a coluna <strong>Concentração</strong> com valores crescentes (ex: <span class="ic-inline">0.001</span>, <span class="ic-inline">0.01</span>, <span class="ic-inline">0.1</span>…). Nas colunas de réplica, insira os valores de inibição (%). Use <strong>+ Linha</strong> para mais concentrações e <strong>+ Réplica</strong> para mais replicatas. Mínimo: 4 pontos para 4PL, 2 para Linear.</p></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-body"><h4>Clique em Analisar</h4><p>O sistema calcula automaticamente a média de cada concentração, ajusta a curva ao modelo selecionado e exibe o gráfico. Para o 4PL, uma linha tracejada vermelha indica o IC₅₀.</p></div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-body"><h4>Interprete os resultados</h4><p>O <strong>IC₅₀</strong> é a concentração que produz 50% do efeito máximo. O <strong>R²</strong> indica qualidade do ajuste (ideal ≥ 0.99). Para 4PL, o coeficiente de Hill (H) indica a inclinação da curva.</p></div></div>
+      <div class="step"><div class="step-n">5</div><div class="step-body"><h4>Exporte o gráfico</h4><p>Após gerar a análise, clique em <strong>Exportar gráfico em PNG</strong> no painel lateral. O arquivo é salvo em alta resolução.</p></div></div>
+    </div>
+
+    <div class="cards3">
+      <div class="info-card"><div class="ico">🧬</div><h4>O que é IC₅₀?</h4><p>IC₅₀ (<em>Inhibitory Concentration 50%</em>) é a concentração de uma substância que inibe 50% de uma função biológica. É o principal parâmetro de potência em estudos farmacológicos e bioquímicos.</p></div>
+      <div class="info-card"><div class="ico">📐</div><h4>Modelo 4PL</h4><ul><li><strong>Base (b):</strong> resposta mínima</li><li><strong>Topo (t):</strong> resposta máxima</li><li><strong>IC₅₀:</strong> concentração no ponto médio</li><li><strong>H (Hill):</strong> inclinação da curva sigmoidal</li></ul></div>
+      <div class="info-card"><div class="ico">💡</div><h4>Dicas</h4><ul><li>Use mínimo <strong>6 concentrações</strong> para o 4PL</li><li>Inclua <strong>3 réplicas</strong> por concentração</li><li>Cubra toda a faixa de resposta (0–100%)</li><li>Verifique se <strong>R² ≥ 0.99</strong></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<div id="componentes-footer"></div>
+
+<script src="../../assets/js/chart.umd.js"></script>
+<script src="../../assets/js/componentes.js"></script>
+<script>
+/* ── Integração com o site ── */
+document.getElementById('componentes-header').innerHTML = gerarHeader('ferramentas');
+document.getElementById('componentes-footer').innerHTML = gerarFooter();
+inicializarNav();
+
+/* ══════════════════════════════════
+   ESTADO GLOBAL
+══════════════════════════════════ */
+var numCols  = 3;
+var rows     = [];
+var curModel = '4pl';
+var curScale = 'log';
+var chartInst = null;
+var lastResult = null;
+
+/* ══════════════════════════════════
+   MATEMÁTICA — 4PL (Levenberg-Marquardt)
+══════════════════════════════════ */
+function f4pl(x, b, t, ic, h) {
+  return b + (t - b) / (1 + Math.pow(x / ic, h));
+}
+
+function fit4PL(xs, ys, maxIt) {
+  if (xs.length < 4) throw new Error('Mínimo 4 pontos para o modelo 4PL.');
+  var n = xs.length;
+  var sy = ys.slice().sort(function(a,b){return a-b;});
+  var top = sy[n-1], bot = sy[0], mid = (top+bot)/2;
+  var bi = 0, bd = Infinity;
+  for (var i=0;i<n;i++){var d=Math.abs(ys[i]-mid);if(d<bd){bd=d;bi=i;}}
+  var p = {b:bot, t:top, ic:xs[bi]||1, h: ys[0]<ys[n-1]?1:-1};
+  var lam=0.01, tol=1e-10;
+
+  function residuals(pp) {
+    return ys.map(function(y,i){ return y - f4pl(xs[i],pp.b,pp.t,pp.ic,pp.h); });
+  }
+  function ssq(r) { return r.reduce(function(s,v){return s+v*v;},0); }
+  function jacobian(pp) {
+    return xs.map(function(x){
+      var r=x/pp.ic, pw=Math.pow(r,pp.h), D=1+pw, D2=D*D;
+      var dB = 1/D;
+      var dT = pw/D;
+      var dIC= (pp.t-pp.b)*pp.h*pw/(pp.ic*D2);
+      var dH = -(pp.t-pp.b)*pw*Math.log(r>0?r:1e-30)/D2;
+      return [dB, dT, dIC, dH];
+    });
+  }
+  function solve(A, b) {
+    var N=4, M=A.map(function(row,i){return row.concat([b[i]]);});
+    for (var c=0;c<N;c++){
+      var piv=c;
+      for(var r=c+1;r<N;r++) if(Math.abs(M[r][c])>Math.abs(M[piv][c])) piv=r;
+      var tmp=M[c];M[c]=M[piv];M[piv]=tmp;
+      if(Math.abs(M[c][c])<1e-14) continue;
+      for(var r2=c+1;r2<N;r2++){var f=M[r2][c]/M[c][c];for(var j=c;j<=N;j++)M[r2][j]-=f*M[c][j];}
+    }
+    var x2=new Array(N).fill(0);
+    for(var i=N-1;i>=0;i--){x2[i]=M[i][N];for(var j2=i+1;j2<N;j2++)x2[i]-=M[i][j2]*x2[j2];if(Math.abs(M[i][i])>1e-14)x2[i]/=M[i][i];}
+    return x2;
+  }
+
+  var res=residuals(p), ssR=ssq(res), conv=false;
+  for (var it=0;it<maxIt;it++){
+    var J=jacobian(p), JtJ=[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], Jtr=[0,0,0,0];
+    for(var i2=0;i2<n;i2++) for(var a=0;a<4;a++){Jtr[a]+=J[i2][a]*res[i2];for(var bb=0;bb<4;bb++) JtJ[a][bb]+=J[i2][a]*J[i2][bb];}
+    var D4=JtJ.map(function(row,i){return row.map(function(v,j){return i===j?v*(1+lam):v;});});
+    var delta=solve(D4,Jtr);
+    var pn={b:p.b+delta[0], t:p.t+delta[1], ic:Math.max(p.ic+delta[2],1e-30), h:p.h+delta[3]};
+    var rn=residuals(pn), sn=ssq(rn);
+    if(sn<ssR){var imp=(ssR-sn)/(ssR+1e-15);p=pn;res=rn;ssR=sn;lam*=0.4;if(imp<tol){conv=true;break;}}
+    else lam*=6;
+  }
+  var ym=ys.reduce(function(a,v){return a+v;},0)/n;
+  var ssTot=ys.reduce(function(s,v){return s+(v-ym)*(v-ym);},0);
+  var r2=ssTot>0?1-ssR/ssTot:0;
+  return {type:'4pl', params:p, r2:r2, conv:conv, ssRes:ssR};
+}
+
+/* ── Regressão Linear ── */
+function fitLinear(xs, ys) {
+  if (xs.length < 2) throw new Error('Mínimo 2 pontos para regressão linear.');
+  var n=xs.length, sx=0,sy=0,sxy=0,sx2=0;
+  for(var i=0;i<n;i++){sx+=xs[i];sy+=ys[i];sxy+=xs[i]*ys[i];sx2+=xs[i]*xs[i];}
+  var den=n*sx2-sx*sx;
+  if(Math.abs(den)<1e-14) throw new Error('Pontos colineares — regressão inválida.');
+  var a=(n*sxy-sx*sy)/den, b=(sy-a*sx)/n;
+  var ym=sy/n, ssRes=0, ssTot=0;
+  for(var i2=0;i2<n;i2++){var pred=a*xs[i2]+b;ssRes+=(ys[i2]-pred)*(ys[i2]-pred);ssTot+=(ys[i2]-ym)*(ys[i2]-ym);}
+  var r2=ssTot>0?1-ssRes/ssTot:0;
+  return {type:'linear', a:a, b:b, r2:r2, ssRes:ssRes};
+}
+
+function fitLogLinear(xs, ys) {
+  var lxs=xs.map(function(x){if(x<=0)throw new Error('Concentração deve ser > 0 para escala log.');return Math.log10(x);});
+  var res=fitLinear(lxs,ys);
+  res.type='log';
+  return res;
+}
+
+/* ── Resumo por concentração ── */
+function summarize(pts) {
+  return pts.map(function(p){
+    var n=p.r.length;
+    var mean=p.r.reduce(function(a,v){return a+v;},0)/n;
+    var vr=n>1?p.r.reduce(function(s,v){return s+(v-mean)*(v-mean);},0)/(n-1):0;
+    var sd=Math.sqrt(vr), sem=n>1?sd/Math.sqrt(n):0;
+    return {c:p.c, mean:mean, sd:sd, sem:sem, n:n};
+  });
+}
+
+/* ── Formatar número ── */
+function fmt(v, d) {
+  if (v===null||v===undefined||!isFinite(v)) return '—';
+  d = d||4;
+  if (Math.abs(v)<0.001||Math.abs(v)>=100000) return v.toExponential(d);
+  return v.toFixed(d);
+}
+
+/* ══════════════════════════════════
+   TABELA DE ENTRADA
+══════════════════════════════════ */
+function emptyRow() { return {c:'', v:Array(numCols).fill('')}; }
+
+function renderHeader() {
+  var tr = document.getElementById('thead');
+  tr.innerHTML = '';
+  // Nº
+  var th0=document.createElement('th'); th0.style.width='32px'; th0.textContent='#'; tr.appendChild(th0);
+  // Concentração
+  var th1=document.createElement('th'); th1.className='left'; th1.style.minWidth='120px'; th1.textContent='Concentração'; tr.appendChild(th1);
+  // Réplicas
+  for (var c=0; c<numCols; c++) {
+    var th=document.createElement('th'); th.style.minWidth='100px';
+    var wrap=document.createElement('div'); wrap.className='col-hd';
+    var sp=document.createElement('span'); sp.textContent='Réplica '+(c+1); wrap.appendChild(sp);
+    if (numCols>1) {
+      var bd=document.createElement('button'); bd.className='btn-delcol'; bd.title='Remover coluna'; bd.textContent='✕';
+      (function(ci){bd.addEventListener('click',function(){delCol(ci);});})(c);
+      wrap.appendChild(bd);
+    }
+    if (c===numCols-1) {
+      var ba=document.createElement('button'); ba.className='btn-addcol'; ba.textContent='+ Réplica';
+      ba.addEventListener('click', addCol); wrap.appendChild(ba);
+    }
+    th.appendChild(wrap); tr.appendChild(th);
+  }
+  // Delete col
+  var thd=document.createElement('th'); thd.style.width='30px'; tr.appendChild(thd);
+}
+
+function renderBody() {
+  var tbody=document.getElementById('tbody'); tbody.innerHTML='';
+  rows.forEach(function(row,idx){
+    var tr=document.createElement('tr');
+    // nº
+    var td0=document.createElement('td'); td0.className='rn'; td0.textContent=idx+1; tr.appendChild(td0);
+    // concentração
+    var tdc=document.createElement('td');
+    var ic=document.createElement('input'); ic.type='number'; ic.min='0'; ic.step='any'; ic.value=row.c; ic.placeholder='0.0';
+    ic.addEventListener('input',(function(ri){return function(){rows[ri].c=this.value;updateCount();};})(idx));
+    ic.addEventListener('keydown', handleKey);
+    tdc.appendChild(ic); tr.appendChild(tdc);
+    // réplicas
+    for (var c=0;c<numCols;c++){
+      var tdv=document.createElement('td');
+      var iv=document.createElement('input'); iv.type='number'; iv.step='any';
+      iv.value=row.v[c]!==undefined?row.v[c]:''; iv.placeholder='—';
+      (function(ri,ci){iv.addEventListener('input',function(){rows[ri].v[ci]=this.value;});})(idx,c);
+      iv.addEventListener('keydown', handleKey);
+      tdv.appendChild(iv); tr.appendChild(tdv);
+    }
+    // delete row
+    var tdd=document.createElement('td');
+    var bd=document.createElement('button'); bd.className='btn-delrow'; bd.innerHTML='✕';
+    (function(ri){bd.addEventListener('click',function(){rows.splice(ri,1);renderBody();updateCount();});})(idx);
+    tdd.appendChild(bd); tr.appendChild(tdd);
+    tbody.appendChild(tr);
+  });
+  updateCount();
+}
+
+function handleKey(e) {
+  var ri=parseInt(this.closest('tr').rowIndex)-1; // -1 for thead
+  if (e.key==='Enter') {
+    e.preventDefault();
+    if (ri===rows.length-1) addRow();
+    var nextRow=document.getElementById('tbody').rows[ri+1];
+    if (nextRow) nextRow.querySelector('input').focus();
+  }
+}
+
+function updateCount() {
+  var filled=rows.filter(function(r){return r.c!=='';}).length;
+  document.getElementById('countLbl').textContent=filled+' linha'+(filled!==1?'s':'');
+}
+
+function addRow() {
+  rows.push(emptyRow());
+  renderBody();
+  setTimeout(function(){
+    var tbody=document.getElementById('tbody');
+    if(tbody.rows.length>0) tbody.rows[tbody.rows.length-1].querySelector('input').focus();
+  },30);
+}
+
+function addCol() {
+  numCols++;
+  rows.forEach(function(r){r.v.push('');});
+  renderHeader(); renderBody();
+}
+
+function delCol(ci) {
+  if(numCols<=1) return;
+  numCols--;
+  rows.forEach(function(r){r.v.splice(ci,1);});
+  renderHeader(); renderBody();
+}
+
+function clearTable() {
+  if(!confirm('Limpar todos os dados?')) return;
+  rows=[];
+  for(var i=0;i<7;i++) rows.push(emptyRow());
+  renderHeader(); renderBody();
+  hideResults();
+}
+
+function loadSample(key) {
+  var samples = {
+    s4pl: [[0.001,[3,2,4]],[0.01,[5,6,5]],[0.1,[14,15,13]],[1,[43,45,42]],[10,[72,70,73]],[100,[90,91,89]],[1000,[97,96,98]]],
+    slin: [[10,[15]],[20,[29]],[30,[42]],[40,[55]],[50,[68]],[60,[82]],[70,[95]],[80,[108]]],
+  };
+  var data=samples[key];
+  var newCols=Math.max.apply(null,data.map(function(d){return d[1].length;}));
+  numCols=newCols;
+  rows=data.map(function(d){var v=d[1].map(String);while(v.length<numCols)v.push('');return{c:String(d[0]),v:v};});
+  renderHeader(); renderBody();
+}
+
+function getPoints() {
+  var map={}, order=[];
+  rows.forEach(function(row){
+    if(row.c===''||row.c===null) return;
+    var c=Number(row.c);
+    if(!isFinite(c)||c<=0) return;
+    if(!map[c]){map[c]=[];order.push(c);}
+    row.v.forEach(function(val){var n=Number(val);if(val!==''&&isFinite(n)) map[c].push(n);});
+  });
+  if(!order.length) throw new Error('Nenhum dado válido encontrado. Preencha Concentração e pelo menos uma Réplica.');
+  order.sort(function(a,b){return a-b;});
+  return order.map(function(c){
+    if(!map[c]||!map[c].length) throw new Error('Concentração '+c+' não possui valores de resposta.');
+    return {c:c, r:map[c]};
+  });
+}
+
+/* ══════════════════════════════════
+   ANÁLISE PRINCIPAL
+══════════════════════════════════ */
+function showErr(msg){
+  var box=document.getElementById('errBox');
+  if(msg){box.classList.add('on');document.getElementById('errMsg').textContent=msg;}
+  else box.classList.remove('on');
+}
+
+function hideResults(){
+  document.getElementById('resPanel').style.display='none';
+  document.getElementById('chartEmpty').style.display='flex';
+  document.getElementById('ic50Canvas').style.display='none';
+  document.getElementById('btnPNG').disabled=true;
+  if(chartInst){chartInst.destroy();chartInst=null;}
+  lastResult=null;
+}
+
+function analyze() {
+  showErr('');
+  var alpha=parseFloat(document.getElementById('cfgCI').value);
+  var maxIt=parseInt(document.getElementById('cfgIt').value);
+
+  try {
+    var pts=getPoints();
+    var summ=summarize(pts);
+    var xs=summ.map(function(s){return s.c;});
+    var ys=summ.map(function(s){return s.mean;});
+    var xMin=xs[0], xMax=xs[xs.length-1];
+
+    var fit, curve;
+    if(curModel==='4pl'){
+      fit=fit4PL(xs,ys,maxIt);
+      var p=fit.params;
+      var lMin=Math.log10(xMin/5), lMax=Math.log10(xMax*5), nPts=200;
+      curve=[];
+      for(var i=0;i<nPts;i++){var x=Math.pow(10,lMin+(lMax-lMin)*i/(nPts-1));curve.push({x:x,y:f4pl(x,p.b,p.t,p.ic,p.h)});}
+    } else if(curModel==='linear'){
+      fit=fitLinear(xs,ys);
+      curve=[];
+      for(var i2=0;i2<100;i2++){var x2=xMin+(xMax-xMin)*i2/99;curve.push({x:x2,y:fit.a*x2+fit.b});}
+    } else {
+      fit=fitLogLinear(xs,ys);
+      var lMin2=Math.log10(xMin/5), lMax2=Math.log10(xMax*5);
+      curve=[];
+      for(var i3=0;i3<200;i3++){var x3=Math.pow(10,lMin2+(lMax2-lMin2)*i3/199);curve.push({x:x3,y:fit.a*Math.log10(x3)+fit.b});}
+    }
+
+    lastResult={fit:fit, summ:summ, curve:curve, xs:xs, ys:ys, alpha:alpha};
+    showMetrics();
+    drawChart();
+    showSummTable(summ);
+    document.getElementById('resPanel').style.display='flex';
+    document.getElementById('btnPNG').disabled=false;
+
+  } catch(e) {
+    showErr(e.message);
+  }
+}
+
+/* ══════════════════════════════════
+   EXIBIR RESULTADOS
+══════════════════════════════════ */
+function showMetrics() {
+  var f=lastResult.fit, alpha=lastResult.alpha, cp=Math.round((1-alpha)*100);
+  var mg='', eq='';
+
+  if(f.type==='4pl'){
+    var p=f.params;
+    mg=
+      '<div class="metric hl"><div class="met-label">IC₅₀</div><div class="met-val">'+fmt(p.ic)+'</div><div class="met-sub">Concentração inibição 50%</div></div>'+
+      '<div class="metric"><div class="met-label">Hill Slope (H)</div><div class="met-val">'+fmt(p.h,3)+'</div><div class="met-sub">Inclinação sigmoidal</div></div>'+
+      '<div class="metric"><div class="met-label">R²</div><div class="met-val">'+fmt(f.r2,5)+'</div><div class="met-sub">'+(f.conv?'✓ Convergiu':'⚠ Verificar')+'</div></div>'+
+      '<div class="metric"><div class="met-label">Topo / Base</div><div class="met-val">'+fmt(p.t,2)+' / '+fmt(p.b,2)+'</div><div class="met-sub">Resp. máx / mín</div></div>';
+    eq='Modelo 4PL (Logístico 4 Parâmetros)\n'+
+       'y = '+fmt(p.b,3)+' + ('+fmt(p.t,3)+' − '+fmt(p.b,3)+') / (1 + (x / '+fmt(p.ic,4)+')^'+fmt(p.h,3)+')\n\n'+
+       'IC₅₀  = '+fmt(p.ic,6)+'\n'+
+       'H     = '+fmt(p.h,5)+'\n'+
+       'Topo  = '+fmt(p.t,5)+'\n'+
+       'Base  = '+fmt(p.b,5)+'\n'+
+       'R²    = '+fmt(f.r2,7);
+    document.getElementById('chartTitle').innerHTML='<i class="fas fa-chart-line"></i> Curva Sigmoidal — Modelo 4PL';
+  } else {
+    var lbl=f.type==='log'?'log₁₀(x)':'x';
+    mg=
+      '<div class="metric hl"><div class="met-label">Coef. Angular (a)</div><div class="met-val">'+fmt(f.a)+'</div></div>'+
+      '<div class="metric hl"><div class="met-label">Intercepto (b)</div><div class="met-val">'+fmt(f.b)+'</div></div>'+
+      '<div class="metric"><div class="met-label">R²</div><div class="met-val">'+fmt(f.r2,5)+'</div></div>'+
+      '<div class="metric"><div class="met-label">IC₅₀ estimado</div><div class="met-val">'+(f.type==='linear'?fmt((50-f.b)/f.a):fmt(Math.pow(10,(50-f.b)/f.a)))+'</div><div class="met-sub">Onde y = 50</div></div>';
+    eq='Modelo '+(f.type==='log'?'Log-Linear':'Linear')+'\n'+
+       'y = '+fmt(f.a,5)+' × '+lbl+' + ('+fmt(f.b,5)+')\n\n'+
+       'a  = '+fmt(f.a,7)+'\n'+
+       'b  = '+fmt(f.b,7)+'\n'+
+       'R² = '+fmt(f.r2,7);
+    document.getElementById('chartTitle').innerHTML='<i class="fas fa-chart-line"></i> Curva — '+(f.type==='log'?'Regressão Log-Linear':'Regressão Linear');
+  }
+
+  document.getElementById('metricsGrid').innerHTML=mg;
+  document.getElementById('eqBox').textContent=eq;
+}
+
+function showSummTable(summ) {
+  document.getElementById('summTbody').innerHTML=summ.map(function(s){
+    return '<tr><td>'+fmt(s.c,4)+'</td><td>'+fmt(s.mean,3)+'</td><td>'+fmt(s.sd,3)+'</td><td>'+fmt(s.sem,3)+'</td><td>'+s.n+'</td></tr>';
+  }).join('');
+}
+
+/* ══════════════════════════════════
+   GRÁFICO
+══════════════════════════════════ */
+function drawChart() {
+  var d=lastResult, f=d.fit, summ=d.summ;
+  var logX=(curScale==='log')&&(f.type==='4pl'||f.type==='log');
+
+  document.getElementById('chartEmpty').style.display='none';
+  var canvas=document.getElementById('ic50Canvas');
+  canvas.style.display='block';
+  if(chartInst){chartInst.destroy();chartInst=null;}
+
+  var clr={line:'#1a3560',pts:'#d97706',ic50:'#dc2626',grid:'rgba(0,0,0,0.05)',txt:'#4a5568'};
+
+  var ptData=summ.map(function(s){return{x:s.c,y:s.mean,sem:s.sem};});
+  var lnData=d.curve.map(function(p){return{x:p.x,y:p.y};});
+
+  /* Plugin barras de erro */
+  var errPlugin={
+    id:'errBars',
+    afterDatasetsDraw:function(ch){
+      var c2=ch.ctx,xs2=ch.scales.x,ys2=ch.scales.y;
+      ptData.forEach(function(s){
+        if(!s.sem||s.sem<=0) return;
+        var xp=xs2.getPixelForValue(s.x),yT=ys2.getPixelForValue(s.y+s.sem),yB=ys2.getPixelForValue(s.y-s.sem);
+        c2.save();c2.strokeStyle=clr.pts;c2.lineWidth=1.8;
+        c2.beginPath();c2.moveTo(xp,yT);c2.lineTo(xp,yB);c2.stroke();
+        c2.beginPath();c2.moveTo(xp-4,yT);c2.lineTo(xp+4,yT);c2.stroke();
+        c2.beginPath();c2.moveTo(xp-4,yB);c2.lineTo(xp+4,yB);c2.stroke();
+        c2.restore();
+      });
+    }
+  };
+
+  /* Plugin linha IC50 */
+  var ic50Plugin={
+    id:'ic50Line',
+    afterDatasetsDraw:function(ch){
+      if(f.type!=='4pl') return;
+      var p=f.params,c2=ch.ctx,xs2=ch.scales.x,ys2=ch.scales.y,ca=ch.chartArea;
+      var xp=xs2.getPixelForValue(p.ic);
+      if(xp<ca.left||xp>ca.right) return;
+      var ic50y=f4pl(p.ic,p.b,p.t,p.ic,p.h),yp=ys2.getPixelForValue(ic50y);
+      c2.save();
+      c2.strokeStyle=clr.ic50;c2.lineWidth=1.8;c2.setLineDash([6,4]);
+      c2.beginPath();c2.moveTo(xp,ca.top);c2.lineTo(xp,ca.bottom);c2.stroke();
+      c2.beginPath();c2.moveTo(ca.left,yp);c2.lineTo(ca.right,yp);c2.stroke();
+      c2.setLineDash([]);
+      c2.fillStyle=clr.ic50;c2.font='bold 11px system-ui,sans-serif';
+      c2.fillText('IC\u2085\u2080 = '+fmt(p.ic,3),xp+6,ca.top+16);
+      c2.restore();
+    }
+  };
+
+  var xCfg={
+    type:logX?'logarithmic':'linear',
+    title:{display:true,text:'Concentração',color:clr.txt,font:{size:12}},
+    ticks:{color:clr.txt,font:{size:10},callback:function(v){return logX?v.toExponential(0):fmt(v,2);}},
+    grid:{color:clr.grid}
+  };
+  if(logX){
+    var xs_=ptData.map(function(d){return d.x;});
+    xCfg.min=Math.min.apply(null,xs_)*0.2;
+    xCfg.max=Math.max.apply(null,xs_)*5;
+  }
+
+  chartInst=new Chart(canvas.getContext('2d'),{
+    type:'scatter',
+    data:{
+      datasets:[
+        {label:'Curva ajustada',data:lnData,type:'line',borderColor:clr.line,borderWidth:2.5,pointRadius:0,fill:false,tension:0,order:1,parsing:false},
+        {label:'Dados experimentais',data:ptData,type:'scatter',backgroundColor:clr.pts,borderColor:clr.pts,pointRadius:5,pointHoverRadius:7,order:2,parsing:false}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,animation:{duration:300},
+      plugins:{
+        legend:{display:true,labels:{color:clr.txt,font:{size:11},usePointStyle:true,boxWidth:8}},
+        tooltip:{callbacks:{label:function(ctx){var r=ctx.raw;return 'Conc: '+fmt(r.x,3)+' | Resp: '+fmt(r.y,3);}},
+          backgroundColor:'#fff',titleColor:clr.txt,bodyColor:clr.txt,borderColor:'#dde3ed',borderWidth:1}
+      },
+      scales:{
+        x:xCfg,
+        y:{title:{display:true,text:'Resposta (%)',color:clr.txt,font:{size:12}},ticks:{color:clr.txt,font:{size:10}},grid:{color:clr.grid}}
+      }
+    },
+    plugins:[errPlugin,ic50Plugin]
+  });
+}
+
+/* ══════════════════════════════════
+   EXPORTAR PNG
+══════════════════════════════════ */
+function exportPNG() {
+  if(!chartInst) return;
+  var a=document.createElement('a');
+  a.href=chartInst.canvas.toDataURL('image/png',1.0);
+  a.download='labquim-ic50.png';
+  a.click();
+}
+
+/* ══════════════════════════════════
+   WIRING — eventos
+══════════════════════════════════ */
+// Model tabs
+document.querySelectorAll('.mtab').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.mtab').forEach(function(b){b.classList.remove('on');});
+    btn.classList.add('on');
+    curModel=btn.dataset.m;
+  });
+});
+// Scale tabs
+document.querySelectorAll('.stab').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.stab').forEach(function(b){b.classList.remove('on');});
+    btn.classList.add('on');
+    curScale=btn.dataset.s;
+    if(lastResult) drawChart();
+  });
+});
+// Table actions
+document.getElementById('btnAddRow').addEventListener('click', addRow);
+document.getElementById('btnClear').addEventListener('click', clearTable);
+document.getElementById('btnRun').addEventListener('click', analyze);
+// Samples
+document.getElementById('btnS4pl').addEventListener('click',function(){
+  loadSample('s4pl');
+  curModel='4pl'; curScale='log';
+  document.querySelectorAll('.mtab').forEach(function(b){b.classList.toggle('on',b.dataset.m==='4pl');});
+  document.querySelectorAll('.stab').forEach(function(b){b.classList.toggle('on',b.dataset.s==='log');});
+});
+document.getElementById('btnSlin').addEventListener('click',function(){
+  loadSample('slin');
+  curModel='linear'; curScale='lin';
+  document.querySelectorAll('.mtab').forEach(function(b){b.classList.toggle('on',b.dataset.m==='linear');});
+  document.querySelectorAll('.stab').forEach(function(b){b.classList.toggle('on',b.dataset.s==='lin');});
+});
+// Export
+document.getElementById('btnPNG').addEventListener('click', exportPNG);
+
+/* ── Inicializar ── */
+loadSample('s4pl');
+</script>
+</body>
+</html>

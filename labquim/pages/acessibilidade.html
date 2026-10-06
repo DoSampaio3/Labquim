@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acessibilidade | LabQuim — UEFS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .acesso-card {
+      background: white;
+      border-radius: var(--borda-raio);
+      border: 1px solid #dde3ec;
+      padding: 28px 32px;
+      box-shadow: var(--sombra);
+      margin-bottom: 24px;
+    }
+    .acesso-card h2 {
+      color: var(--azul-principal);
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .acesso-card p { color: #4a5568; margin-bottom: 16px; }
+
+    /* Controles de fonte */
+    .fonte-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .fonte-btn {
+      border: 2px solid var(--azul-medio);
+      background: white;
+      color: var(--azul-principal);
+      border-radius: 8px;
+      padding: 8px 20px;
+      font-family: var(--font-corpo);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transicao);
+    }
+    .fonte-btn:hover, .fonte-btn.ativo { background: var(--azul-medio); color: white; }
+
+    /* Alto contraste toggle */
+    .contraste-btn {
+      background: var(--azul-principal);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-family: var(--font-corpo);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transicao);
+    }
+    .contraste-btn:hover { background: #0f2448; }
+
+    /* Preview alto contraste */
+    .preview-box {
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+    .preview-normal { background: white; border: 1px solid #dde3ec; }
+    .preview-contraste { background: #000; color: #ffff00; border: 2px solid #ffff00; }
+    .preview-contraste a { color: #00ffff; }
+    .preview-contraste p { color: #fff; }
+
+    /* Alto contraste global */
+    html.alto-contraste {
+      background: #000 !important;
+      color: #ffff00 !important;
+    }
+    html.alto-contraste * {
+      background-color: #000 !important;
+      color: #ffff00 !important;
+      border-color: #ffff00 !important;
+    }
+    html.alto-contraste a { color: #00ffff !important; }
+    html.alto-contraste .site-header,
+    html.alto-contraste .nav-principal,
+    html.alto-contraste footer,
+    html.alto-contraste .barra-topo { background: #111 !important; border-color: #ffff00 !important; }
+    html.alto-contraste h1, html.alto-contraste h2, html.alto-contraste h3 { color: #fff !important; }
+    html.alto-contraste .btn-primario { background: #ffff00 !important; color: #000 !important; }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div id="header-container"></div>
+<div id="breadcrumb-container"></div>
+
+<div style="background: linear-gradient(135deg, #6b46c1 0%, #805ad5 100%); padding: 52px 0; color: white;">
+  <div class="container">
+    <h1 style="font-size:2rem; color:white; margin-bottom:10px;">
+      <i class="fa fa-universal-access" style="margin-right:12px; opacity:0.8;"></i>Acessibilidade
+    </h1>
+    <p style="opacity:0.82; font-size:1rem;">Recursos para tornar o LabQuim acessível a todos os usuários</p>
+  </div>
+</div>
+
+<section class="section-padded">
+  <div class="container" style="max-width:820px;">
+
+    <div class="acesso-card">
+      <h2><i class="fa fa-info-circle" style="color:#6b46c1;"></i> Declaração de Acessibilidade</h2>
+      <p>
+        O site do LabQuim — Laboratório de Química da UEFS — busca seguir as diretrizes de acessibilidade
+        digital do <strong>e-MAG (Modelo de Acessibilidade em Governo Eletrônico)</strong> e as recomendações
+        do <strong>WCAG 2.1 (Web Content Accessibility Guidelines)</strong> do W3C, garantindo que o conteúdo
+        seja acessível ao maior número possível de pessoas.
+      </p>
+      <p style="margin-bottom:0;">
+        Em caso de dificuldades de acesso ou sugestões de melhoria, entre em contato pelo formulário
+        disponível na <a href="../index.html#contato">página de contato</a>.
+      </p>
+    </div>
+
+    <!-- Tamanho da fonte -->
+    <div class="acesso-card" id="fonte">
+      <h2><i class="fa fa-text-height" style="color:#6b46c1;"></i> Tamanho da Fonte</h2>
+      <p>Ajuste o tamanho do texto para melhor leitura. A preferência é salva para sua próxima visita.</p>
+      <div class="fonte-btns">
+        <button class="fonte-btn" id="fonte-diminuir" aria-label="Diminuir fonte">
+          <i class="fa fa-minus"></i> Diminuir
+        </button>
+        <button class="fonte-btn ativo" id="fonte-normal" aria-label="Tamanho padrão">
+          A Normal
+        </button>
+        <button class="fonte-btn" id="fonte-aumentar" aria-label="Aumentar fonte">
+          <i class="fa fa-plus"></i> Aumentar
+        </button>
+        <button class="fonte-btn" id="fonte-grande" aria-label="Fonte grande">
+          A+ Grande
+        </button>
+      </div>
+      <p style="margin-top:14px; font-size:0.82rem; color:#9aa5b4; margin-bottom:0;">
+        <i class="fa fa-keyboard" style="margin-right:4px;"></i>
+        Atalho de teclado: <kbd style="background:#f0f2f5; padding:2px 8px; border-radius:4px; border:1px solid #dde3ec;">Ctrl</kbd> + <kbd style="background:#f0f2f5; padding:2px 8px; border-radius:4px; border:1px solid #dde3ec;">+</kbd> ou <kbd style="background:#f0f2f5; padding:2px 8px; border-radius:4px; border:1px solid #dde3ec;">-</kbd> no navegador
+      </p>
+    </div>
+
+    <!-- Alto Contraste -->
+    <div class="acesso-card" id="alto-contraste">
+      <h2><i class="fa fa-adjust" style="color:#6b46c1;"></i> Alto Contraste</h2>
+      <p>Ative o modo de alto contraste para melhorar a visibilidade do conteúdo, especialmente para pessoas com baixa visão.</p>
+
+      <button class="contraste-btn" id="btn-contraste">
+        <i class="fa fa-adjust"></i>
+        <span id="contraste-texto">Ativar Alto Contraste</span>
+      </button>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:20px;">
+        <div>
+          <p style="font-size:0.8rem; font-weight:600; color:#6b7b8e; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em;">Normal</p>
+          <div class="preview-box preview-normal">
+            <p style="font-weight:600; margin-bottom:4px;">Texto de exemplo</p>
+            <p style="font-size:0.85rem;">Conteúdo com contraste padrão.</p>
+            <a href="#" style="font-size:0.85rem;">Link de exemplo</a>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:0.8rem; font-weight:600; color:#6b7b8e; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.05em;">Alto Contraste</p>
+          <div class="preview-box preview-contraste">
+            <p style="font-weight:600; margin-bottom:4px; color:#fff;">Texto de exemplo</p>
+            <p style="font-size:0.85rem;">Conteúdo com alto contraste.</p>
+            <a href="#" style="font-size:0.85rem; color:#00ffff;">Link de exemplo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navegação por Teclado -->
+    <div class="acesso-card">
+      <h2><i class="fa fa-keyboard" style="color:#6b46c1;"></i> Navegação por Teclado</h2>
+      <p>Todo o site pode ser navegado sem o uso do mouse. Utilize as teclas abaixo:</p>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div style="background:var(--azul-claro); border-radius:8px; padding:14px 18px;">
+          <p style="font-weight:700; margin-bottom:4px;"><kbd style="background:var(--azul-medio); color:white; padding:2px 8px; border-radius:4px;">Tab</kbd></p>
+          <p style="font-size:0.85rem; margin-bottom:0;">Avançar entre elementos interativos</p>
+        </div>
+        <div style="background:var(--azul-claro); border-radius:8px; padding:14px 18px;">
+          <p style="font-weight:700; margin-bottom:4px;"><kbd style="background:var(--azul-medio); color:white; padding:2px 8px; border-radius:4px;">Shift + Tab</kbd></p>
+          <p style="font-size:0.85rem; margin-bottom:0;">Voltar entre elementos interativos</p>
+        </div>
+        <div style="background:var(--azul-claro); border-radius:8px; padding:14px 18px;">
+          <p style="font-weight:700; margin-bottom:4px;"><kbd style="background:var(--azul-medio); color:white; padding:2px 8px; border-radius:4px;">Enter</kbd></p>
+          <p style="font-size:0.85rem; margin-bottom:0;">Ativar links e botões</p>
+        </div>
+        <div style="background:var(--azul-claro); border-radius:8px; padding:14px 18px;">
+          <p style="font-weight:700; margin-bottom:4px;"><kbd style="background:var(--azul-medio); color:white; padding:2px 8px; border-radius:4px;">Esc</kbd></p>
+          <p style="font-size:0.85rem; margin-bottom:0;">Fechar menus e modais</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leitores de Tela -->
+    <div class="acesso-card">
+      <h2><i class="fa fa-assistive-listening-systems" style="color:#6b46c1;"></i> Leitores de Tela</h2>
+      <p>O site foi desenvolvido com semântica HTML adequada (tags <code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>) e atributos ARIA para compatibilidade com os principais leitores de tela:</p>
+      <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:4px;">
+        <span style="background:var(--azul-claro); color:var(--azul-principal); padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:600;">NVDA (Windows)</span>
+        <span style="background:var(--azul-claro); color:var(--azul-principal); padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:600;">JAWS (Windows)</span>
+        <span style="background:var(--azul-claro); color:var(--azul-principal); padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:600;">VoiceOver (macOS/iOS)</span>
+        <span style="background:var(--azul-claro); color:var(--azul-principal); padding:6px 16px; border-radius:20px; font-size:0.85rem; font-weight:600;">TalkBack (Android)</span>
+      </div>
+    </div>
+
+    <!-- Contato -->
+    <div class="acesso-card" style="background:var(--azul-claro); border-color:var(--azul-medio);">
+      <h2><i class="fa fa-envelope" style="color:var(--azul-medio);"></i> Encontrou alguma barreira?</h2>
+      <p style="margin-bottom:16px;">
+        Se você encontrou alguma dificuldade de acesso ou tem sugestões para melhorar a acessibilidade do site,
+        entre em contato conosco. Sua contribuição é fundamental para tornar o LabQuim mais inclusivo.
+      </p>
+      <a href="../index.html#contato" class="btn btn-primario"><i class="fa fa-paper-plane"></i> Enviar sugestão</a>
+    </div>
+
+  </div>
+</section>
+
+<div id="footer-container"></div>
+<script src="../assets/js/componentes.js"></script>
+<script src="../assets/js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('breadcrumb-container').innerHTML = gerarBreadcrumb([
+      { texto: 'Home', href: '../index.html' },
+      { texto: 'Acessibilidade', href: '#' },
+    ]);
+
+    /* ===== TAMANHO DE FONTE ===== */
+    const tamanhos = { 'fonte-diminuir': 14, 'fonte-normal': 16, 'fonte-aumentar': 18, 'fonte-grande': 20 };
+    const tamanhoSalvo = localStorage.getItem('labquim-fonte');
+    if (tamanhoSalvo) document.documentElement.style.fontSize = tamanhoSalvo + 'px';
+
+    Object.keys(tamanhos).forEach(id => {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        document.documentElement.style.fontSize = tamanhos[id] + 'px';
+        localStorage.setItem('labquim-fonte', tamanhos[id]);
+        document.querySelectorAll('.fonte-btn').forEach(b => b.classList.remove('ativo'));
+        btn.classList.add('ativo');
+      });
+    });
+
+    /* ===== ALTO CONTRASTE ===== */
+    const btnC = document.getElementById('btn-contraste');
+    const textoC = document.getElementById('contraste-texto');
+    const contrasteAtivo = localStorage.getItem('labquim-contraste') === '1';
+    if (contrasteAtivo) {
+      textoC.textContent = 'Desativar Alto Contraste';
+    }
+    btnC.addEventListener('click', () => {
+      const ativo = document.documentElement.classList.toggle('alto-contraste');
+      textoC.textContent = ativo ? 'Desativar Alto Contraste' : 'Ativar Alto Contraste';
+      localStorage.setItem('labquim-contraste', ativo ? '1' : '0');
+      const linkAC = document.getElementById('link-alto-contraste');
+      if (linkAC) linkAC.textContent = ativo ? '✓ Alto Contraste' : 'Alto Contraste';
+    });
+  });
+</script>
+</body>
+</html>
